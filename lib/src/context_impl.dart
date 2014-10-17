@@ -5,9 +5,6 @@ import 'context.dart';
 import 'package:option/option.dart';
 
 class MojitoContextImpl implements MojitoContext {
-
-  MojitoContextImpl() {}
-
   @override
   Option<AuthenticatedContext> get auth => authenticatedContext();
 }

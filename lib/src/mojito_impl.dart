@@ -1,4 +1,4 @@
-library mojito;
+library mojito.impl;
 
 import 'context.dart';
 import 'context_impl.dart';
@@ -6,15 +6,15 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_exception_response/exception_response.dart';
 import 'package:shelf_bind/shelf_bind.dart';
-import 'package:shelf_auth/shelf_auth.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'package:shelf_proxy/shelf_proxy.dart';
 import '../mojito.dart';
+import 'auth_impl.dart';
 
 class MojitoImpl implements Mojito {
   final r.Router router;
   Handler _pubServeHandler;
-  final MojitoAuthImpl auth = new MojitoAuthImpl._internal();
+  final MojitoAuthImpl auth = new MojitoAuthImpl();
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
 
@@ -48,10 +48,9 @@ class MojitoImpl implements Mojito {
       .addMiddleware(logRequests())
       .addMiddleware(exceptionResponse());
 
-    if (auth._global != null) {
-      final authMiddleware = auth._middleware != null ?  auth._middleware :
-          auth._global.build();
+    final authMiddleware = auth.middleware;
 
+    if (authMiddleware != null) {
       pipeline = pipeline.addMiddleware(authMiddleware);
     }
 
@@ -65,39 +64,6 @@ class MojitoImpl implements Mojito {
 
 // just a trick as Mojito has a property called context which points to this one
 MojitoContext _getContext() => context;
-
-class _GlobalAuthBuilder extends AuthenticationBuilder {
-  final MojitoAuthImpl _ma;
-
-  _GlobalAuthBuilder(this._ma);
-
-  @override
-  Middleware build() {
-    final m = super.build();
-    _ma._middleware = m;
-    return m;
-  }
-}
-
-class MojitoAuthImpl implements MojitoAuth {
-  Middleware _middleware;
-  AuthenticationBuilder _global;
-
-  MojitoAuthImpl._internal();
-
-  /// builder for authenitcation middleware to be applied all routes
-  AuthenticationBuilder get global {
-    if (_global == null) {
-      _global = new _GlobalAuthBuilder(this);
-    }
-    return _global;
-  }
-
-  /// builder for authenitcation middleware that you choose where to include
-  AuthenticationBuilder builder() => new AuthenticationBuilder();
-}
-
-
 
 const Symbol _MOJITO_CONTEXT = #mojito_context;
 
