@@ -34,11 +34,15 @@ class Mojito {
   Handler get handler {
     r.printRoutes(router);
 
-    var cascade = new Cascade()
-      .add(router.handler);
+//    var cascade = new Cascade()
+//      .add(router.handler);
+//
+//    if (_pubServeHandler != null) {
+//      cascade = cascade.add(_pubServeHandler);
+//    }
 
     if (_pubServeHandler != null) {
-      cascade = cascade.add(_pubServeHandler);
+      router.add('/', ['GET'], _pubServeHandler, exactMatch: false);
     }
 
     var pipeline = const Pipeline()
@@ -49,7 +53,7 @@ class Mojito {
       pipeline = pipeline.addMiddleware(auth._middleware);
     }
 
-    final handler = pipeline.addHandler(cascade.handler);
+    final handler = pipeline.addHandler(router.handler);
 
     return _wrapHandler(handler);
   }
