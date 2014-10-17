@@ -6,10 +6,10 @@ import 'context_impl.dart';
 import 'package:option/option.dart';
 
 MojitoContext contextFromRequest(Request request) =>
-    new MojitoContext();
+    new MojitoContextImpl();
 
 abstract class MojitoContext {
   Option<AuthenticatedContext> get auth;
 
-  factory MojitoContext() => new MojitoContextImpl();
+//  factory MojitoContext() => new MojitoContextImpl();
 }

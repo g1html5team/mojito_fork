@@ -41,6 +41,10 @@ packages:
     description: hateoas_models
     source: hosted
     version: "0.0.1+1"
+  http:
+    description: http
+    source: hosted
+    version: "0.11.1+1"
   http_parser:
     description: http_parser
     source: hosted
@@ -80,7 +84,7 @@ packages:
   shelf_auth:
     description: shelf_auth
     source: hosted
-    version: "0.1.0+1"
+    version: "0.2.0"
   shelf_bind:
     description: shelf_bind
     source: hosted
@@ -93,6 +97,10 @@ packages:
     description: shelf_path
     source: hosted
     version: "0.1.1+1"
+  shelf_proxy:
+    description: shelf_proxy
+    source: hosted
+    version: "0.1.0+1"
   shelf_rest:
     description: shelf_rest
     source: hosted

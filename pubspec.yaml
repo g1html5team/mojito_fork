@@ -8,10 +8,11 @@ environment:
 dependencies:
   option: '>=0.3.3 <0.4.0'
   shelf: any
-  shelf_auth: any
+  shelf_auth: '>=0.2.0'
   shelf_bind: any
   shelf_exception_response: any
   shelf_path: any
+  shelf_proxy: any
   shelf_rest: '>=0.1.4-pre.4'
   shelf_route: any
 dev_dependencies:
