@@ -1,0 +1,19 @@
+name: mojito
+version: 0.0.1
+author: Anders Holmgren <andersmholmgren@gmail.com>
+description: A micro framework for modern web apps built from the ground up on the shelf framework
+homepage: https://bitbucket.org/andersmholmgren/shelf_auth
+environment:
+  sdk: '>=1.2.0 <2.0.0'
+dependencies:
+  option: '>=0.3.3 <0.4.0'
+  shelf: any
+  shelf_auth: any
+  shelf_bind: any
+  shelf_exception_response: any
+  shelf_path: any
+  shelf_rest: '>=0.1.4-pre.4'
+  shelf_route: any
+dev_dependencies:
+  mockito: any
+  unittest: any
