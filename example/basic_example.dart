@@ -6,9 +6,14 @@ import 'package:option/option.dart';
 main() {
   final app = mojito.init();
 
-  app.auth.basic(_lookup, allowHttp: true);
+  app.auth.global
+    .basic(_lookup)
+    ..allowHttp=true
+    ..allowAnonymousAccess=true;
 
-  app.router..get('/', () {
+  app.proxyPubServe();
+
+  app.router..get('/hi', () {
     String username = app.context.auth.map((authContext) =>
         authContext.principal.name)
         .getOrElse(() => 'guest');
