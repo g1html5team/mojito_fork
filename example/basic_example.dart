@@ -1,10 +1,9 @@
-import 'package:mojito/mojito.dart' as mojito;
-import 'package:shelf_auth/shelf_auth.dart';
+import 'package:mojito/mojito.dart';
 import 'dart:async';
 import 'package:option/option.dart';
 
 main() {
-  final app = mojito.init();
+  final app = init();
 
   app.auth.global
     .basic(_lookup)
