@@ -12,17 +12,21 @@ import 'mojito.dart';
 import 'router.dart';
 import 'router_impl.dart';
 import 'auth_impl.dart';
+import 'package:mojito/src/middleware_impl.dart';
 
 class MojitoImpl implements Mojito {
   final Router router;
   Handler _pubServeHandler;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
+  final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
+
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
 
+  final bool _logRequests;
 
 
-  MojitoImpl(RouteCreator createRootRouter)
+  MojitoImpl(RouteCreator createRootRouter, this._logRequests)
       : router = createRootRouter != null ? createRootRouter() :
           new RouterImpl(handlerAdapter: handlerAdapter());
 
@@ -46,14 +50,22 @@ class MojitoImpl implements Mojito {
 
     r.printRoutes(router);
 
-    var pipeline = const Pipeline()
-      .addMiddleware(logRequests())
-      .addMiddleware(exceptionResponse());
+    var pipeline = const Pipeline();
+    if (_logRequests) {
+      pipeline = pipeline.addMiddleware(logRequests());
+    }
+
+    pipeline = pipeline.addMiddleware(exceptionResponse());
 
     final authMiddleware = auth.middleware;
 
     if (authMiddleware != null) {
       pipeline = pipeline.addMiddleware(authMiddleware);
+    }
+
+    final mw = middleware.middleware;
+    if (mw != null) {
+      pipeline = pipeline.addMiddleware(mw);
     }
 
     final handler = pipeline.addHandler(router.handler);
