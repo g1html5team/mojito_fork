@@ -108,7 +108,7 @@ packages:
   shelf_route:
     description: shelf_route
     source: hosted
-    version: "0.10.0"
+    version: "0.10.1"
   source_span:
     description: source_span
     source: hosted

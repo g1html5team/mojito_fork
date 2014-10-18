@@ -2,17 +2,17 @@ library mojito;
 
 import 'context.dart';
 import 'package:shelf/shelf.dart';
-import 'package:shelf_route/shelf_route.dart' as r;
+import 'router.dart';
 import 'auth.dart';
 import 'mojito_impl.dart' as impl;
 
-typedef r.Router RouteCreator();
+typedef Router RouteCreator();
 
 Mojito init({ RouteCreator createRootRouter }) =>
     new impl.MojitoImpl(createRootRouter);
 
 abstract class Mojito {
-  r.Router get router;
+  Router get router;
   MojitoAuth get auth;
   MojitoContext get context;
   Handler get handler;

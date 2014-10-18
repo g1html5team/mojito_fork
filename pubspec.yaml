@@ -14,7 +14,7 @@ dependencies:
   shelf_path: any
   shelf_proxy: any
   shelf_rest: '>=0.1.4-pre.4'
-  shelf_route: any
+  shelf_route: '>=0.10.1'
 dev_dependencies:
   mockito: any
   unittest: any

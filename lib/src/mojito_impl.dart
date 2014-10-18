@@ -8,11 +8,13 @@ import 'package:shelf_exception_response/exception_response.dart';
 import 'package:shelf_bind/shelf_bind.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'package:shelf_proxy/shelf_proxy.dart';
-import '../mojito.dart';
+import 'mojito.dart';
+import 'router.dart';
+import 'router_impl.dart';
 import 'auth_impl.dart';
 
 class MojitoImpl implements Mojito {
-  final r.Router router;
+  final Router router;
   Handler _pubServeHandler;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   MojitoContext get context => _getContext();
@@ -22,7 +24,7 @@ class MojitoImpl implements Mojito {
 
   MojitoImpl(RouteCreator createRootRouter)
       : router = createRootRouter != null ? createRootRouter() :
-          r.router(handlerAdapter: handlerAdapter());
+          new RouterImpl(handlerAdapter: handlerAdapter());
 
   void proxyPubServe({int port: 8080}) {
     _pubServeHandler = proxyHandler("http://localhost:$port");
