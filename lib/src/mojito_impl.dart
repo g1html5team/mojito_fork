@@ -18,12 +18,17 @@ import 'router.dart';
 import 'router_impl.dart';
 import 'auth_impl.dart';
 import 'package:mojito/src/middleware_impl.dart';
+import 'dart:async';
+import 'package:logging/logging.dart';
+
+final Logger _log = new Logger('mojito');
 
 class MojitoImpl implements Mojito {
   final Router router;
   Handler _pubServeHandler;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
+  final LogRecordProcessor _perRequestLogProcessor;
 
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
@@ -31,9 +36,12 @@ class MojitoImpl implements Mojito {
   final bool _logRequests;
 
 
-  MojitoImpl(RouteCreator createRootRouter, this._logRequests)
-      : router = createRootRouter != null ? createRootRouter() :
-          new RouterImpl(handlerAdapter: handlerAdapter());
+  MojitoImpl(RouteCreator createRootRouter, this._logRequests,
+    { LogRecordProcessor perRequestLogProcessor })
+      : this._perRequestLogProcessor = perRequestLogProcessor,
+        router = createRootRouter != null ? createRootRouter() :
+          new RouterImpl(handlerAdapter: handlerAdapter()) {
+  }
 
   void proxyPubServe({int port: 8080}) {
     _pubServeHandler = proxyHandler("http://localhost:$port");
@@ -43,7 +51,7 @@ class MojitoImpl implements Mojito {
   void start({ int port: 9999 }) {
     io.serve(handler, 'localhost', port)
         .then((server) {
-      print('Serving at http://${server.address.host}:${server.port}');
+      _log.info('Serving at http://${server.address.host}:${server.port}');
     });
   }
 
@@ -53,14 +61,20 @@ class MojitoImpl implements Mojito {
           exactMatch: false);
     }
 
-    r.printRoutes(router);
+    r.printRoutes(router, printer: _log.info);
 
     var pipeline = const Pipeline();
+
+    if (_perRequestLogProcessor != null) {
+      pipeline = pipeline.addMiddleware(_adaptLogging);
+    }
+
     if (_logRequests) {
       pipeline = pipeline.addMiddleware(logRequests());
     }
 
     pipeline = pipeline.addMiddleware(exceptionResponse());
+    pipeline = pipeline.addMiddleware(logExceptions());
 
     final authMiddleware = auth.middleware;
 
@@ -79,6 +93,17 @@ class MojitoImpl implements Mojito {
     return handler;
   }
 
+
+  Handler _adaptLogging(Handler innerHandler) {
+    return (request) {
+      var streamSubscription = Logger.root.onRecord.listen(_perRequestLogProcessor);
+      return new Future.sync(() => innerHandler(request)).whenComplete(() {
+        streamSubscription.cancel();
+      });
+    };
+  }
+
+
 }
 
 // just a trick as Mojito has a property called context which points to this one
@@ -88,6 +113,23 @@ const Symbol _MOJITO_CONTEXT = #mojito_context;
 
 
 final MojitoContext context = new MojitoContextImpl();
+
+
+Middleware logExceptions() {
+  return (Handler handler) {
+    return (Request request) {
+      return new Future.sync(() =>
+          handler(request)).catchError((error, stackTrace) {
+
+          _log.fine('exception', error, stackTrace);
+
+          throw error;
+      });
+    };
+  };
+}
+
+
 
 ///**
 // * Returns the [MojitoContext] of the current request.

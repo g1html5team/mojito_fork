@@ -11,11 +11,20 @@ import 'router.dart';
 import 'auth.dart';
 import 'mojito_impl.dart' as impl;
 import 'middleware.dart';
+import 'package:logging/logging.dart';
+
+typedef LogRecordProcessor(LogRecord logRecord);
+
 
 typedef Router RouteCreator();
 
-Mojito init({ RouteCreator createRootRouter, bool logRequests: true }) =>
-    new impl.MojitoImpl(createRootRouter, logRequests);
+/// if provided the [perRequestLogProcessor] will be subscribed to log events
+/// on the root logger during processing of each request. This allows
+/// integration with external logging services on PAAS providers
+Mojito init({ RouteCreator createRootRouter, bool logRequests: true,
+            LogRecordProcessor perRequestLogProcessor }) =>
+    new impl.MojitoImpl(createRootRouter, logRequests,
+      perRequestLogProcessor: perRequestLogProcessor);
 
 abstract class Mojito {
   Router get router;
