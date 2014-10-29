@@ -15,6 +15,17 @@ abstract class Router implements r.Router<Router> {
   /// add a shelf_rest REST resource
   void resource(resource, {path, Middleware middleware,
       r.HandlerAdapter handlerAdapter});
+
+  void addOAuth1Provider(path,
+                         String consumerKey, String consumerSecret,
+                         String requestTokenUrl, String accessTokenUrl,
+                         String authenticationUrl,
+                         // TODO: would be nice if we could generate it
+                         String callbackUrl,
+                         { requestTokenPath: '/requestToken',
+                           authTokenPath: '/authToken' }
+  );
+
 }
 
 /// Creates a mojito router

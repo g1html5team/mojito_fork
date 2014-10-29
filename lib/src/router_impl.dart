@@ -9,6 +9,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_route/extend.dart' as r;
 import 'package:shelf_rest/shelf_rest.dart';
 import 'router.dart';
+import 'oauth1.dart';
 
 class RouterImpl extends r.RouterImpl<Router> implements Router {
   RouterImpl({Function fallbackHandler,
@@ -37,6 +38,27 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
       new RouterImpl(fallbackHandler: fallbackHandler,
           handlerAdapter: ha, pathAdapter: pa, path: path,
           middleware: middleware);
+
+
+  @override
+  void addOAuth1Provider(path,
+                         String consumerKey, String consumerSecret,
+                         String requestTokenUrl, String accessTokenUrl,
+                         String authenticationUrl,
+                         // TODO: would be nice if we could generate it
+                         String callbackUrl,
+                         { requestTokenPath: '/requestToken',
+                           authTokenPath: '/authToken' }
+  ) {
+
+    final dancer = new OAuth1Dancer(consumerKey, consumerSecret, requestTokenUrl,
+        accessTokenUrl, authenticationUrl, callbackUrl);
+
+    addAll((Router r) => r
+        ..get(requestTokenPath, dancer.tokenRequestHandler())
+        ..get(authTokenPath, dancer.accessTokenRequestHandler()),
+        path: path);
+  }
 }
 
 
