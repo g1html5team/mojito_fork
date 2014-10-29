@@ -6,6 +6,7 @@
 library mojito.auth;
 
 import 'package:shelf_auth/shelf_auth.dart';
+import 'package:shelf/shelf.dart';
 
 abstract class MojitoAuth {
 
@@ -14,6 +15,11 @@ abstract class MojitoAuth {
 
   /// builder for authenitcation middleware that you choose where to include
   AuthenticationBuilder builder();
+
+  Handler oauth1TokenRequestHandler(String consumerKey, String consumerSecret,
+                            String requestTokenUrl, String authenticationUrl,
+                            String callbackUrl);
+
 }
 
 

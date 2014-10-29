@@ -8,6 +8,13 @@ library mojito.auth.impl;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 import 'auth.dart';
+import 'package:oauth/oauth.dart' as oauth;
+import 'package:uri/uri.dart';
+import 'package:http/http.dart' as http;
+import 'package:crypto/crypto.dart' as crypto;
+import 'dart:math';
+import 'dart:async';
+
 
 class MojitoAuthImpl implements MojitoAuth {
   Middleware _middleware;
@@ -33,6 +40,16 @@ class MojitoAuthImpl implements MojitoAuth {
 
   /// builder for authenitcation middleware that you choose where to include
   AuthenticationBuilder builder() => new AuthenticationBuilder();
+
+
+  Handler oauth1TokenRequestHandler(String consumerKey, String consumerSecret,
+                            String requestTokenUrl, String authenticationUrl,
+                            String callbackUrl) {
+    return (Request request) =>
+        _authRedirect(consumerKey, consumerSecret, requestTokenUrl,
+            authenticationUrl, callbackUrl);
+  }
+
 }
 
 
@@ -49,3 +66,59 @@ class _GlobalAuthBuilder extends AuthenticationBuilder {
   }
 }
 
+
+
+Future<Response> _authRedirect(String consumerKey, String consumerSecret,
+    String requestTokenUrl, String authenticationUrl, String callbackUrl) {
+
+  final consumerToken = new oauth.Token(consumerKey, consumerSecret);
+
+  var requestTokenUri =
+    (new UriBuilder.fromUri(
+        Uri.parse(requestTokenUrl))
+        ..queryParameters={'oauth_callback': callbackUrl})
+    .build();
+
+  print(requestTokenUri);
+
+  final request = new http.Request("POST", requestTokenUri);
+  final params = oauth.generateParameters(request, consumerToken, null, _nonce(),
+    new DateTime.now().millisecondsSinceEpoch ~/ 1000);
+
+  print(params);
+
+  final fullUrl = (new UriBuilder.fromUri(requestTokenUri)..queryParameters.addAll(params)).build();
+  print(fullUrl);
+
+//  final bbClient = new oauth.Client(consumerToken, client: new http.IOClient());
+
+  final oauthProviderClient = new http.IOClient();
+
+  return oauthProviderClient.post(fullUrl).then((http.Response response) {
+    print(response.statusCode);
+//    print(response.headers['oauth_token_secret']);
+    final body = response.body;
+    final m = Uri.splitQueryString(body);
+    print(response.body);
+    final authToken = m['oauth_token'];
+    print(authToken);
+    final authUri = (new UriBuilder.fromUri(
+        Uri.parse(authenticationUrl))
+      ..queryParameters = {
+        'oauth_token' : authToken
+    }).build();
+
+    return new Response.seeOther(authUri);
+  }).whenComplete(() {
+    print('done');
+  });
+
+}
+
+
+String _nonce() {
+  var r = new Random();
+  final n = new List<int>.generate(8, (_) => r.nextInt(255), growable: false);
+  String nonceStr = crypto.CryptoUtils.bytesToBase64(n, urlSafe: true);
+  return nonceStr;
+}
