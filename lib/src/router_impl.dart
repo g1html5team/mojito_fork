@@ -50,9 +50,13 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                          { requestTokenPath: '/requestToken',
                            authTokenPath: '/authToken' }
   ) {
+    final atp = authTokenPath.toString();
+
+    final cb = callbackUrl != null ? callbackUrl :
+      atp.startsWith('/') ? atp.substring(1) : atp;
 
     final dancer = new OAuth1ProviderHandlers(consumerToken, oauthProvider,
-        callbackUrl, tokenStore);
+        cb, tokenStore);
 
     addAll((Router r) => r
         ..get(requestTokenPath, dancer.tokenRequestHandler())
