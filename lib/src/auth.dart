@@ -6,7 +6,6 @@
 library mojito.auth;
 
 import 'package:shelf_auth/shelf_auth.dart';
-import 'package:shelf/shelf.dart';
 
 abstract class MojitoAuth {
 

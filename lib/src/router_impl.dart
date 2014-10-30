@@ -42,9 +42,8 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
 
   @override
   void addOAuth1Provider(path,
-                         String consumerKey, String consumerSecret,
-                         String requestTokenUrl, String accessTokenUrl,
-                         String authenticationUrl,
+                         Token consumerToken,
+                         OAuth1Provider oauthProvider,
                          // TODO: would be nice if we could generate it
                          String callbackUrl,
                          OAuth1RequestTokenSecretStore tokenStore,
@@ -52,9 +51,8 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                            authTokenPath: '/authToken' }
   ) {
 
-    final dancer = new OAuth1ProviderHandlers(consumerKey, consumerSecret,
-        requestTokenUrl, accessTokenUrl, authenticationUrl, callbackUrl,
-        tokenStore);
+    final dancer = new OAuth1ProviderHandlers(consumerToken, oauthProvider,
+        callbackUrl, tokenStore);
 
     addAll((Router r) => r
         ..get(requestTokenPath, dancer.tokenRequestHandler())

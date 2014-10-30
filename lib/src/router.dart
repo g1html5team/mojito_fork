@@ -21,9 +21,8 @@ abstract class Router implements r.Router<Router> {
       r.HandlerAdapter handlerAdapter});
 
   void addOAuth1Provider(path,
-                         String consumerKey, String consumerSecret,
-                         String requestTokenUrl, String accessTokenUrl,
-                         String authenticationUrl,
+                         Token consumerToken,
+                         OAuth1Provider oauthProvider,
                          // TODO: would be nice if we could generate it
                          String callbackUrl,
                          OAuth1RequestTokenSecretStore tokenStore,

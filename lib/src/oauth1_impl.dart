@@ -8,7 +8,7 @@ library mojito.auth.oauth1.impl;
 
 import 'package:shelf/shelf.dart';
 //import 'package:shelf_auth/shelf_auth.dart';
-import 'package:oauth/oauth.dart';
+import 'package:oauth/oauth.dart' as oauth;
 import 'package:uri/uri.dart';
 import 'package:http/http.dart' as http;
 import 'package:crypto/crypto.dart' as crypto;
@@ -16,41 +16,64 @@ import 'dart:math';
 import 'dart:async';
 import 'package:shelf_exception_response/exception.dart';
 import 'oauth1.dart';
+import 'preconditions.dart';
+import 'package:path/path.dart' as pathos;
+
+final _p = pathos.url;
 
 class OAuth1ProviderHandlersImpl implements OAuth1ProviderHandlers {
-  final Token consumerToken;
-  final String requestTokenUrl;
-  final String authenticationUrl;
-  final String accessTokenUrl;
-  final String callbackUrl;
+  final oauth.Token consumerToken;
+  final OAuth1Provider oauthProvider;
+  final String callbackUrlStr;
   final OAuth1RequestTokenSecretStore tokenStore;
 
-  OAuth1ProviderHandlersImpl(String consumerKey, String consumerSecret,
-      this.requestTokenUrl, this.accessTokenUrl,
-      this.authenticationUrl, this.callbackUrl, this.tokenStore)
-      : this.consumerToken = new Token(consumerKey, consumerSecret);
-
-  Handler tokenRequestHandler() {
-    return (Request request) => _authRedirect();
+  // TODO: makes sense to let callbackUrl be absolute or relative. If relative
+  // then relative to basepath
+  OAuth1ProviderHandlersImpl(Token consumerToken,
+      this.oauthProvider, this.callbackUrlStr,
+      this.tokenStore)
+      : this.consumerToken = new oauth.Token(consumerToken.key,
+          consumerToken.secret) {
+    ensure(consumerToken, isNotNull);
+    ensure(oauthProvider, isNotNull);
+    ensure(callbackUrlStr, isNotNull);
+    ensure(tokenStore, isNotNull);
   }
+
+  Handler tokenRequestHandler() => _authRedirect;
 
   Handler accessTokenRequestHandler() => _fetchAccessToken;
 
-  Future<Response> _authRedirect() {
+  Future<Response> _authRedirect(Request req) {
+    // I know a bit weird but route paths tend to start with /
+    final isRelative = callbackUrlStr.startsWith('/') ||
+        _p.isRelative(callbackUrlStr);
+
+    final callbackUrl = isRelative ?
+        (new UriBuilder.fromUri(req.requestedUri)
+          ..path=_p.join(req.scriptName, callbackUrlStr)).build().toString()
+        : callbackUrlStr;
+
+    print('callback $callbackUrl');
+
     var requestTokenUri =
-      (new UriBuilder.fromUri(Uri.parse(requestTokenUrl))
+      (new UriBuilder.fromUri(oauthProvider.requestTokenUrl)
           ..queryParameters={'oauth_callback': callbackUrl})
       .build();
 
     print(requestTokenUri);
 
     final request = new http.Request("POST", requestTokenUri);
-    final params = generateParameters(request, consumerToken, null, _nonce(),
+    final params = oauth.generateParameters(request, consumerToken, null,
+        _nonce(),
       new DateTime.now().millisecondsSinceEpoch ~/ 1000);
 
     print(params);
 
-    final fullUrl = (new UriBuilder.fromUri(requestTokenUri)..queryParameters.addAll(params)).build();
+    final fullUrl = (new UriBuilder.fromUri(requestTokenUri)
+      ..queryParameters.addAll(params))
+    .build();
+
     print(fullUrl);
 
   //  final bbClient = new Client(consumerToken, client: new http.IOClient());
@@ -71,7 +94,7 @@ class OAuth1ProviderHandlersImpl implements OAuth1ProviderHandlers {
 
       return tokenStore.storeSecret(authToken, authTokenSecret).then((_) {
         final authUri = (new UriBuilder.fromUri(
-            Uri.parse(authenticationUrl))
+            oauthProvider.authenticationUrl)
           ..queryParameters = {
             'oauth_token' : authToken
         }).build();
@@ -103,19 +126,20 @@ class OAuth1ProviderHandlersImpl implements OAuth1ProviderHandlers {
   }
 
   Future<Response> _requestAuthToken(String authToken, String secret, String authVerifier) {
-    Token userToken = new Token(authToken, secret);
+    oauth.Token userToken = new oauth.Token(authToken, secret);
 
     print('authVerifier: $authVerifier; authToken: $authToken');
 
     var accessTokenUri =
-      (new UriBuilder.fromUri(Uri.parse(accessTokenUrl))
+      (new UriBuilder.fromUri(oauthProvider.accessTokenUrl)
           ..queryParameters={ 'oauth_verifier': authVerifier })
       .build();
 
     print(accessTokenUri);
 
     final request = new http.Request("POST", accessTokenUri);
-    final params = generateParameters(request, consumerToken, userToken, _nonce(15),
+    final params = oauth.generateParameters(request, consumerToken, userToken,
+        _nonce(15),
       new DateTime.now().millisecondsSinceEpoch ~/ 1000);
 
     print(params);
@@ -140,7 +164,7 @@ class OAuth1ProviderHandlersImpl implements OAuth1ProviderHandlers {
       final authTokenSecret = m['oauth_token_secret'];
       print(authTokenSecret);
 
-      return new Response.ok('ohYeah');
+      return new Response.ok('ohYeah: $authToken & $authTokenSecret');
 
     });
   }

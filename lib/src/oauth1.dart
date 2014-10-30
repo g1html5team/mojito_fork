@@ -10,8 +10,12 @@ import 'package:shelf/shelf.dart';
 import 'dart:async';
 import 'package:option/option.dart';
 import 'oauth1_impl.dart';
+import 'preconditions.dart';
 
 abstract class OAuth1RequestTokenSecretStore {
+  // TODO: need to include oauth provider as part of key as the authToken's
+  // will not be guaranteed to be unique across providers. Although probably
+  // low odds of getting duped tokens given the are short lived.
   Future storeSecret(String authToken, String secret);
   Future<Option<String>> consumeSecret(String authToken);
 }
@@ -33,15 +37,34 @@ class InMemoryOAuth1RequestTokenSecretStore implements
 
 }
 
+class OAuth1Provider {
+  final Uri requestTokenUrl;
+  final Uri accessTokenUrl;
+  final Uri authenticationUrl;
+
+  const OAuth1Provider(this.requestTokenUrl, this.accessTokenUrl,
+      this.authenticationUrl);
+}
+
+// Duping from oauth lib to avoid exposing dependency????
+class Token {
+  /// The token (public) key
+  final String key;
+  /// The token secret
+  final String secret;
+
+  /// Constructs a new token
+  Token(this.key, this.secret);
+}
+
+
 abstract class OAuth1ProviderHandlers {
-  factory OAuth1ProviderHandlers(String consumerKey, String consumerSecret,
-      String requestTokenUrl, String accessTokenUrl,
-      String authenticationUrl, String callbackUrl,
+  factory OAuth1ProviderHandlers(Token consumerToken,
+      OAuth1Provider oauthProvider, String callbackUrl,
       OAuth1RequestTokenSecretStore tokenStore) {
 
-    return new OAuth1ProviderHandlersImpl(consumerKey, consumerSecret,
-        requestTokenUrl, accessTokenUrl, authenticationUrl, callbackUrl,
-        tokenStore);
+    return new OAuth1ProviderHandlersImpl(consumerToken, oauthProvider,
+        callbackUrl, tokenStore);
   }
 
 
