@@ -90,6 +90,8 @@ class OAuth1Dancer {
     final authVerifier = queryParams['oauth_verifier'];
     final authToken = queryParams['oauth_token'];
 
+    Token userToken = new Token(authToken, _dodgySessionHackAuthTokenSecret);
+
     print('authVerifier: $authVerifier; authToken: $authToken');
 
     var accessTokenUri =
@@ -100,7 +102,6 @@ class OAuth1Dancer {
     print(accessTokenUri);
 
     final request = new http.Request("POST", accessTokenUri);
-    Token userToken = new Token(authToken, _dodgySessionHackAuthTokenSecret);
     final params = generateParameters(request, consumerToken, userToken, _nonce(15),
       new DateTime.now().millisecondsSinceEpoch ~/ 1000);
 
@@ -123,6 +124,9 @@ class OAuth1Dancer {
       print(response.body);
       final authToken = m['oauth_token'];
       print(authToken);
+      final authTokenSecret = m['oauth_token_secret'];
+      print(authTokenSecret);
+
       return new Response.ok('ohYeah');
     }).whenComplete(() {
       print('done');
