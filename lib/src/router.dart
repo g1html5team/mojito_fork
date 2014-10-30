@@ -8,6 +8,10 @@ library mojito.router;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'router_impl.dart';
+import 'oauth1.dart';
+// TODO: move somewhere else??
+export 'oauth1.dart' show OAuth1RequestTokenSecretStore,
+  InMemoryOAuth1RequestTokenSecretStore;
 
 /// A shelf_route router that adds some methods
 abstract class Router implements r.Router<Router> {
@@ -22,6 +26,7 @@ abstract class Router implements r.Router<Router> {
                          String authenticationUrl,
                          // TODO: would be nice if we could generate it
                          String callbackUrl,
+                         OAuth1RequestTokenSecretStore tokenStore,
                          { requestTokenPath: '/requestToken',
                            authTokenPath: '/authToken' }
   );

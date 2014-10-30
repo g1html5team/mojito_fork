@@ -47,12 +47,14 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                          String authenticationUrl,
                          // TODO: would be nice if we could generate it
                          String callbackUrl,
+                         OAuth1RequestTokenSecretStore tokenStore,
                          { requestTokenPath: '/requestToken',
                            authTokenPath: '/authToken' }
   ) {
 
-    final dancer = new OAuth1Dancer(consumerKey, consumerSecret, requestTokenUrl,
-        accessTokenUrl, authenticationUrl, callbackUrl);
+    final dancer = new OAuth1ProviderHandlers(consumerKey, consumerSecret,
+        requestTokenUrl, accessTokenUrl, authenticationUrl, callbackUrl,
+        tokenStore);
 
     addAll((Router r) => r
         ..get(requestTokenPath, dancer.tokenRequestHandler())

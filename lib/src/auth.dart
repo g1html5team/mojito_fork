@@ -16,10 +16,6 @@ abstract class MojitoAuth {
   /// builder for authenitcation middleware that you choose where to include
   AuthenticationBuilder builder();
 
-  Handler oauth1TokenRequestHandler(String consumerKey, String consumerSecret,
-                            String requestTokenUrl, String authenticationUrl,
-                            String callbackUrl);
-
 }
 
 

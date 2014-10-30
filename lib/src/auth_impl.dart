@@ -42,14 +42,6 @@ class MojitoAuthImpl implements MojitoAuth {
   AuthenticationBuilder builder() => new AuthenticationBuilder();
 
 
-  Handler oauth1TokenRequestHandler(String consumerKey, String consumerSecret,
-                            String requestTokenUrl, String authenticationUrl,
-                            String callbackUrl) {
-    return (Request request) =>
-        _authRedirect(consumerKey, consumerSecret, requestTokenUrl,
-            authenticationUrl, callbackUrl);
-  }
-
 }
 
 
