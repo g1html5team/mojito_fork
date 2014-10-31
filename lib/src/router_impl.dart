@@ -9,7 +9,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_route/extend.dart' as r;
 import 'package:shelf_rest/shelf_rest.dart';
 import 'router.dart';
-import 'oauth1.dart';
+import 'package:shelf_oauth/shelf_oauth.dart';
 
 class RouterImpl extends r.RouterImpl<Router> implements Router {
   RouterImpl({Function fallbackHandler,
@@ -25,11 +25,11 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
       r.HandlerAdapter handlerAdapter,
       bool validateParameters: true, bool validateReturn: false }) {
 
-    addAll(bindResource(resource, validateParameters: validateParameters,
-                        validateReturn: validateReturn),
-                        middleware: middleware,
-                        handlerAdapter: handlerAdapter,
-                        path: path);
+    final routeable = resource is r.RouteableFunction ? resource
+        : bindResource(resource, validateParameters: validateParameters,
+                                  validateReturn: validateReturn);
+    addAll(routeable, middleware: middleware, handlerAdapter: handlerAdapter,
+        path: path);
   }
 
   @override

@@ -19,6 +19,8 @@ dependencies:
   shelf_rest:
     path: ../shelf_rest
   shelf_route: '>=0.10.1 <0.11.0'
+  shelf_oauth:
+    path: ../shelf_oauth
 dev_dependencies:
   mockito: any
   unittest: any

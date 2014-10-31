@@ -8,10 +8,12 @@ library mojito.router;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'router_impl.dart';
-import 'oauth1.dart';
-// TODO: move somewhere else??
-export 'oauth1.dart' show OAuth1RequestTokenSecretStore,
+import 'package:shelf_oauth/shelf_oauth.dart';
+export 'package:shelf_oauth/shelf_oauth.dart' show OAuth1RequestTokenSecretStore,
   InMemoryOAuth1RequestTokenSecretStore;
+
+/// this just exists due to lack of generic function support in Dart
+typedef MojitoRouteableFunction(Router r);
 
 /// A shelf_route router that adds some methods
 abstract class Router implements r.Router<Router> {
@@ -26,7 +28,12 @@ abstract class Router implements r.Router<Router> {
                          OAuth1RequestTokenSecretStore tokenStore,
                          { requestTokenPath: '/requestToken',
                            authTokenPath: '/authToken',
+                           // optional. Only if want absolute url
                            String callbackUrl });
+
+  void addAll(MojitoRouteableFunction routeable,
+              { dynamic path, Middleware middleware,
+                r.HandlerAdapter handlerAdapter });
 
 }
 
