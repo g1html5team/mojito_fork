@@ -23,12 +23,10 @@ abstract class Router implements r.Router<Router> {
   void addOAuth1Provider(path,
                          Token consumerToken,
                          OAuth1Provider oauthProvider,
-                         // TODO: would be nice if we could generate it
-                         String callbackUrl,
                          OAuth1RequestTokenSecretStore tokenStore,
                          { requestTokenPath: '/requestToken',
-                           authTokenPath: '/authToken' }
-  );
+                           authTokenPath: '/authToken',
+                           String callbackUrl });
 
 }
 

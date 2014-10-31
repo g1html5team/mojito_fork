@@ -49,9 +49,10 @@ class OAuth1ProviderHandlersImpl implements OAuth1ProviderHandlers {
     final isRelative = callbackUrlStr.startsWith('/') ||
         _p.isRelative(callbackUrlStr);
 
+    final path = _p.join(_p.dirname(req.scriptName), callbackUrlStr);
+
     final callbackUrl = isRelative ?
-        (new UriBuilder.fromUri(req.requestedUri)
-          ..path=_p.join(req.scriptName, callbackUrlStr)).build().toString()
+        (new UriBuilder.fromUri(req.requestedUri)..path=path).build().toString()
         : callbackUrlStr;
 
     print('callback $callbackUrl');

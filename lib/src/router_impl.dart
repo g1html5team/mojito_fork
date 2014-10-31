@@ -44,12 +44,10 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
   void addOAuth1Provider(path,
                          Token consumerToken,
                          OAuth1Provider oauthProvider,
-                         // TODO: would be nice if we could generate it
-                         String callbackUrl,
                          OAuth1RequestTokenSecretStore tokenStore,
                          { requestTokenPath: '/requestToken',
-                           authTokenPath: '/authToken' }
-  ) {
+                           authTokenPath: '/authToken',
+                           String callbackUrl }) {
     final atp = authTokenPath.toString();
 
     final cb = callbackUrl != null ? callbackUrl :
