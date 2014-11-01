@@ -30,15 +30,11 @@ abstract class Router implements r.Router<Router> {
                            authTokenPath: '/authToken',
                            // optional. Only if want absolute url
                            String callbackUrl });
-
-  void addAll(MojitoRouteableFunction routeable,
-              { dynamic path, Middleware middleware,
-                r.HandlerAdapter handlerAdapter });
-
 }
 
 /// Creates a mojito router
-Router router({ r.HandlerAdapter handlerAdapter: noopHandlerAdapter,
+Router router({ r.HandlerAdapter handlerAdapter,
+  r.RouteableAdapter routeableAdapter,
   r.PathAdapter pathAdapter: r.uriTemplatePattern, Function fallbackHandler,
   Middleware middleware}) =>
     new RouterImpl(handlerAdapter: handlerAdapter, pathAdapter: pathAdapter,

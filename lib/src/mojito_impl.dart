@@ -10,12 +10,10 @@ import 'context_impl.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_exception_response/exception_response.dart';
-import 'package:shelf_bind/shelf_bind.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'package:shelf_proxy/shelf_proxy.dart';
 import 'mojito.dart';
-import 'router.dart';
-import 'router_impl.dart';
+import 'router.dart' as mr;
 import 'auth_impl.dart';
 import 'package:mojito/src/middleware_impl.dart';
 import 'dart:async';
@@ -24,7 +22,7 @@ import 'package:logging/logging.dart';
 final Logger _log = new Logger('mojito');
 
 class MojitoImpl implements Mojito {
-  final Router router;
+  final mr.Router router;
   Handler _pubServeHandler;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
@@ -40,7 +38,7 @@ class MojitoImpl implements Mojito {
     { LogRecordProcessor perRequestLogProcessor })
       : this._perRequestLogProcessor = perRequestLogProcessor,
         router = createRootRouter != null ? createRootRouter() :
-          new RouterImpl(handlerAdapter: handlerAdapter()) {
+          mr.router() {
   }
 
   void proxyPubServe({int port: 8080}) {

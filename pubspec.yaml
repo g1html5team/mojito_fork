@@ -29,3 +29,5 @@ dependency_overrides:
     path: ../shelf_auth
   shelf_rest:
     path: ../shelf_rest
+  shelf_route:
+    path: ../shelf_route
