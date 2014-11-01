@@ -8,12 +8,6 @@ library mojito.auth.impl;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 import 'auth.dart';
-import 'package:oauth/oauth.dart' as oauth;
-import 'package:uri/uri.dart';
-import 'package:http/http.dart' as http;
-import 'package:crypto/crypto.dart' as crypto;
-import 'dart:math';
-import 'dart:async';
 
 
 class MojitoAuthImpl implements MojitoAuth {

@@ -18,6 +18,7 @@ import 'auth_impl.dart';
 import 'package:mojito/src/middleware_impl.dart';
 import 'dart:async';
 import 'package:logging/logging.dart';
+import 'package:mojito/src/session_storage_impl.dart';
 
 final Logger _log = new Logger('mojito');
 
@@ -25,6 +26,7 @@ class MojitoImpl implements Mojito {
   final mr.Router router;
   Handler _pubServeHandler;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
+  final MojitoSessionStorageImpl sessionStorage = new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
   final LogRecordProcessor _perRequestLogProcessor;
 
@@ -78,6 +80,13 @@ class MojitoImpl implements Mojito {
 
     if (authMiddleware != null) {
       pipeline = pipeline.addMiddleware(authMiddleware);
+
+      // TODO: check auth middleware has session handler ???
+      // TODO: error out if session set wo auth
+      final sessMiddleware = sessionStorage.middleware;
+      if (sessMiddleware != null) {
+        pipeline = pipeline.addMiddleware(sessMiddleware);
+      }
     }
 
     final mw = middleware.middleware;
@@ -128,63 +137,3 @@ Middleware logExceptions() {
 }
 
 
-
-///**
-// * Returns the [MojitoContext] of the current request.
-// *
-// * This getter can only be called inside a request handler which was passed to
-// * [runAppEngine].
-// */
-//MojitoContext get context {
-//  var context = Zone.current[_MOJITO_CONTEXT];
-//  if (context == null) {
-//    throw new StateError(
-//        'Could not retrieve the request handler context. You are likely calling'
-//        ' this method outside of the request handler zone.');
-//  }
-//  return context;
-//}
-
-//Handler _wrapHandler(Handler handler) {
-//  return (Request request) {
-//    var response;
-//
-//    runZoned(() {
-//      response = handler(request);
-//    }, zoneValues: <Symbol, Object>{
-//      _MOJITO_CONTEXT: contextFromRequest(request)
-////    }, onError: (error, stack) {
-////      print('!!!!!! $error\n$stack');
-////      var context = appengine_internal.contextFromRequest(request);
-////      if (context != null) {
-////        try {
-////          context.services.logging.error(
-////              'Uncaught error in request handler: $error\n$stack');
-////        } catch (e) {
-////          print('Error while logging uncaught error: $e');
-////        }
-////      } else {
-////        // TODO: We could log on the background ticket here.
-////        print('Unable to log error, since response has already been sent.');
-////      }
-////      errorHandler('Uncaught error in request handler zone: $error', stack);
-//
-////      // In many cases errors happen during request processing or response
-////      // preparation. In such cases we want to close the connection, since user
-////      // code might not be able to.
-////      try {
-////        request.response.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-////      } on StateError catch (_) {}
-////      request.response.close().catchError((closeError, closeErrorStack) {
-////        errorHandler('Forcefully closing response, due to error in request '
-////                     'handler zone, resulted in an error: $closeError',
-////                     closeErrorStack);
-////      });
-//    });
-//
-//    return response;
-//  };
-//}
-//
-//
-//
