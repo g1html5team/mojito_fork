@@ -16,9 +16,8 @@ dependencies:
     git: https://github.com/Andersmholmgren/shelf_exception_response.git
   shelf_path: '>=0.1.1+1 <0.2.0'
   shelf_proxy: '>=0.1.0+1 <0.2.0'
-  shelf_rest:
-    path: ../shelf_rest
-  shelf_route: '>=0.10.1 <0.11.0'
+  shelf_rest: '>=0.1.4-pre.5'
+  shelf_route: '>=0.11.0 <0.12.0'
   shelf_oauth:
     path: ../shelf_oauth
 dev_dependencies:
@@ -27,7 +26,3 @@ dev_dependencies:
 dependency_overrides:
   shelf_auth:
     path: ../shelf_auth
-  shelf_rest:
-    path: ../shelf_rest
-  shelf_route:
-    path: ../shelf_route
