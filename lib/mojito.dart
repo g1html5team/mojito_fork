@@ -10,7 +10,6 @@ export 'src/mojito.dart';
 export 'src/context.dart';
 export 'src/auth.dart';
 export 'src/router.dart';
-//export 'src/oauth1.dart' show OAuth1RequestTokenSecretStore,
-//  InMemoryOAuth1RequestTokenSecretStore;
 
 export 'package:shelf_auth/shelf_auth.dart';
+export 'package:shelf_oauth/shelf_oauth.dart';
