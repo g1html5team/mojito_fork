@@ -9,6 +9,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'router_impl.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
+import 'package:uri/uri.dart';
 export 'package:shelf_oauth/shelf_oauth.dart' show OAuth1RequestTokenSecretStore,
   InMemoryOAuth1RequestTokenSecretStore;
 
@@ -26,6 +27,7 @@ abstract class Router implements r.Router<Router> {
                          Token consumerToken,
                          OAuth1Provider oauthProvider,
                          OAuth1RequestTokenSecretStore tokenStore,
+                         UriTemplate completionRedirectUrl,
                          { requestTokenPath: '/requestToken',
                            authTokenPath: '/authToken',
                            // optional. Only if want absolute url

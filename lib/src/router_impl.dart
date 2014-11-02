@@ -11,6 +11,7 @@ import 'package:shelf_route/extend.dart' as r;
 import 'package:shelf_rest/shelf_rest.dart' as rest;
 import 'router.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
+import 'package:uri/uri.dart';
 
 class RouterImpl extends r.RouterImpl<Router> implements Router {
   RouterImpl({Function fallbackHandler,
@@ -54,6 +55,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                          Token consumerToken,
                          OAuth1Provider oauthProvider,
                          OAuth1RequestTokenSecretStore tokenStore,
+                         UriTemplate completionRedirectUrl,
                          { requestTokenPath: '/requestToken',
                            authTokenPath: '/authToken',
                            String callbackUrl }) {
@@ -63,7 +65,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
       atp.startsWith('/') ? atp.substring(1) : atp;
 
     final dancer = new OAuth1ProviderHandlers(consumerToken, oauthProvider,
-        cb, tokenStore);
+        cb, tokenStore, completionRedirectUrl);
 
     addAll((Router r) => r
         ..get(requestTokenPath, dancer.tokenRequestHandler())
