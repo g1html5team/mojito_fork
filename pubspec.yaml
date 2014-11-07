@@ -6,7 +6,8 @@ homepage: https://bitbucket.org/andersmholmgren/mojito
 environment:
   sdk: '>=1.2.0 <2.0.0'
 dependencies:
-  oauth: any
+  oauth:
+    path: ../../thirdparty/oauth.dart
   option: '>=0.3.3 <0.4.0'
   shelf: '>=0.5.5 <0.6.0'
   shelf_auth:
@@ -27,3 +28,5 @@ dev_dependencies:
 dependency_overrides:
   shelf_auth:
     path: ../shelf_auth
+  shelf_rest:
+    path: ../shelf_rest
