@@ -12,8 +12,7 @@ dependencies:
   shelf_auth:
     path: ../shelf_auth
   shelf_bind: '>=0.7.0 <0.8.0'
-  shelf_exception_response:
-    git: https://github.com/Andersmholmgren/shelf_exception_response.git
+  shelf_exception_response: '>=0.1.1 <0.2.0'
   shelf_path: '>=0.1.1+1 <0.2.0'
   shelf_proxy: '>=0.1.0+1 <0.2.0'
   shelf_rest: '>=0.1.4-pre.5'
