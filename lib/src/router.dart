@@ -24,7 +24,7 @@ abstract class Router implements r.Router<Router> {
       r.HandlerAdapter handlerAdapter});
 
   void addOAuth1Provider(path,
-                         Token consumerToken,
+                         OAuth1Token consumerToken,
                          OAuth1Provider oauthProvider,
                          OAuth1RequestTokenSecretStore tokenStore,
                          UriTemplate completionRedirectUrl,
