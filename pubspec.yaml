@@ -6,12 +6,10 @@ homepage: https://bitbucket.org/andersmholmgren/mojito
 environment:
   sdk: '>=1.2.0 <2.0.0'
 dependencies:
-  oauth:
-    path: ../../thirdparty/oauth.dart
+  oauth: '>=0.3.0 <0.4.0'
   option: '>=0.3.3 <0.4.0'
   shelf: '>=0.5.5 <0.6.0'
-  shelf_auth:
-    path: ../shelf_auth
+  shelf_auth: '>=0.2.2 <0.3.0'
   shelf_bind: '>=0.7.0 <0.8.0'
   shelf_exception_response: '>=0.1.1 <0.2.0'
   shelf_path: '>=0.1.1+1 <0.2.0'
@@ -26,5 +24,3 @@ dev_dependencies:
   mockito: any
   unittest: any
 dependency_overrides:
-  shelf_auth:
-    path: ../shelf_auth
