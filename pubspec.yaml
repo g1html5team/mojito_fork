@@ -16,8 +16,7 @@ dependencies:
   shelf_proxy: '>=0.1.0+1 <0.2.0'
   shelf_rest: '>=0.1.4-pre.6'
   shelf_route: '>=0.11.0 <0.12.0'
-  shelf_oauth:
-    path: ../shelf_oauth
+  shelf_oauth: any
   shelf_auth_session:
     path: ../shelf_auth_session
 dev_dependencies:
