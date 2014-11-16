@@ -8,6 +8,7 @@
 
 A micro framework for modern web apps built from the ground up on the [Shelf Framework](https://api.dartlang.org/apidocs/channels/be/dartdoc-viewer/shelf). 
 
+Like its namesake, Mojito is mostly sugar and a blend of other ingredients.
 Mojito is deliberately a very thin layer over several shelf packages and focuses
  on the overall experience of building an application. 
 
@@ -70,6 +71,7 @@ Mojito bundles lots of existing shelf libraries and integrates them for easier u
  - [Shelf Bind](https://pub.dartlang.org/packages/shelf_bind)
  - [Shelf Rest](https://pub.dartlang.org/packages/shelf_rest)
  - [Shelf Auth](https://pub.dartlang.org/packages/shelf_auth)
+ - [Shelf OAuth](https://pub.dartlang.org/packages/shelf_oauth)
  - [Shelf Proxy](https://pub.dartlang.org/packages/shelf_proxy)
  - [Shelf Static](https://pub.dartlang.org/packages/shelf_static)
  - [Shelf Exception Response](https://pub.dartlang.org/packages/shelf_exception_response)

@@ -12,6 +12,7 @@ import 'auth.dart';
 import 'mojito_impl.dart' as impl;
 import 'middleware.dart';
 import 'package:logging/logging.dart';
+import 'package:mojito/src/session_storage.dart';
 
 typedef LogRecordProcessor(LogRecord logRecord);
 
@@ -29,6 +30,7 @@ Mojito init({ RouteCreator createRootRouter, bool logRequests: true,
 abstract class Mojito {
   Router get router;
   MojitoAuth get auth;
+  MojitoSessionStorage get sessionStorage;
   MojitoMiddleware get middleware;
   MojitoContext get context;
   Handler get handler;

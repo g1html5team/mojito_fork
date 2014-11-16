@@ -6,14 +6,23 @@
 import 'package:mojito/mojito.dart';
 import 'dart:async';
 import 'package:option/option.dart';
+import 'package:logging/logging.dart';
 
 main() {
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((r) {
+    print(r);
+  });
+
   final app = init();
 
   app.auth.global
     .basic(_lookup)
+    .jwtSession('moi', 'shh', (username) => _lookup(username, null))
     ..allowHttp=true
     ..allowAnonymousAccess=true;
+
+  app.sessionStorage.add(new InMemorySessionRepository());
 
   app.proxyPubServe();
 

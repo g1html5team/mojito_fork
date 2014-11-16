@@ -12,3 +12,5 @@ export 'src/auth.dart';
 export 'src/router.dart';
 
 export 'package:shelf_auth/shelf_auth.dart';
+export 'package:shelf_auth_session/shelf_auth_session.dart';
+export 'package:shelf_oauth/shelf_oauth.dart';
