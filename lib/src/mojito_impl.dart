@@ -22,6 +22,9 @@ import 'package:mojito/src/session_storage_impl.dart';
 
 final Logger _log = new Logger('mojito');
 
+bool defaultIsDevMode() =>
+   const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
+
 class MojitoImpl implements Mojito {
   final mr.Router router;
   Handler _pubServeHandler;
@@ -37,10 +40,13 @@ class MojitoImpl implements Mojito {
 
 
   MojitoImpl(RouteCreator createRootRouter, this._logRequests,
-    { LogRecordProcessor perRequestLogProcessor })
+    { LogRecordProcessor perRequestLogProcessor,
+      IsDevMode isDevMode })
       : this._perRequestLogProcessor = perRequestLogProcessor,
         router = createRootRouter != null ? createRootRouter() :
           mr.router() {
+    IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
+    _context = new MojitoContextImpl(_isDevMode());
   }
 
   void proxyPubServe({int port: 8080}) {
@@ -118,8 +124,14 @@ MojitoContext _getContext() => context;
 
 const Symbol _MOJITO_CONTEXT = #mojito_context;
 
-
-final MojitoContext context = new MojitoContextImpl();
+MojitoContextImpl _context;
+//final MojitoContext context = new MojitoContextImpl();
+MojitoContext get context {
+  if (_context == null) {
+    throw new StateError('you must call the init method first');
+  }
+  return _context;
+}
 
 
 Middleware logExceptions() {

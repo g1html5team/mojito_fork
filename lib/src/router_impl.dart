@@ -12,6 +12,11 @@ import 'package:shelf_rest/shelf_rest.dart' as rest;
 import 'router.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:uri/uri.dart';
+import 'mojito.dart';
+import 'dart:async';
+import 'package:shelf_static/shelf_static.dart';
+import 'package:shelf_proxy/shelf_proxy.dart';
+import 'package:option/option.dart';
 
 class RouterImpl extends r.RouterImpl<Router> implements Router {
   RouterImpl({Function fallbackHandler,
@@ -72,13 +77,44 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
         ..get(authTokenPath, dancer.accessTokenRequestHandler()),
         path: path);
   }
+
+
+  @override
+  void addStaticAssetHandler(path, { String fileSystemPath: 'build/web',
+    bool serveFilesOutsidePath: false, String defaultDocument,
+    bool usePubServeInDev: true, String pubServeUrlString }) {
+
+    final usePubServe = usePubServeInDev && context.isDevelopmentMode;
+
+    final handler = _pubServeHandler(usePubServe, pubServeUrlString)
+        .getOrElse(() => createStaticHandler(fileSystemPath,
+        serveFilesOutsidePath: serveFilesOutsidePath,
+        defaultDocument: defaultDocument));
+
+    add('/', ['GET'], handler, exactMatch: false);
+  }
+
+}
+
+
+Option<Handler> _pubServeHandler(bool usePubServe,
+    String providedPubServeUrlString) {
+  if (!usePubServe) {
+    return const None();
+  }
+
+  return new Option(providedPubServeUrlString)
+    .orElse(const String.fromEnvironment('DART_PUB_SERVE'))
+    .orElse('http://localhost:8080')
+    .map(proxyHandler);
+
 }
 
 
 
 r.HandlerAdapter _createHandlerAdapter(r.HandlerAdapter ha) =>
-ha != null ? ha : handlerAdapter();
+    ha != null ? ha : handlerAdapter();
 
 r.RouteableAdapter _createRouteableAdapter(r.RouteableAdapter ra) =>
-ra != null ? ra : rest.routeableAdapter();
+    ra != null ? ra : rest.routeableAdapter();
 

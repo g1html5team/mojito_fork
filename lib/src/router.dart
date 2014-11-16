@@ -32,6 +32,26 @@ abstract class Router implements r.Router<Router> {
                            authTokenPath: '/authToken',
                            // optional. Only if want absolute url
                            String callbackUrl });
+
+  /// Serves static assets.
+  /// If not in `development` mode then assets are served from filesystem
+  /// (via shelf_static) and will have cache support.
+  /// If [usePubServeInDev] is true (the default) then in `development` mode
+  /// the assets will be served by `pub serve` (via shelf_proxy).
+  /// If [pubServeUrlString] is provided that will be used as the url for
+  /// `pub serve`. Otherwise the environment variable `DART_PUB_SERVE` will be
+  /// looked up and if present used. If neither is present then it will fall
+  /// back to `http://localhost:8080`
+  /// Note: if more than one route is set up to use [serveStaticAssets] then
+  /// it only makes sense to use pub serve on one of them
+  void addStaticAssetHandler(path, {
+    String fileSystemPath: 'build/web',
+    bool serveFilesOutsidePath: false,
+    String defaultDocument,
+    bool usePubServeInDev: true,
+    String pubServeUrlString });
+
+
 }
 
 /// Creates a mojito router
