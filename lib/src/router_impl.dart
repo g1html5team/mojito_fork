@@ -82,7 +82,8 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
   @override
   void addStaticAssetHandler(path, { String fileSystemPath: 'build/web',
     bool serveFilesOutsidePath: false, String defaultDocument,
-    bool usePubServeInDev: true, String pubServeUrlString }) {
+    bool usePubServeInDev: true, String pubServeUrlString,
+    Middleware middleware }) {
 
     final usePubServe = usePubServeInDev && context.isDevelopmentMode;
 
@@ -92,7 +93,8 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                 serveFilesOutsidePath: serveFilesOutsidePath,
                 defaultDocument: defaultDocument));
 
-    add(path, ['GET'], (Request request) => handler(request), exactMatch: false);
+    add(path, ['GET'], (Request request) => handler(request),
+        exactMatch: false, middleware: middleware);
   }
 
 }

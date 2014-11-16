@@ -32,7 +32,7 @@ const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 /// determine if the server is running in development mode. This can be
 /// overriden by providing [isDevMode]. For example in appengine you can do
 ///
-///     isDevMode: () => Platform.environment['GAE_PARTITION'] == 'dev'
+///     isDevMode: () => const String.fromEnvironment('GAE_PARTITION') == 'dev'
 ///
 Mojito init({ RouteCreator createRootRouter, bool logRequests: true,
             LogRecordProcessor perRequestLogProcessor,

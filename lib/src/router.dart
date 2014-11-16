@@ -49,7 +49,8 @@ abstract class Router implements r.Router<Router> {
     bool serveFilesOutsidePath: false,
     String defaultDocument,
     bool usePubServeInDev: true,
-    String pubServeUrlString });
+    String pubServeUrlString,
+    Middleware middleware });
 
 
 }
