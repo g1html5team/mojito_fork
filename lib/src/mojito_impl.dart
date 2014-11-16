@@ -11,7 +11,6 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_exception_response/exception_response.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
-import 'package:shelf_proxy/shelf_proxy.dart';
 import 'mojito.dart';
 import 'router.dart' as mr;
 import 'auth_impl.dart';
@@ -22,9 +21,11 @@ import 'package:mojito/src/session_storage_impl.dart';
 
 final Logger _log = new Logger('mojito');
 
+bool defaultIsDevMode() =>
+   const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
+
 class MojitoImpl implements Mojito {
   final mr.Router router;
-  Handler _pubServeHandler;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoSessionStorageImpl sessionStorage = new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
@@ -37,16 +38,14 @@ class MojitoImpl implements Mojito {
 
 
   MojitoImpl(RouteCreator createRootRouter, this._logRequests,
-    { LogRecordProcessor perRequestLogProcessor })
+    { LogRecordProcessor perRequestLogProcessor,
+      IsDevMode isDevMode })
       : this._perRequestLogProcessor = perRequestLogProcessor,
         router = createRootRouter != null ? createRootRouter() :
           mr.router() {
+    IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
+    _context = new MojitoContextImpl(_isDevMode());
   }
-
-  void proxyPubServe({int port: 8080}) {
-    _pubServeHandler = proxyHandler("http://localhost:$port");
-  }
-
 
   void start({ int port: 9999 }) {
     io.serve(handler, 'localhost', port)
@@ -56,11 +55,6 @@ class MojitoImpl implements Mojito {
   }
 
   Handler _createHandler() {
-    if (_pubServeHandler != null) {
-      router.add('/', ['GET'], (Request r) => _pubServeHandler(r),
-          exactMatch: false);
-    }
-
     r.printRoutes(router, printer: _log.info);
 
     var pipeline = const Pipeline();
@@ -118,8 +112,14 @@ MojitoContext _getContext() => context;
 
 const Symbol _MOJITO_CONTEXT = #mojito_context;
 
-
-final MojitoContext context = new MojitoContextImpl();
+MojitoContextImpl _context;
+//final MojitoContext context = new MojitoContextImpl();
+MojitoContext get context {
+  if (_context == null) {
+    throw new StateError('you must call the init method first');
+  }
+  return _context;
+}
 
 
 Middleware logExceptions() {
