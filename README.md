@@ -38,10 +38,10 @@ Set up some global authentication. These will be applied to all routes.
     ..allowAnonymousAccess=true;
 ```
 
-Set up a proxy to pub serve to serve your ui in dev.
+Set up a handler that will proxy to pub serve in dev and serve from the filesystem in prod.
 
 ```
-app.proxyPubServe();
+app.router..addStaticAssetHandler('/ui');
 ```  
 
 Set up a route and get the authenticated users name from the context. *Note: Mojito makes the logged in user available in the current zone.*
@@ -71,7 +71,9 @@ Mojito bundles lots of existing shelf libraries and integrates them for easier u
  - [Shelf Bind](https://pub.dartlang.org/packages/shelf_bind)
  - [Shelf Rest](https://pub.dartlang.org/packages/shelf_rest)
  - [Shelf Auth](https://pub.dartlang.org/packages/shelf_auth)
+ - [Shelf Auth Session](https://pub.dartlang.org/packages/shelf_auth_session)
  - [Shelf OAuth](https://pub.dartlang.org/packages/shelf_oauth)
+ - [Shelf OAuth Memcache](https://pub.dartlang.org/packages/shelf_oauth_memcache)
  - [Shelf Proxy](https://pub.dartlang.org/packages/shelf_proxy)
  - [Shelf Static](https://pub.dartlang.org/packages/shelf_static)
  - [Shelf Exception Response](https://pub.dartlang.org/packages/shelf_exception_response)
