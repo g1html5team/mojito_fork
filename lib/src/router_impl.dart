@@ -87,11 +87,12 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
     final usePubServe = usePubServeInDev && context.isDevelopmentMode;
 
     final handler = _pubServeHandler(usePubServe, pubServeUrlString)
-        .getOrElse(() => createStaticHandler(fileSystemPath,
-        serveFilesOutsidePath: serveFilesOutsidePath,
-        defaultDocument: defaultDocument));
+        .getOrElse(() =>
+            createStaticHandler(fileSystemPath,
+                serveFilesOutsidePath: serveFilesOutsidePath,
+                defaultDocument: defaultDocument));
 
-    add('/', ['GET'], handler, exactMatch: false);
+    add(path, ['GET'], (Request request) => handler(request), exactMatch: false);
   }
 
 }
@@ -104,8 +105,8 @@ Option<Handler> _pubServeHandler(bool usePubServe,
   }
 
   return new Option(providedPubServeUrlString)
-    .orElse(const String.fromEnvironment('DART_PUB_SERVE'))
-    .orElse('http://localhost:8080')
+    .orElse(new Option(const String.fromEnvironment('DART_PUB_SERVE')))
+    .orElse(new Some('http://localhost:8080'))
     .map(proxyHandler);
 
 }

@@ -14,7 +14,7 @@ main() {
     print(r);
   });
 
-  final app = init();
+  final app = init(isDevMode: () => true);
 
   app.auth.global
     .basic(_lookup)
@@ -24,15 +24,14 @@ main() {
 
   app.sessionStorage.add(new InMemorySessionRepository());
 
-  app.proxyPubServe();
-
   app.router..get('/hi', () {
     String username = app.context.auth.map((authContext) =>
         authContext.principal.name)
         .getOrElse(() => 'guest');
 
     return 'hello $username';
-  });
+  })
+  ..addStaticAssetHandler('/ui');
 
   app.start();
 

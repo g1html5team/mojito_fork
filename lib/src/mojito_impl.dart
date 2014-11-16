@@ -11,7 +11,6 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_exception_response/exception_response.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
-import 'package:shelf_proxy/shelf_proxy.dart';
 import 'mojito.dart';
 import 'router.dart' as mr;
 import 'auth_impl.dart';
@@ -27,7 +26,6 @@ bool defaultIsDevMode() =>
 
 class MojitoImpl implements Mojito {
   final mr.Router router;
-  Handler _pubServeHandler;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoSessionStorageImpl sessionStorage = new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
@@ -49,11 +47,6 @@ class MojitoImpl implements Mojito {
     _context = new MojitoContextImpl(_isDevMode());
   }
 
-  void proxyPubServe({int port: 8080}) {
-    _pubServeHandler = proxyHandler("http://localhost:$port");
-  }
-
-
   void start({ int port: 9999 }) {
     io.serve(handler, 'localhost', port)
         .then((server) {
@@ -62,11 +55,6 @@ class MojitoImpl implements Mojito {
   }
 
   Handler _createHandler() {
-    if (_pubServeHandler != null) {
-      router.add('/', ['GET'], (Request r) => _pubServeHandler(r),
-          exactMatch: false);
-    }
-
     r.printRoutes(router, printer: _log.info);
 
     var pipeline = const Pipeline();
