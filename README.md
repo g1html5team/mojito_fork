@@ -38,7 +38,7 @@ Set up some global authentication. These will be applied to all routes.
     ..allowAnonymousAccess=true;
 ```
 
-Set up a handler that will proxy to pub serve in dev and serve from the filesystem in prod.
+Set up a route for the ui that will proxy to pub serve in dev and serve from the filesystem in prod.
 
 ```
 app.router..addStaticAssetHandler('/ui');
