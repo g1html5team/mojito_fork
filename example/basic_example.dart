@@ -24,14 +24,15 @@ main() {
 
   app.sessionStorage.add(new InMemorySessionRepository());
 
-  app.router..get('/hi', () {
-    String username = app.context.auth.map((authContext) =>
-        authContext.principal.name)
-        .getOrElse(() => 'guest');
+  app.router
+    ..get('/hi', () {
+      String username = app.context.auth.map((authContext) =>
+          authContext.principal.name)
+          .getOrElse(() => 'guest');
 
-    return 'hello $username';
-  })
-  ..addStaticAssetHandler('/ui');
+      return 'hello $username';
+    })
+    ..addStaticAssetHandler('/ui');
 
   app.start();
 
