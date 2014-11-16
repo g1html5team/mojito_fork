@@ -6,24 +6,33 @@
 import 'package:mojito/mojito.dart';
 import 'dart:async';
 import 'package:option/option.dart';
+import 'package:logging/logging.dart';
 
 main() {
-  final app = init();
+  Logger.root.level = Level.ALL;
+  Logger.root.onRecord.listen((r) {
+    print(r);
+  });
+
+  final app = init(isDevMode: () => true);
 
   app.auth.global
     .basic(_lookup)
+    .jwtSession('moi', 'shh', (username) => _lookup(username, null))
     ..allowHttp=true
     ..allowAnonymousAccess=true;
 
-  app.proxyPubServe();
+  app.sessionStorage.add(new InMemorySessionRepository());
 
-  app.router..get('/hi', () {
-    String username = app.context.auth.map((authContext) =>
-        authContext.principal.name)
-        .getOrElse(() => 'guest');
+  app.router
+    ..get('/hi', () {
+      String username = app.context.auth.map((authContext) =>
+          authContext.principal.name)
+          .getOrElse(() => 'guest');
 
-    return 'hello $username';
-  });
+      return 'hello $username';
+    })
+    ..addStaticAssetHandler('/ui');
 
   app.start();
 

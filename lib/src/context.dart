@@ -14,5 +14,7 @@ import 'package:option/option.dart';
 abstract class MojitoContext {
   Option<AuthenticatedContext> get auth;
 
+  bool get isDevelopmentMode;
+
 //  factory MojitoContext() => new MojitoContextImpl();
 }

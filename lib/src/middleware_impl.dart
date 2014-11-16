@@ -49,7 +49,6 @@ class MiddlewareBuilderImpl implements MiddlewareBuilder {
     pipeline = pipeline.addMiddleware(middleware);
     return this;
   }
-
 }
 
 class _GlobalMiddlewareBuilder extends MiddlewareBuilderImpl {
@@ -65,3 +64,14 @@ class _GlobalMiddlewareBuilder extends MiddlewareBuilderImpl {
   }
 }
 
+
+//class AssetHandler {
+//  s.Middleware get middleware => _createStaticHandler;
+//
+//  s.Handler _createStaticHandler(s.Handler innerHandler) {
+//    return (s.Request request) => _handle(request, innerHandler);
+//  }
+//
+//  Future<s.Response> _handle(s.Request request, s.Handler innerHandler) {
+//  }
+//}
