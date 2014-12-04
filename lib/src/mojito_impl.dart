@@ -47,12 +47,18 @@ class MojitoImpl implements Mojito {
     _context = new MojitoContextImpl(_isDevMode());
   }
 
-  void start({ int port: 9999 }) {
-    io.serve(handler, 'localhost', port)
+  Future start({ int port: 9999 }) {
+    return io.serve(handler, 'localhost', port)
         .then((server) {
       _log.info('Serving at http://${server.address.host}:${server.port}');
     });
   }
+        
+//  Future start({ int port: 9999 }) async {
+//    final server = await io.serve(handler, InternetAddress.ANY_IP_V6, port);
+//    _log.info('Serving at http://${server.address.host}:${server.port}');
+//    return null;
+//  }
 
   Handler _createHandler() {
     r.printRoutes(router, printer: _log.info);
