@@ -18,6 +18,7 @@ import 'package:mojito/src/middleware_impl.dart';
 import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
+import 'dart:io';
 
 final Logger _log = new Logger('mojito');
 
@@ -48,7 +49,7 @@ class MojitoImpl implements Mojito {
   }
 
   Future start({ int port: 9999 }) {
-    return io.serve(handler, 'localhost', port)
+    return io.serve(handler, InternetAddress.ANY_IP_V6, port)
         .then((server) {
       _log.info('Serving at http://${server.address.host}:${server.port}');
     });
