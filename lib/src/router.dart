@@ -40,6 +40,7 @@ abstract class Router implements r.Router<Router> {
                          OAuth2TokenStore tokenStore,
                          UriTemplate completionRedirectUrl,
                          SessionIdentifierExtractor sessionIdExtractor,
+                         List<String> scopes,
                          { userGrantPath: '/userGrant',
                            authTokenPath: '/authToken',
                            // optional. Only if want absolute url

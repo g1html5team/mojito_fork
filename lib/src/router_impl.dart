@@ -84,7 +84,8 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                          OAuth2CSRFStateStore stateStore, 
                          OAuth2TokenStore tokenStore, 
                          UriTemplate completionRedirectUrl, 
-                         SessionIdentifierExtractor sessionIdExtractor, 
+                         SessionIdentifierExtractor sessionIdExtractor,
+                         List<String> scopes,
                          { userGrantPath: '/userGrant', 
                            authTokenPath: '/authToken', 
                            String callbackUrl}) {
@@ -96,7 +97,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
 
     final dancer = new OAuth2ProviderHandlers(clientId, oauthProvider,
         Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl, 
-        sessionIdExtractor);
+        sessionIdExtractor, scopes);
 
     addAll((Router r) => r
         ..get(userGrantPath, dancer.authorizationRequestHandler())
