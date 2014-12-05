@@ -33,6 +33,19 @@ abstract class Router implements r.Router<Router> {
                            // optional. Only if want absolute url
                            String callbackUrl });
 
+  void addOAuth2Provider(path,
+                         ClientId clientId,
+                         OAuth2Provider oauthProvider,
+                         OAuth2CSRFStateStore stateStore,
+                         OAuth2TokenStore tokenStore,
+                         UriTemplate completionRedirectUrl,
+                         SessionIdentifierExtractor sessionIdExtractor,
+                         { userGrantPath: '/userGrant',
+                           authTokenPath: '/authToken',
+                           // optional. Only if want absolute url
+                           String callbackUrl });
+  
+  
   /// Serves static assets.
   /// If not in `development` mode then assets are served from filesystem
   /// (via shelf_static) and will have cache support.
