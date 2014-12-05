@@ -13,7 +13,6 @@ import 'router.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:uri/uri.dart';
 import 'mojito.dart';
-import 'dart:async';
 import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
@@ -39,7 +38,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                                   validateReturn: validateReturn);
     addAll(resource,
         handlerAdapter: handlerAdapter,
-        routeableAdapter: routeableAdapter,
+        routeableAdapter: ra,
         middleware: middleware,
         path: path);
   }
@@ -78,11 +77,41 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
         path: path);
   }
 
+  @override
+  void addOAuth2Provider(path, 
+                         ClientId clientId, 
+                         OAuth2Provider oauthProvider, 
+                         OAuth2CSRFStateStore stateStore, 
+                         OAuth2TokenStore tokenStore, 
+                         UriTemplate completionRedirectUrl, 
+                         SessionIdentifierExtractor sessionIdExtractor,
+                         List<String> scopes,
+                         { userGrantPath: '/userGrant', 
+                           authTokenPath: '/authToken', 
+                           String callbackUrl}) {
+    
+    final atp = authTokenPath.toString();
+
+    final cb = callbackUrl != null ? callbackUrl :
+      atp.startsWith('/') ? atp.substring(1) : atp;
+
+    final dancer = new OAuth2ProviderHandlers(clientId, oauthProvider,
+        Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl, 
+        sessionIdExtractor, scopes);
+
+    addAll((Router r) => r
+        ..get(userGrantPath, dancer.authorizationRequestHandler())
+        ..get(authTokenPath, dancer.accessTokenRequestHandler()),
+        path: path);
+
+  }
+
 
   @override
   void addStaticAssetHandler(path, { String fileSystemPath: 'build/web',
     bool serveFilesOutsidePath: false, String defaultDocument,
-    bool usePubServeInDev: true, String pubServeUrlString }) {
+    bool usePubServeInDev: true, String pubServeUrlString,
+    Middleware middleware }) {
 
     final usePubServe = usePubServeInDev && context.isDevelopmentMode;
 
@@ -92,7 +121,8 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
                 serveFilesOutsidePath: serveFilesOutsidePath,
                 defaultDocument: defaultDocument));
 
-    add(path, ['GET'], (Request request) => handler(request), exactMatch: false);
+    add(path, ['GET'], (Request request) => handler(request),
+        exactMatch: false, middleware: middleware);
   }
 
 }

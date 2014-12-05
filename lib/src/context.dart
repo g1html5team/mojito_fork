@@ -13,6 +13,7 @@ import 'package:option/option.dart';
 
 abstract class MojitoContext {
   Option<AuthenticatedContext> get auth;
+//  Option<Session> get session;
 
   bool get isDevelopmentMode;
 
