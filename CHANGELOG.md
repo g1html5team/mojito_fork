@@ -1,3 +1,7 @@
+## 0.1.0+1
+
+* fixed bug where middleware was not passed to super ctr in router
+
 ## 0.1.0
 
 * added oauth2 support

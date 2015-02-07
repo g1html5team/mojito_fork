@@ -1,5 +1,5 @@
 name: mojito
-version: 0.1.0
+version: 0.1.0+1
 author: Anders Holmgren <andersmholmgren@gmail.com>
 description: A micro framework for modern web apps built from the ground up on the shelf framework
 homepage: https://bitbucket.org/andersmholmgren/mojito
