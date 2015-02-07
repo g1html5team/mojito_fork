@@ -23,12 +23,13 @@ import 'dart:io';
 final Logger _log = new Logger('mojito');
 
 bool defaultIsDevMode() =>
-   const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
+    const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
 
 class MojitoImpl implements Mojito {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
-  final MojitoSessionStorageImpl sessionStorage = new MojitoSessionStorageImpl();
+  final MojitoSessionStorageImpl sessionStorage =
+      new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
   final LogRecordProcessor _perRequestLogProcessor;
 
@@ -37,24 +38,20 @@ class MojitoImpl implements Mojito {
 
   final bool _logRequests;
 
-
   MojitoImpl(RouteCreator createRootRouter, this._logRequests,
-    { LogRecordProcessor perRequestLogProcessor,
-      IsDevMode isDevMode })
+      {LogRecordProcessor perRequestLogProcessor, IsDevMode isDevMode})
       : this._perRequestLogProcessor = perRequestLogProcessor,
-        router = createRootRouter != null ? createRootRouter() :
-          mr.router() {
+        router = createRootRouter != null ? createRootRouter() : mr.router() {
     IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
     _context = new MojitoContextImpl(_isDevMode());
   }
 
-  Future start({ int port: 9999 }) {
-    return io.serve(handler, InternetAddress.ANY_IP_V6, port)
-        .then((server) {
+  Future start({int port: 9999}) {
+    return io.serve(handler, InternetAddress.ANY_IP_V6, port).then((server) {
       _log.info('Serving at http://${server.address.host}:${server.port}');
     });
   }
-        
+
 //  Future start({ int port: 9999 }) async {
 //    final server = await io.serve(handler, InternetAddress.ANY_IP_V6, port);
 //    _log.info('Serving at http://${server.address.host}:${server.port}');
@@ -101,17 +98,15 @@ class MojitoImpl implements Mojito {
     return handler;
   }
 
-
   Handler _adaptLogging(Handler innerHandler) {
     return (request) {
-      var streamSubscription = Logger.root.onRecord.listen(_perRequestLogProcessor);
+      var streamSubscription =
+          Logger.root.onRecord.listen(_perRequestLogProcessor);
       return new Future.sync(() => innerHandler(request)).whenComplete(() {
         streamSubscription.cancel();
       });
     };
   }
-
-
 }
 
 // just a trick as Mojito has a property called context which points to this one
@@ -128,19 +123,15 @@ MojitoContext get context {
   return _context;
 }
 
-
 Middleware logExceptions() {
   return (Handler handler) {
     return (Request request) {
-      return new Future.sync(() =>
-          handler(request)).catchError((error, stackTrace) {
+      return new Future.sync(() => handler(request)).catchError(
+          (error, stackTrace) {
+        _log.fine('exception', error, stackTrace);
 
-          _log.fine('exception', error, stackTrace);
-
-          throw error;
+        throw error;
       });
     };
   };
 }
-
-

@@ -18,24 +18,26 @@ import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
 
 class RouterImpl extends r.RouterImpl<Router> implements Router {
-  RouterImpl({Function fallbackHandler,
-    r.HandlerAdapter handlerAdapter,
-    r.RouteableAdapter routeableAdapter,
-    r.PathAdapter pathAdapter: r.uriTemplatePattern,
-    Middleware middleware, path: '/'})
-      : super(fallbackHandler: fallbackHandler,
+  RouterImpl({Function fallbackHandler, r.HandlerAdapter handlerAdapter,
+      r.RouteableAdapter routeableAdapter,
+      r.PathAdapter pathAdapter: r.uriTemplatePattern, Middleware middleware,
+      path: '/'})
+      : super(
+          fallbackHandler: fallbackHandler,
           handlerAdapter: _createHandlerAdapter(handlerAdapter),
           routeableAdapter: _createRouteableAdapter(routeableAdapter),
           pathAdapter: pathAdapter,
+          middleware: middleware,
           path: path);
 
   void resource(resource, {path, Middleware middleware,
-      r.HandlerAdapter handlerAdapter,
-      bool validateParameters: true, bool validateReturn: false }) {
-
-    final ra = this.routeableAdapter != null ? this.routeableAdapter
-        : rest.routeableAdapter(validateParameters: validateParameters,
-                                  validateReturn: validateReturn);
+      r.HandlerAdapter handlerAdapter, bool validateParameters: true,
+      bool validateReturn: false}) {
+    final ra = this.routeableAdapter != null
+        ? this.routeableAdapter
+        : rest.routeableAdapter(
+            validateParameters: validateParameters,
+            validateReturn: validateReturn);
     addAll(resource,
         handlerAdapter: handlerAdapter,
         routeableAdapter: ra,
@@ -45,107 +47,87 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
 
   @override
   RouterImpl createChild(r.HandlerAdapter handlerAdapter,
-                         r.RouteableAdapter routeableAdapter,
-                         r.PathAdapter pathAdapter, path,
-                         Middleware middleware) =>
-      new RouterImpl(fallbackHandler: fallbackHandler,
-          handlerAdapter: handlerAdapter, routeableAdapter: routeableAdapter,
-          pathAdapter: pathAdapter, path: path,
-          middleware: middleware);
-
+      r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter, path,
+      Middleware middleware) => new RouterImpl(
+      fallbackHandler: fallbackHandler,
+      handlerAdapter: handlerAdapter,
+      routeableAdapter: routeableAdapter,
+      pathAdapter: pathAdapter,
+      path: path,
+      middleware: middleware);
 
   @override
-  void addOAuth1Provider(path,
-                         OAuth1Token consumerToken,
-                         OAuth1Provider oauthProvider,
-                         OAuth1RequestTokenSecretStore tokenStore,
-                         UriTemplate completionRedirectUrl,
-                         { requestTokenPath: '/requestToken',
-                           authTokenPath: '/authToken',
-                           String callbackUrl }) {
+  void addOAuth1Provider(path, OAuth1Token consumerToken,
+      OAuth1Provider oauthProvider, OAuth1RequestTokenSecretStore tokenStore,
+      UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',
+      authTokenPath: '/authToken', String callbackUrl}) {
     final atp = authTokenPath.toString();
 
-    final cb = callbackUrl != null ? callbackUrl :
-      atp.startsWith('/') ? atp.substring(1) : atp;
+    final cb = callbackUrl != null
+        ? callbackUrl
+        : atp.startsWith('/') ? atp.substring(1) : atp;
 
-    final dancer = new OAuth1ProviderHandlers(consumerToken, oauthProvider,
-        cb, tokenStore, completionRedirectUrl);
+    final dancer = new OAuth1ProviderHandlers(
+        consumerToken, oauthProvider, cb, tokenStore, completionRedirectUrl);
 
     addAll((Router r) => r
-        ..get(requestTokenPath, dancer.tokenRequestHandler())
-        ..get(authTokenPath, dancer.accessTokenRequestHandler()),
-        path: path);
+      ..get(requestTokenPath, dancer.tokenRequestHandler())
+      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
   }
 
   @override
-  void addOAuth2Provider(path, 
-                         ClientId clientId, 
-                         OAuth2Provider oauthProvider, 
-                         OAuth2CSRFStateStore stateStore, 
-                         OAuth2TokenStore tokenStore, 
-                         UriTemplate completionRedirectUrl, 
-                         SessionIdentifierExtractor sessionIdExtractor,
-                         List<String> scopes,
-                         { userGrantPath: '/userGrant', 
-                           authTokenPath: '/authToken', 
-                           String callbackUrl}) {
-    
+  void addOAuth2Provider(path, ClientId clientId, OAuth2Provider oauthProvider,
+      OAuth2CSRFStateStore stateStore, OAuth2TokenStore tokenStore,
+      UriTemplate completionRedirectUrl,
+      SessionIdentifierExtractor sessionIdExtractor, List<String> scopes,
+      {userGrantPath: '/userGrant', authTokenPath: '/authToken',
+      String callbackUrl}) {
     final atp = authTokenPath.toString();
 
-    final cb = callbackUrl != null ? callbackUrl :
-      atp.startsWith('/') ? atp.substring(1) : atp;
+    final cb = callbackUrl != null
+        ? callbackUrl
+        : atp.startsWith('/') ? atp.substring(1) : atp;
 
     final dancer = new OAuth2ProviderHandlers(clientId, oauthProvider,
-        Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl, 
+        Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl,
         sessionIdExtractor, scopes);
 
     addAll((Router r) => r
-        ..get(userGrantPath, dancer.authorizationRequestHandler())
-        ..get(authTokenPath, dancer.accessTokenRequestHandler()),
-        path: path);
-
+      ..get(userGrantPath, dancer.authorizationRequestHandler())
+      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
   }
 
-
   @override
-  void addStaticAssetHandler(path, { String fileSystemPath: 'build/web',
-    bool serveFilesOutsidePath: false, String defaultDocument,
-    bool usePubServeInDev: true, String pubServeUrlString,
-    Middleware middleware }) {
-
+  void addStaticAssetHandler(path, {String fileSystemPath: 'build/web',
+      bool serveFilesOutsidePath: false, String defaultDocument,
+      bool usePubServeInDev: true, String pubServeUrlString,
+      Middleware middleware}) {
     final usePubServe = usePubServeInDev && context.isDevelopmentMode;
 
-    final handler = _pubServeHandler(usePubServe, pubServeUrlString)
-        .getOrElse(() =>
-            createStaticHandler(fileSystemPath,
-                serveFilesOutsidePath: serveFilesOutsidePath,
-                defaultDocument: defaultDocument));
+    final handler = _pubServeHandler(usePubServe, pubServeUrlString).getOrElse(
+        () => createStaticHandler(fileSystemPath,
+            serveFilesOutsidePath: serveFilesOutsidePath,
+            defaultDocument: defaultDocument));
 
     add(path, ['GET'], (Request request) => handler(request),
         exactMatch: false, middleware: middleware);
   }
-
 }
 
-
-Option<Handler> _pubServeHandler(bool usePubServe,
-    String providedPubServeUrlString) {
+Option<Handler> _pubServeHandler(
+    bool usePubServe, String providedPubServeUrlString) {
   if (!usePubServe) {
     return const None();
   }
 
   return new Option(providedPubServeUrlString)
-    .orElse(new Option(const String.fromEnvironment('DART_PUB_SERVE')))
-    .orElse(new Some('http://localhost:8080'))
-    .map(proxyHandler);
-
+      .orElse(new Option(const String.fromEnvironment('DART_PUB_SERVE')))
+      .orElse(new Some('http://localhost:8080'))
+      .map(proxyHandler);
 }
-
-
 
 r.HandlerAdapter _createHandlerAdapter(r.HandlerAdapter ha) =>
     ha != null ? ha : handlerAdapter();
 
 r.RouteableAdapter _createRouteableAdapter(r.RouteableAdapter ra) =>
     ra != null ? ra : rest.routeableAdapter();
-

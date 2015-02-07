@@ -16,7 +16,6 @@ abstract class MojitoMiddleware {
   MiddlewareBuilder builder();
 }
 
-
 abstract class MiddlewareBuilder {
   MiddlewareBuilder addMiddleware(Middleware middleware);
 

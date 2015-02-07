@@ -9,14 +9,13 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_auth/shelf_auth.dart';
 import 'auth.dart';
 
-
 class MojitoAuthImpl implements MojitoAuth {
   Middleware _middleware;
   AuthenticationBuilder _global;
 
   Middleware get middleware {
     if (_global != null) {
-      return _middleware != null ?  _middleware : _global.build();
+      return _middleware != null ? _middleware : _global.build();
     }
 
     return null;
@@ -34,10 +33,7 @@ class MojitoAuthImpl implements MojitoAuth {
 
   /// builder for authenitcation middleware that you choose where to include
   AuthenticationBuilder builder() => new AuthenticationBuilder();
-
-
 }
-
 
 class _GlobalAuthBuilder extends AuthenticationBuilder {
   final MojitoAuthImpl _ma;
@@ -51,6 +47,3 @@ class _GlobalAuthBuilder extends AuthenticationBuilder {
     return m;
   }
 }
-
-
-

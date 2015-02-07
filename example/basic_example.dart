@@ -17,17 +17,17 @@ main() {
   final app = init(isDevMode: () => true);
 
   app.auth.global
-    .basic(_lookup)
-    .jwtSession('moi', 'shh', (username) => _lookup(username, null))
-    ..allowHttp=true
-    ..allowAnonymousAccess=true;
+      .basic(_lookup)
+      .jwtSession('moi', 'shh', (username) => _lookup(username, null))
+    ..allowHttp = true
+    ..allowAnonymousAccess = true;
 
   app.sessionStorage.add(new InMemorySessionRepository());
 
   app.router
     ..get('/hi', () {
-      String username = app.context.auth.map((authContext) =>
-          authContext.principal.name)
+      String username = app.context.auth
+          .map((authContext) => authContext.principal.name)
           .getOrElse(() => 'guest');
 
       return 'hello $username';
@@ -35,7 +35,6 @@ main() {
     ..addStaticAssetHandler('/ui');
 
   app.start();
-
 }
 
 Future<Option<Principal>> _lookup(String username, String password) {

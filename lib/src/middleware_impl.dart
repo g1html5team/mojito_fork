@@ -14,7 +14,7 @@ class MojitoMiddlewareImpl implements MojitoMiddleware {
 
   s.Middleware get middleware {
     if (_global != null) {
-      return _middleware != null ?  _middleware : _global.build();
+      return _middleware != null ? _middleware : _global.build();
     }
 
     return null;
@@ -63,7 +63,6 @@ class _GlobalMiddlewareBuilder extends MiddlewareBuilderImpl {
     return m;
   }
 }
-
 
 //class AssetHandler {
 //  s.Middleware get middleware => _createStaticHandler;
