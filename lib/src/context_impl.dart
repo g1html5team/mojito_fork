@@ -21,4 +21,3 @@ class MojitoContextImpl implements MojitoContext {
   @override
   Option<AuthenticatedContext> get auth => authenticatedContext();
 }
-

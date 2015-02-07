@@ -14,7 +14,4 @@ abstract class MojitoAuth {
 
   /// builder for authenitcation middleware that you choose where to include
   AuthenticationBuilder builder();
-
 }
-
-

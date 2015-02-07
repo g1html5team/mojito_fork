@@ -18,5 +18,3 @@ class MojitoSessionStorageImpl implements MojitoSessionStorage {
     middleware = sessionMiddleware(repository);
   }
 }
-
-
