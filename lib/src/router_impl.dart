@@ -27,6 +27,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
           handlerAdapter: _createHandlerAdapter(handlerAdapter),
           routeableAdapter: _createRouteableAdapter(routeableAdapter),
           pathAdapter: pathAdapter,
+          middleware: middleware,
           path: path);
 
   void resource(resource, {path, Middleware middleware,
@@ -78,25 +79,25 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
   }
 
   @override
-  void addOAuth2Provider(path, 
-                         ClientId clientId, 
-                         OAuth2Provider oauthProvider, 
-                         OAuth2CSRFStateStore stateStore, 
-                         OAuth2TokenStore tokenStore, 
-                         UriTemplate completionRedirectUrl, 
+  void addOAuth2Provider(path,
+                         ClientId clientId,
+                         OAuth2Provider oauthProvider,
+                         OAuth2CSRFStateStore stateStore,
+                         OAuth2TokenStore tokenStore,
+                         UriTemplate completionRedirectUrl,
                          SessionIdentifierExtractor sessionIdExtractor,
                          List<String> scopes,
-                         { userGrantPath: '/userGrant', 
-                           authTokenPath: '/authToken', 
+                         { userGrantPath: '/userGrant',
+                           authTokenPath: '/authToken',
                            String callbackUrl}) {
-    
+
     final atp = authTokenPath.toString();
 
     final cb = callbackUrl != null ? callbackUrl :
       atp.startsWith('/') ? atp.substring(1) : atp;
 
     final dancer = new OAuth2ProviderHandlers(clientId, oauthProvider,
-        Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl, 
+        Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl,
         sessionIdExtractor, scopes);
 
     addAll((Router r) => r
