@@ -1,3 +1,7 @@
+## 0.1.1
+
+* added authorisation middleware
+
 ## 0.1.0+1
 
 * fixed bug where middleware was not passed to super ctr in router
