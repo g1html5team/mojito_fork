@@ -14,6 +14,7 @@ import 'package:shelf_route/shelf_route.dart' as r;
 import 'mojito.dart';
 import 'router.dart' as mr;
 import 'auth_impl.dart';
+import 'authorisation_impl.dart';
 import 'package:mojito/src/middleware_impl.dart';
 import 'dart:async';
 import 'package:logging/logging.dart';
@@ -28,6 +29,7 @@ bool defaultIsDevMode() =>
 class MojitoImpl implements Mojito {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
+  final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
@@ -87,6 +89,11 @@ class MojitoImpl implements Mojito {
       }
     }
 
+    final authorisationMiddleware = authorisation.middleware;
+    if (authorisationMiddleware != null) {
+      pipeline = pipeline.addMiddleware(authorisationMiddleware);
+    }
+
     final mw = middleware.middleware;
     if (mw != null) {
       pipeline = pipeline.addMiddleware(mw);
@@ -94,7 +101,6 @@ class MojitoImpl implements Mojito {
 
     final handler = pipeline.addHandler(router.handler);
 
-//    return _wrapHandler(handler);
     return handler;
   }
 

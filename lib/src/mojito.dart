@@ -9,6 +9,7 @@ import 'context.dart';
 import 'package:shelf/shelf.dart';
 import 'router.dart';
 import 'auth.dart';
+import 'authorisation.dart';
 import 'mojito_impl.dart' as impl;
 import 'middleware.dart';
 import 'package:logging/logging.dart';
@@ -40,6 +41,7 @@ Mojito init({RouteCreator createRootRouter, bool logRequests: true,
 abstract class Mojito {
   Router get router;
   MojitoAuth get auth;
+  MojitoAuthorisation get authorisation;
   MojitoSessionStorage get sessionStorage;
   MojitoMiddleware get middleware;
   MojitoContext get context;
