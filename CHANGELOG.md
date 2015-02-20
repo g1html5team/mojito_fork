@@ -1,3 +1,7 @@
+## 0.1.2
+
+* upgraded version of shelf_auth
+
 ## 0.1.1
 
 * added authorisation middleware
