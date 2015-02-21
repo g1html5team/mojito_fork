@@ -1,5 +1,5 @@
 name: mojito
-version: 0.1.2
+version: 0.1.3
 author: Anders Holmgren <andersmholmgren@gmail.com>
 description: A micro framework for modern web apps built from the ground up on the shelf framework
 homepage: https://bitbucket.org/andersmholmgren/mojito
@@ -9,7 +9,7 @@ dependencies:
   oauth: '>=0.3.0 <0.4.0'
   option: '>=0.3.3 <0.4.0'
   shelf: '>=0.5.5+1 <0.6.0'
-  shelf_auth: '>=0.2.4 <0.2.5'
+  shelf_auth: '>=0.2.5 <0.2.6'
   shelf_auth_session: '>=0.0.1+1 <0.0.2'
   shelf_bind: '>=0.7.0+2 <0.8.0'
   shelf_exception_response: '>=0.1.1 <0.2.0'

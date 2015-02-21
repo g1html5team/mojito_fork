@@ -1,3 +1,7 @@
+## 0.1.3
+
+* upgraded version of shelf_auth for exclusion support in authorisers
+
 ## 0.1.2
 
 * upgraded version of shelf_auth
