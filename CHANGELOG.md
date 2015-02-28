@@ -1,3 +1,7 @@
+## 0.1.5
+
+* upgraded version of shelf_oauth
+
 ## 0.1.4
 
 * upgraded version of shelf_oauth

@@ -81,7 +81,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
       UriTemplate completionRedirectUrl,
       SessionIdentifierExtractor sessionIdExtractor, List<String> scopes,
       {userGrantPath: '/userGrant', authTokenPath: '/authToken',
-      String callbackUrl}) {
+      String callbackUrl, bool storeTokens:true}) {
     final atp = authTokenPath.toString();
 
     final cb = callbackUrl != null
@@ -90,7 +90,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
 
     final dancer = new OAuth2ProviderHandlers(clientId, oauthProvider,
         Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl,
-        sessionIdExtractor, scopes);
+        sessionIdExtractor, scopes, storeTokens: storeTokens);
 
     addAll((Router r) => r
       ..get(userGrantPath, dancer.authorizationRequestHandler())
