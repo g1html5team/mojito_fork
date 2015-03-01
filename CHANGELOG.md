@@ -1,3 +1,8 @@
+## 0.2.0
+
+* upgraded version of shelf_oauth. Breaking if you relied on accessType in oauth2
+being 'offline'
+
 ## 0.1.7
 
 * upgraded version of shelf_auth
