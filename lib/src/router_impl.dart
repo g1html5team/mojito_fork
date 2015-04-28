@@ -76,19 +76,20 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
   }
 
   @override
-  void addOAuth2Provider(path, ClientId clientId, OAuth2Provider oauthProvider,
+  void addOAuth2Provider(path, ClientIdFactory clientIdFactory,
+      OAuth2ProviderFactory oauthProviderFactory,
       OAuth2CSRFStateStore stateStore, OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
       SessionIdentifierExtractor sessionIdExtractor, List<String> scopes,
       {userGrantPath: '/userGrant', authTokenPath: '/authToken',
-      String callbackUrl, bool storeTokens:true}) {
+      String callbackUrl, bool storeTokens: true}) {
     final atp = authTokenPath.toString();
 
     final cb = callbackUrl != null
         ? callbackUrl
         : atp.startsWith('/') ? atp.substring(1) : atp;
 
-    final dancer = new OAuth2ProviderHandlers(clientId, oauthProvider,
+    final dancer = new OAuth2ProviderHandlers(clientIdFactory, oauthProviderFactory,
         Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl,
         sessionIdExtractor, scopes, storeTokens: storeTokens);
 
