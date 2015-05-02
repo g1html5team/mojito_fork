@@ -132,8 +132,8 @@ MojitoContext get context {
 Middleware logExceptions() {
   return (Handler handler) {
     return (Request request) {
-      return new Future.sync(() => handler(request)).catchError(
-          (error, stackTrace) {
+      return new Future.sync(() => handler(request))
+          .catchError((error, stackTrace) {
         _log.fine('exception response', error, stackTrace);
 
         throw error;
