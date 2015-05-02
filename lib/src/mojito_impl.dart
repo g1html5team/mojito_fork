@@ -9,7 +9,7 @@ import 'context.dart';
 import 'context_impl.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
-import 'package:shelf_exception_response/exception_response.dart';
+import 'package:shelf_exception_handler/shelf_exception_handler.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'mojito.dart';
 import 'router.dart' as mr;
@@ -73,7 +73,7 @@ class MojitoImpl implements Mojito {
       pipeline = pipeline.addMiddleware(logRequests());
     }
 
-    pipeline = pipeline.addMiddleware(exceptionResponse());
+    pipeline = pipeline.addMiddleware(exceptionHandler());
     pipeline = pipeline.addMiddleware(logExceptions());
 
     final authMiddleware = auth.middleware;
