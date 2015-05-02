@@ -89,9 +89,10 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
         ? callbackUrl
         : atp.startsWith('/') ? atp.substring(1) : atp;
 
-    final dancer = new OAuth2ProviderHandlers(clientIdFactory, oauthProviderFactory,
-        Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl,
-        sessionIdExtractor, scopes, storeTokens: storeTokens);
+    final dancer = new OAuth2ProviderHandlers(clientIdFactory,
+        oauthProviderFactory, Uri.parse(cb), stateStore, tokenStore,
+        completionRedirectUrl, sessionIdExtractor, scopes,
+        storeTokens: storeTokens);
 
     addAll((Router r) => r
       ..get(userGrantPath, dancer.authorizationRequestHandler())

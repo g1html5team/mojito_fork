@@ -16,9 +16,6 @@ export 'package:shelf_oauth/shelf_oauth.dart'
 /// this just exists due to lack of generic function support in Dart
 typedef MojitoRouteableFunction(Router r);
 
-typedef ClientId ClientIdFactory(Request r);
-typedef OAuth2Provider OAuth2ProviderFactory(Request r);
-
 /// A shelf_route router that adds some methods
 abstract class Router implements r.Router<Router> {
 
