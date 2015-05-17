@@ -18,43 +18,39 @@ import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
 
 class RouterImpl extends r.RouterImpl<Router> implements Router {
+  RouterImpl.internal(Function fallbackHandler, String name, path,
+      r.RouterAdapter routerAdapter, routeable)
+      : super(fallbackHandler, name, path, routerAdapter, routeable);
+
   RouterImpl({Function fallbackHandler, r.HandlerAdapter handlerAdapter,
       r.RouteableAdapter routeableAdapter,
       r.PathAdapter pathAdapter: r.uriTemplatePattern, Middleware middleware,
-      path: '/'})
-      : super(
+      path: '/', String name})
+      : super.create(
           fallbackHandler: fallbackHandler,
           handlerAdapter: _createHandlerAdapter(handlerAdapter),
-          routeableAdapter: _createRouteableAdapter(routeableAdapter),
+          routeableAdapter: routeableAdapter,
           pathAdapter: pathAdapter,
           middleware: middleware,
-          path: path);
+          path: path,
+          name: name);
 
-  void resource(resource, {path, Middleware middleware,
+  void resource(resource, {String name, path, Middleware middleware,
       r.HandlerAdapter handlerAdapter, bool validateParameters: true,
       bool validateReturn: false}) {
-    final ra = this.routeableAdapter != null
-        ? this.routeableAdapter
-        : rest.routeableAdapter(
-            validateParameters: validateParameters,
-            validateReturn: validateReturn);
-    addAll(resource,
-        handlerAdapter: handlerAdapter,
-        routeableAdapter: ra,
-        middleware: middleware,
-        path: path);
+    // TODO: ignoring middleware etc. Don't
+
+    addRouter(rest.restSpec(path, resource,
+        validateParameters: validateParameters,
+        validateReturn: validateReturn,
+        name: name));
   }
 
   @override
-  RouterImpl createChild(r.HandlerAdapter handlerAdapter,
-      r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter, path,
-      Middleware middleware) => new RequestRouterImpl(
-      fallbackHandler: fallbackHandler,
-      handlerAdapter: handlerAdapter,
-      routeableAdapter: routeableAdapter,
-      pathAdapter: pathAdapter,
-      path: path,
-      middleware: middleware);
+  RouterImpl createChild(
+          String name, path, routeable, r.RouterAdapter routerAdapter) =>
+      new RouterImpl.internal(
+          fallbackHandler, name, path, routeAdapter, routeable);
 
   @override
   void addOAuth1Provider(path, OAuth1Token consumerToken,
@@ -130,6 +126,3 @@ Option<Handler> _pubServeHandler(
 
 r.HandlerAdapter _createHandlerAdapter(r.HandlerAdapter ha) =>
     ha != null ? ha : handlerAdapter();
-
-r.RouteableAdapter _createRouteableAdapter(r.RouteableAdapter ra) =>
-    ra != null ? ra : rest.routeableAdapter();
