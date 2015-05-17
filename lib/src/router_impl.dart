@@ -48,7 +48,7 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
   @override
   RouterImpl createChild(r.HandlerAdapter handlerAdapter,
       r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter, path,
-      Middleware middleware) => new RouterImpl(
+      Middleware middleware) => new RequestRouterImpl(
       fallbackHandler: fallbackHandler,
       handlerAdapter: handlerAdapter,
       routeableAdapter: routeableAdapter,
