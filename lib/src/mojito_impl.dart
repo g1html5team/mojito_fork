@@ -20,6 +20,7 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
 import 'dart:io';
+import 'package:shelf_route/extend.dart';
 
 final Logger _log = new Logger('mojito');
 
