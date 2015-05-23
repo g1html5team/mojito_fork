@@ -17,7 +17,7 @@ import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
 
-class RouterImpl extends r.RouterImpl<Router> implements Router {
+class RouterImpl extends r.ShelfRouteRouter<Router> implements Router {
   RouterImpl.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable)
       : super(fallbackHandler, name, path, routerAdapter, routeable);
