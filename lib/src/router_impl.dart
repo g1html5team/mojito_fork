@@ -38,7 +38,7 @@ class MojitoRouter extends r.ShelfRestRouterBuilder<Router> implements Router {
   MojitoRouter createChild(
           String name, path, routeable, r.RouterAdapter routerAdapter) =>
       new MojitoRouter.internal(
-          fallbackHandler, name, path, routeAdapter, routeable);
+          fallbackHandler, name, path, routerAdapter, routeable);
 
   @override
   void addOAuth1Provider(path, OAuth1Token consumerToken,
