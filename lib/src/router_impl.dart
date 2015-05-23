@@ -6,9 +6,7 @@
 library mojito.router.impl;
 
 import 'package:shelf/shelf.dart';
-import 'package:shelf_bind/shelf_bind.dart';
-import 'package:shelf_route/extend.dart' as r;
-import 'package:shelf_rest/shelf_rest.dart' as rest;
+import 'package:shelf_rest/extend.dart' as r;
 import 'router.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:uri/uri.dart';
@@ -16,13 +14,14 @@ import 'mojito.dart';
 import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
+import 'package:shelf_bind/shelf_bind.dart';
 
-class RouterImpl extends r.ShelfRouteRouter<Router> implements Router {
-  RouterImpl.internal(Function fallbackHandler, String name, path,
+class MojitoRouter extends r.ShelfRestRouterBuilder<Router> implements Router {
+  MojitoRouter.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable)
       : super(fallbackHandler, name, path, routerAdapter, routeable);
 
-  RouterImpl({Function fallbackHandler, r.HandlerAdapter handlerAdapter,
+  MojitoRouter({Function fallbackHandler, r.HandlerAdapter handlerAdapter,
       r.RouteableAdapter routeableAdapter,
       r.PathAdapter pathAdapter: r.uriTemplatePattern, Middleware middleware,
       path: '/', String name})
@@ -35,21 +34,10 @@ class RouterImpl extends r.ShelfRouteRouter<Router> implements Router {
           path: path,
           name: name);
 
-  void resource(resource, {String name, path, Middleware middleware,
-      r.HandlerAdapter handlerAdapter, bool validateParameters: true,
-      bool validateReturn: false}) {
-    // TODO: ignoring middleware etc. Don't
-
-    addRouter(rest.restSpec(path, resource,
-        validateParameters: validateParameters,
-        validateReturn: validateReturn,
-        name: name));
-  }
-
   @override
-  RouterImpl createChild(
+  MojitoRouter createChild(
           String name, path, routeable, r.RouterAdapter routerAdapter) =>
-      new RouterImpl.internal(
+      new MojitoRouter.internal(
           fallbackHandler, name, path, routeAdapter, routeable);
 
   @override
