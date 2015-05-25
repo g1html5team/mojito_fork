@@ -55,7 +55,7 @@ abstract class Router implements r.Router<Router> {
 Router router({r.HandlerAdapter handlerAdapter,
     r.RouteableAdapter routeableAdapter,
     r.PathAdapter pathAdapter: r.uriTemplatePattern, Function fallbackHandler,
-    Middleware middleware}) => new MojitoRouter(
+    Middleware middleware}) => new MojitoRouterBuilder(
     handlerAdapter: handlerAdapter,
     pathAdapter: pathAdapter,
     fallbackHandler: fallbackHandler,

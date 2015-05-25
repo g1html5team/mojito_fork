@@ -16,13 +16,14 @@ import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
 import 'package:shelf_bind/shelf_bind.dart';
 
-class MojitoRouter extends r.ShelfRestRouterBuilder<Router> implements Router {
-  MojitoRouter.internal(Function fallbackHandler, String name, path,
+class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<Router>
+    implements Router {
+  MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable)
       : super(fallbackHandler, name, path, routerAdapter, routeable);
 
-  MojitoRouter({Function fallbackHandler, r.HandlerAdapter handlerAdapter,
-      r.RouteableAdapter routeableAdapter,
+  MojitoRouterBuilder({Function fallbackHandler,
+      r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
       r.PathAdapter pathAdapter: r.uriTemplatePattern, Middleware middleware,
       path: '/', String name})
       : super.create(
@@ -35,9 +36,9 @@ class MojitoRouter extends r.ShelfRestRouterBuilder<Router> implements Router {
           name: name);
 
   @override
-  MojitoRouter createChild(
+  MojitoRouterBuilder createChild(
           String name, path, routeable, r.RouterAdapter routerAdapter) =>
-      new MojitoRouter.internal(
+      new MojitoRouterBuilder.internal(
           fallbackHandler, name, path, routerAdapter, routeable);
 
   @override
