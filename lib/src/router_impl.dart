@@ -19,8 +19,9 @@ import 'package:shelf_bind/shelf_bind.dart';
 class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<Router>
     implements Router {
   MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
-      r.RouterAdapter routerAdapter, routeable)
-      : super(fallbackHandler, name, path, routerAdapter, routeable);
+      r.RouterAdapter routerAdapter, routeable, Middleware middleware)
+      : super(
+          fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
   MojitoRouterBuilder({Function fallbackHandler,
       r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
@@ -36,10 +37,10 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<Router>
           name: name);
 
   @override
-  MojitoRouterBuilder createChild(
-          String name, path, routeable, r.RouterAdapter routerAdapter) =>
+  MojitoRouterBuilder createChild(String name, path, routeable,
+          r.RouterAdapter routerAdapter, Middleware middleware) =>
       new MojitoRouterBuilder.internal(
-          fallbackHandler, name, path, routerAdapter, routeable);
+          fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
   @override
   void addOAuth1Provider(path, OAuth1Token consumerToken,
