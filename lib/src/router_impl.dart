@@ -17,7 +17,7 @@ import 'package:option/option.dart';
 import 'package:shelf_bind/shelf_bind.dart';
 
 class MojitoRouterBuilder
-    extends r.ShelfRestRouterBuilder<MojitoRouterBuilder, Router>
+    extends r.ShelfRestRouterBuilder<MojitoRouterBuilder, r.DefaultRouter>
     implements Router {
   MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
@@ -26,8 +26,7 @@ class MojitoRouterBuilder
 
   MojitoRouterBuilder({Function fallbackHandler,
       r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
-      r.PathAdapter pathAdapter: r.uriTemplatePattern, Middleware middleware,
-      path: '/', String name})
+      r.PathAdapter pathAdapter, Middleware middleware, path: '/', String name})
       : super.create(
           fallbackHandler: fallbackHandler,
           handlerAdapter: _createHandlerAdapter(handlerAdapter),

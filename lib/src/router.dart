@@ -17,7 +17,7 @@ export 'package:shelf_oauth/shelf_oauth.dart'
 typedef MojitoRouteableFunction(Router r);
 
 /// A shelf_route router that adds some methods
-abstract class Router implements r.Router<Router> {
+abstract class Router implements r.Router<Router, r.DefaultRouter> {
   void addOAuth1Provider(path, OAuth1Token consumerToken,
       OAuth1Provider oauthProvider, OAuth1RequestTokenSecretStore tokenStore,
       UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',
@@ -53,10 +53,10 @@ abstract class Router implements r.Router<Router> {
 
 /// Creates a mojito router
 Router router({r.HandlerAdapter handlerAdapter,
-    r.RouteableAdapter routeableAdapter,
-    r.PathAdapter pathAdapter: r.uriTemplatePattern, Function fallbackHandler,
-    Middleware middleware}) => new MojitoRouterBuilder(
-    handlerAdapter: handlerAdapter,
-    pathAdapter: pathAdapter,
-    fallbackHandler: fallbackHandler,
-    middleware: middleware);
+        r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter,
+        Function fallbackHandler, Middleware middleware}) =>
+    new MojitoRouterBuilder(
+        handlerAdapter: handlerAdapter,
+        pathAdapter: pathAdapter,
+        fallbackHandler: fallbackHandler,
+        middleware: middleware);
