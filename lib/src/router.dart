@@ -17,7 +17,7 @@ export 'package:shelf_oauth/shelf_oauth.dart'
 typedef MojitoRouteableFunction(Router r);
 
 /// A shelf_route router that adds some methods
-abstract class Router implements r.Router<Router, r.DefaultRouter> {
+abstract class Router implements r.Router<Router> {
   void addOAuth1Provider(path, OAuth1Token consumerToken,
       OAuth1Provider oauthProvider, OAuth1RequestTokenSecretStore tokenStore,
       UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',

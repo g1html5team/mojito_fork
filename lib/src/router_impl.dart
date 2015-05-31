@@ -16,8 +16,7 @@ import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
 import 'package:shelf_bind/shelf_bind.dart';
 
-class MojitoRouterBuilder
-    extends r.ShelfRestRouterBuilder<MojitoRouterBuilder, r.DefaultRouter>
+class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
   MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
