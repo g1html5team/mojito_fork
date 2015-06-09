@@ -1,24 +1,32 @@
-name: mojito
-version: 0.2.0
 author: Anders Holmgren <andersmholmgren@gmail.com>
 description: A micro framework for modern web apps built from the ground up on the shelf framework
 homepage: https://bitbucket.org/andersmholmgren/mojito
-environment:
-  sdk: '>=1.2.0 <2.0.0'
-dependencies:
+name: mojito
+version: 0.2.0
+dependencies: 
+  http_exception: '^0.1.0'
   oauth: '>=0.3.0 <0.4.0'
   option: '>=0.3.3 <0.4.0'
-  shelf: '>=0.5.5+1 <0.6.0'
-  shelf_auth: '>=0.3.0 <0.3.1'
-  shelf_auth_session: '>=0.1.0 <0.1.1'
-  shelf_bind: '>=0.7.0+2 <0.8.0'
-  shelf_exception_response: '>=0.1.1 <0.2.0'
-  shelf_oauth: '>=0.4.0 <0.4.1'
-  shelf_path: '>=0.1.1+1 <0.2.0'
-  shelf_proxy: '>=0.1.0+1 <0.2.0'
-  shelf_rest: '>=0.1.4-pre.6 <0.2.0'
-  shelf_route: '>=0.11.0 <0.12.0'
-  shelf_static: '>=0.2.1 <0.3.0'
-dev_dependencies:
+  shelf: '^0.6.0'
+  shelf_path: '^0.1.2'
+  shelf_proxy: '^0.1.0+2'
+  shelf_static: '^0.2.2'
+  shelf_auth: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth
+  shelf_auth_session: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth_session
+  shelf_bind: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_bind
+  shelf_exception_handler: '^0.1.0'
+  shelf_oauth:
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth
+  shelf_rest: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_rest
+  shelf_route: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_route
+dependency_overrides: 
+dev_dependencies: 
   mockito: '>=0.8.1 <0.9.0'
   unittest: '>=0.11.0+5 <0.12.0'
+environment: 
+  sdk: '>=1.9.0 <2.0.0'

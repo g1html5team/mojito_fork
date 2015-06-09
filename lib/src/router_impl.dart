@@ -6,9 +6,7 @@
 library mojito.router.impl;
 
 import 'package:shelf/shelf.dart';
-import 'package:shelf_bind/shelf_bind.dart';
-import 'package:shelf_route/extend.dart' as r;
-import 'package:shelf_rest/shelf_rest.dart' as rest;
+import 'package:shelf_rest/extend.dart' as r;
 import 'router.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:uri/uri.dart';
@@ -16,45 +14,32 @@ import 'mojito.dart';
 import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
+import 'package:shelf_bind/shelf_bind.dart';
 
-class RouterImpl extends r.RouterImpl<Router> implements Router {
-  RouterImpl({Function fallbackHandler, r.HandlerAdapter handlerAdapter,
-      r.RouteableAdapter routeableAdapter,
-      r.PathAdapter pathAdapter: r.uriTemplatePattern, Middleware middleware,
-      path: '/'})
+class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
+    implements Router {
+  MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
+      r.RouterAdapter routerAdapter, routeable, Middleware middleware)
       : super(
+          fallbackHandler, name, path, routerAdapter, routeable, middleware);
+
+  MojitoRouterBuilder({Function fallbackHandler,
+      r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
+      r.PathAdapter pathAdapter, Middleware middleware, path: '/', String name})
+      : super.create(
           fallbackHandler: fallbackHandler,
           handlerAdapter: _createHandlerAdapter(handlerAdapter),
-          routeableAdapter: _createRouteableAdapter(routeableAdapter),
+          routeableAdapter: routeableAdapter,
           pathAdapter: pathAdapter,
           middleware: middleware,
-          path: path);
-
-  void resource(resource, {path, Middleware middleware,
-      r.HandlerAdapter handlerAdapter, bool validateParameters: true,
-      bool validateReturn: false}) {
-    final ra = this.routeableAdapter != null
-        ? this.routeableAdapter
-        : rest.routeableAdapter(
-            validateParameters: validateParameters,
-            validateReturn: validateReturn);
-    addAll(resource,
-        handlerAdapter: handlerAdapter,
-        routeableAdapter: ra,
-        middleware: middleware,
-        path: path);
-  }
+          path: path,
+          name: name);
 
   @override
-  RouterImpl createChild(r.HandlerAdapter handlerAdapter,
-      r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter, path,
-      Middleware middleware) => new RouterImpl(
-      fallbackHandler: fallbackHandler,
-      handlerAdapter: handlerAdapter,
-      routeableAdapter: routeableAdapter,
-      pathAdapter: pathAdapter,
-      path: path,
-      middleware: middleware);
+  MojitoRouterBuilder createChild(String name, path, routeable,
+          r.RouterAdapter routerAdapter, Middleware middleware) =>
+      new MojitoRouterBuilder.internal(
+          fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
   @override
   void addOAuth1Provider(path, OAuth1Token consumerToken,
@@ -89,9 +74,10 @@ class RouterImpl extends r.RouterImpl<Router> implements Router {
         ? callbackUrl
         : atp.startsWith('/') ? atp.substring(1) : atp;
 
-    final dancer = new OAuth2ProviderHandlers(clientIdFactory, oauthProviderFactory,
-        Uri.parse(cb), stateStore, tokenStore, completionRedirectUrl,
-        sessionIdExtractor, scopes, storeTokens: storeTokens);
+    final dancer = new OAuth2ProviderHandlers(clientIdFactory,
+        oauthProviderFactory, Uri.parse(cb), stateStore, tokenStore,
+        completionRedirectUrl, sessionIdExtractor, scopes,
+        storeTokens: storeTokens);
 
     addAll((Router r) => r
       ..get(userGrantPath, dancer.authorizationRequestHandler())
@@ -129,6 +115,3 @@ Option<Handler> _pubServeHandler(
 
 r.HandlerAdapter _createHandlerAdapter(r.HandlerAdapter ha) =>
     ha != null ? ha : handlerAdapter();
-
-r.RouteableAdapter _createRouteableAdapter(r.RouteableAdapter ra) =>
-    ra != null ? ra : rest.routeableAdapter();

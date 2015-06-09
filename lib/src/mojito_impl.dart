@@ -9,7 +9,7 @@ import 'context.dart';
 import 'context_impl.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
-import 'package:shelf_exception_response/exception_response.dart';
+import 'package:shelf_exception_handler/shelf_exception_handler.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 import 'mojito.dart';
 import 'router.dart' as mr;
@@ -20,6 +20,7 @@ import 'dart:async';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
 import 'dart:io';
+import 'package:shelf_route/extend.dart';
 
 final Logger _log = new Logger('mojito');
 
@@ -73,7 +74,7 @@ class MojitoImpl implements Mojito {
       pipeline = pipeline.addMiddleware(logRequests());
     }
 
-    pipeline = pipeline.addMiddleware(exceptionResponse());
+    pipeline = pipeline.addMiddleware(exceptionHandler());
     pipeline = pipeline.addMiddleware(logExceptions());
 
     final authMiddleware = auth.middleware;
@@ -132,8 +133,8 @@ MojitoContext get context {
 Middleware logExceptions() {
   return (Handler handler) {
     return (Request request) {
-      return new Future.sync(() => handler(request)).catchError(
-          (error, stackTrace) {
+      return new Future.sync(() => handler(request))
+          .catchError((error, stackTrace) {
         _log.fine('exception response', error, stackTrace);
 
         throw error;
