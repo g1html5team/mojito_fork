@@ -9,7 +9,6 @@ dependencies:
   option: '>=0.3.3 <0.4.0'
   shelf: '^0.6.0'
   shelf_exception_handler: '^0.1.0'
-  shelf_path: '^0.1.2'
   shelf_proxy: '^0.1.0+2'
   shelf_static: '^0.2.2'
   shelf_auth: 
@@ -20,6 +19,8 @@ dependencies:
     path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_bind
   shelf_oauth: 
     path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth
+  shelf_path: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_path
   shelf_rest: 
     path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_rest
   shelf_route: 
