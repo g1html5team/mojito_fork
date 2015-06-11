@@ -4,9 +4,10 @@ homepage: https://bitbucket.org/andersmholmgren/mojito
 name: mojito
 version: 0.2.0
 dependencies: 
+  matcher: '>=0.10.0 <0.13.0'
+  option: '>=0.3.0 <2.0.0'
   http_exception: '^0.1.0'
   oauth: '>=0.3.0 <0.4.0'
-  option: '>=0.3.3 <0.4.0'
   shelf: '^0.6.0'
   shelf_exception_handler: '^0.1.0'
   shelf_proxy: '^0.1.0+2'
@@ -27,7 +28,7 @@ dependencies:
     path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_route
 dependency_overrides: 
 dev_dependencies: 
-  mockito: '>=0.8.1 <0.9.0'
-  unittest: '>=0.11.0+5 <0.12.0'
+  mockito: '>=0.8.1 <0.11.0'
+  test: '^0.12.0'
 environment: 
   sdk: '>=1.9.0 <2.0.0'
