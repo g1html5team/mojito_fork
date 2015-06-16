@@ -4,10 +4,10 @@ homepage: https://bitbucket.org/andersmholmgren/mojito
 name: mojito
 version: 0.2.0
 dependencies: 
-  matcher: '>=0.10.0 <0.13.0'
-  option: '>=0.3.0 <2.0.0'
   http_exception: '^0.1.0'
+  matcher: '>=0.10.0 <0.13.0'
   oauth: '>=0.3.0 <0.4.0'
+  option: '>=0.3.0 <2.0.0'
   shelf: '^0.6.0'
   shelf_exception_handler: '^0.1.0'
   shelf_proxy: '^0.1.0+2'
