@@ -108,8 +108,8 @@ Option<Handler> _pubServeHandler(
   }
 
   return new Option(providedPubServeUrlString)
-      .orElse(new Option(const String.fromEnvironment('DART_PUB_SERVE')))
-      .orElse(new Some('http://localhost:8080'))
+      .orElse(() => new Option(const String.fromEnvironment('DART_PUB_SERVE')))
+      .orElse(() => new Some('http://localhost:8080'))
       .map(proxyHandler);
 }
 

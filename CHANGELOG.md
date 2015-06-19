@@ -1,3 +1,7 @@
+## 0.3.0
+
+* Now extends the new `shelf_rest` `router` and inherits its shiny new features
+
 ## 0.2.0
 
 * upgraded version of shelf_oauth. Breaking if you relied on accessType in oauth2
