@@ -6,7 +6,7 @@
 library mojito.router;
 
 import 'package:shelf/shelf.dart';
-import 'package:shelf_route/shelf_route.dart' as r;
+import 'package:shelf_rest/shelf_rest.dart' as r;
 import 'router_impl.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:uri/uri.dart';
@@ -18,11 +18,6 @@ typedef MojitoRouteableFunction(Router r);
 
 /// A shelf_route router that adds some methods
 abstract class Router implements r.Router<Router> {
-
-  /// add a shelf_rest REST resource
-  void resource(resource,
-      {path, Middleware middleware, r.HandlerAdapter handlerAdapter});
-
   void addOAuth1Provider(path, OAuth1Token consumerToken,
       OAuth1Provider oauthProvider, OAuth1RequestTokenSecretStore tokenStore,
       UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',
@@ -30,7 +25,8 @@ abstract class Router implements r.Router<Router> {
       // optional. Only if want absolute url
       String callbackUrl});
 
-  void addOAuth2Provider(path, ClientId clientId, OAuth2Provider oauthProvider,
+  void addOAuth2Provider(path, ClientIdFactory clientIdFactory,
+      OAuth2ProviderFactory oauthProviderFactory,
       OAuth2CSRFStateStore stateStore, OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
       SessionIdentifierExtractor sessionIdExtractor, List<String> scopes,
@@ -57,10 +53,10 @@ abstract class Router implements r.Router<Router> {
 
 /// Creates a mojito router
 Router router({r.HandlerAdapter handlerAdapter,
-    r.RouteableAdapter routeableAdapter,
-    r.PathAdapter pathAdapter: r.uriTemplatePattern, Function fallbackHandler,
-    Middleware middleware}) => new RouterImpl(
-    handlerAdapter: handlerAdapter,
-    pathAdapter: pathAdapter,
-    fallbackHandler: fallbackHandler,
-    middleware: middleware);
+        r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter,
+        Function fallbackHandler, Middleware middleware}) =>
+    new MojitoRouterBuilder(
+        handlerAdapter: handlerAdapter,
+        pathAdapter: pathAdapter,
+        fallbackHandler: fallbackHandler,
+        middleware: middleware);

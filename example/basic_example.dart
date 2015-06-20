@@ -16,9 +16,8 @@ main() {
 
   final app = init(isDevMode: () => true);
 
-  app.auth.global
-      .basic(_lookup)
-      .jwtSession('moi', 'shh', (username) => _lookup(username, null))
+  app.auth.global.basic(_lookup).jwtSession(
+      'moi', 'shh', (username) => _lookup(username, null))
     ..allowHttp = true
     ..allowAnonymousAccess = true;
 
