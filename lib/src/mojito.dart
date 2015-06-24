@@ -33,8 +33,11 @@ const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 ///
 ///     isDevMode: () => const String.fromEnvironment('GAE_PARTITION') == 'dev'
 ///
-Mojito init({RouteCreator createRootRouter, bool logRequests: true,
-        LogRecordProcessor perRequestLogProcessor, IsDevMode isDevMode}) =>
+Mojito init(
+        {RouteCreator createRootRouter,
+        bool logRequests: true,
+        LogRecordProcessor perRequestLogProcessor,
+        IsDevMode isDevMode}) =>
     new impl.MojitoImpl(createRootRouter, logRequests,
         perRequestLogProcessor: perRequestLogProcessor, isDevMode: isDevMode);
 

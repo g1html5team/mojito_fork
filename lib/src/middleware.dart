@@ -8,7 +8,6 @@ library mojito.middleware;
 import 'package:shelf/shelf.dart';
 
 abstract class MojitoMiddleware {
-
   /// builder for middleware to be applied all routes
   MiddlewareBuilder get global;
 
