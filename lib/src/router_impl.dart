@@ -21,19 +21,24 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
       : super(
-          fallbackHandler, name, path, routerAdapter, routeable, middleware);
+            fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
-  MojitoRouterBuilder({Function fallbackHandler,
-      r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
-      r.PathAdapter pathAdapter, Middleware middleware, path: '/', String name})
+  MojitoRouterBuilder(
+      {Function fallbackHandler,
+      r.HandlerAdapter handlerAdapter,
+      r.RouteableAdapter routeableAdapter,
+      r.PathAdapter pathAdapter,
+      Middleware middleware,
+      path: '/',
+      String name})
       : super.create(
-          fallbackHandler: fallbackHandler,
-          handlerAdapter: _createHandlerAdapter(handlerAdapter),
-          routeableAdapter: routeableAdapter,
-          pathAdapter: pathAdapter,
-          middleware: middleware,
-          path: path,
-          name: name);
+            fallbackHandler: fallbackHandler,
+            handlerAdapter: _createHandlerAdapter(handlerAdapter),
+            routeableAdapter: routeableAdapter,
+            pathAdapter: pathAdapter,
+            middleware: middleware,
+            path: path,
+            name: name);
 
   @override
   MojitoRouterBuilder createChild(String name, path, routeable,
@@ -42,10 +47,15 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
           fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
   @override
-  void addOAuth1Provider(path, OAuth1Token consumerToken,
-      OAuth1Provider oauthProvider, OAuth1RequestTokenSecretStore tokenStore,
-      UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',
-      authTokenPath: '/authToken', String callbackUrl}) {
+  void addOAuth1Provider(
+      path,
+      OAuth1Token consumerToken,
+      OAuth1Provider oauthProvider,
+      OAuth1RequestTokenSecretStore tokenStore,
+      UriTemplate completionRedirectUrl,
+      {requestTokenPath: '/requestToken',
+      authTokenPath: '/authToken',
+      String callbackUrl}) {
     final atp = authTokenPath.toString();
 
     final cb = callbackUrl != null
@@ -61,22 +71,34 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   }
 
   @override
-  void addOAuth2Provider(path, ClientIdFactory clientIdFactory,
+  void addOAuth2Provider(
+      path,
+      ClientIdFactory clientIdFactory,
       OAuth2ProviderFactory oauthProviderFactory,
-      OAuth2CSRFStateStore stateStore, OAuth2TokenStore tokenStore,
+      OAuth2CSRFStateStore stateStore,
+      OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
-      SessionIdentifierExtractor sessionIdExtractor, List<String> scopes,
-      {userGrantPath: '/userGrant', authTokenPath: '/authToken',
-      String callbackUrl, bool storeTokens: true}) {
+      SessionIdentifierExtractor sessionIdExtractor,
+      List<String> scopes,
+      {userGrantPath: '/userGrant',
+      authTokenPath: '/authToken',
+      String callbackUrl,
+      bool storeTokens: true}) {
     final atp = authTokenPath.toString();
 
     final cb = callbackUrl != null
         ? callbackUrl
         : atp.startsWith('/') ? atp.substring(1) : atp;
 
-    final dancer = new OAuth2ProviderHandlers(clientIdFactory,
-        oauthProviderFactory, Uri.parse(cb), stateStore, tokenStore,
-        completionRedirectUrl, sessionIdExtractor, scopes,
+    final dancer = new OAuth2ProviderHandlers(
+        clientIdFactory,
+        oauthProviderFactory,
+        Uri.parse(cb),
+        stateStore,
+        tokenStore,
+        completionRedirectUrl,
+        sessionIdExtractor,
+        scopes,
         storeTokens: storeTokens);
 
     addAll((Router r) => r
@@ -85,9 +107,12 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   }
 
   @override
-  void addStaticAssetHandler(path, {String fileSystemPath: 'build/web',
-      bool serveFilesOutsidePath: false, String defaultDocument,
-      bool usePubServeInDev: true, String pubServeUrlString,
+  void addStaticAssetHandler(path,
+      {String fileSystemPath: 'build/web',
+      bool serveFilesOutsidePath: false,
+      String defaultDocument,
+      bool usePubServeInDev: true,
+      String pubServeUrlString,
       Middleware middleware}) {
     final usePubServe = usePubServeInDev && context.isDevelopmentMode;
 

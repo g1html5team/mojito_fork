@@ -8,7 +8,6 @@ library mojito.authorisation;
 import 'package:shelf_auth/shelf_auth.dart';
 
 abstract class MojitoAuthorisation {
-
   /// builder for authorisation middleware to be applied all routes
   AuthorisationBuilder get global;
 

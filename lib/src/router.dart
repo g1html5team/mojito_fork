@@ -18,19 +18,28 @@ typedef MojitoRouteableFunction(Router r);
 
 /// A shelf_route router that adds some methods
 abstract class Router implements r.Router<Router> {
-  void addOAuth1Provider(path, OAuth1Token consumerToken,
-      OAuth1Provider oauthProvider, OAuth1RequestTokenSecretStore tokenStore,
-      UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',
+  void addOAuth1Provider(
+      path,
+      OAuth1Token consumerToken,
+      OAuth1Provider oauthProvider,
+      OAuth1RequestTokenSecretStore tokenStore,
+      UriTemplate completionRedirectUrl,
+      {requestTokenPath: '/requestToken',
       authTokenPath: '/authToken',
       // optional. Only if want absolute url
       String callbackUrl});
 
-  void addOAuth2Provider(path, ClientIdFactory clientIdFactory,
+  void addOAuth2Provider(
+      path,
+      ClientIdFactory clientIdFactory,
       OAuth2ProviderFactory oauthProviderFactory,
-      OAuth2CSRFStateStore stateStore, OAuth2TokenStore tokenStore,
+      OAuth2CSRFStateStore stateStore,
+      OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
-      SessionIdentifierExtractor sessionIdExtractor, List<String> scopes,
-      {userGrantPath: '/userGrant', authTokenPath: '/authToken',
+      SessionIdentifierExtractor sessionIdExtractor,
+      List<String> scopes,
+      {userGrantPath: '/userGrant',
+      authTokenPath: '/authToken',
       // optional. Only if want absolute url
       String callbackUrl});
 
@@ -45,16 +54,22 @@ abstract class Router implements r.Router<Router> {
   /// back to `http://localhost:8080`
   /// Note: if more than one route is set up to use [serveStaticAssets] then
   /// it only makes sense to use pub serve on one of them
-  void addStaticAssetHandler(path, {String fileSystemPath: 'build/web',
-      bool serveFilesOutsidePath: false, String defaultDocument,
-      bool usePubServeInDev: true, String pubServeUrlString,
+  void addStaticAssetHandler(path,
+      {String fileSystemPath: 'build/web',
+      bool serveFilesOutsidePath: false,
+      String defaultDocument,
+      bool usePubServeInDev: true,
+      String pubServeUrlString,
       Middleware middleware});
 }
 
 /// Creates a mojito router
-Router router({r.HandlerAdapter handlerAdapter,
-        r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter,
-        Function fallbackHandler, Middleware middleware}) =>
+Router router(
+        {r.HandlerAdapter handlerAdapter,
+        r.RouteableAdapter routeableAdapter,
+        r.PathAdapter pathAdapter,
+        Function fallbackHandler,
+        Middleware middleware}) =>
     new MojitoRouterBuilder(
         handlerAdapter: handlerAdapter,
         pathAdapter: pathAdapter,
