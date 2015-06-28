@@ -15,31 +15,27 @@ import 'middleware.dart';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage.dart';
 
-typedef LogRecordProcessor(LogRecord logRecord);
-
 typedef Router RouteCreator();
 
 typedef bool IsDevMode();
 
 const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 
-/// if provided the [perRequestLogProcessor] will be subscribed to log events
-/// on the root logger during processing of each request. This allows
-/// integration with external logging services on PAAS providers.
-///
 /// By default the environment variable `MOJITO_IS_DEV_MODE` is used to
 /// determine if the server is running in development mode. This can be
 /// overriden by providing [isDevMode]. For example in appengine you can do
 ///
 ///     isDevMode: () => const String.fromEnvironment('GAE_PARTITION') == 'dev'
 ///
+/// By default mojito will create a root [Logger]. If you want to control the
+/// setup of the logger yourself then pass [createRootLogger]: false
 Mojito init(
         {RouteCreator createRootRouter,
         bool logRequests: true,
-        LogRecordProcessor perRequestLogProcessor,
+        bool createRootLogger: true,
         IsDevMode isDevMode}) =>
-    new impl.MojitoImpl(createRootRouter, logRequests,
-        perRequestLogProcessor: perRequestLogProcessor, isDevMode: isDevMode);
+    new impl.MojitoImpl(createRootRouter, logRequests, createRootLogger,
+        isDevMode: isDevMode);
 
 abstract class Mojito {
   Router get router;

@@ -34,19 +34,24 @@ class MojitoImpl implements Mojito {
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
-  final LogRecordProcessor _perRequestLogProcessor;
 
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
 
   final bool _logRequests;
 
-  MojitoImpl(RouteCreator createRootRouter, this._logRequests,
-      {LogRecordProcessor perRequestLogProcessor, IsDevMode isDevMode})
-      : this._perRequestLogProcessor = perRequestLogProcessor,
-        router = createRootRouter != null ? createRootRouter() : mr.router() {
+  MojitoImpl(
+      RouteCreator createRootRouter, this._logRequests, bool createRootLogger,
+      {IsDevMode isDevMode})
+      : router = createRootRouter != null ? createRootRouter() : mr.router() {
     IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
     _context = new MojitoContextImpl(_isDevMode());
+
+    if (createRootLogger) {
+      Logger.root.onRecord.listen((LogRecord lr) {
+        print('${lr.time} $lr');
+      });
+    }
   }
 
   Future start({int port: 9999}) {
@@ -65,10 +70,6 @@ class MojitoImpl implements Mojito {
     r.printRoutes(router, printer: _log.info);
 
     var pipeline = const Pipeline();
-
-    if (_perRequestLogProcessor != null) {
-      pipeline = pipeline.addMiddleware(_adaptLogging);
-    }
 
     if (_logRequests) {
       pipeline = pipeline.addMiddleware(logRequests());
@@ -103,16 +104,6 @@ class MojitoImpl implements Mojito {
     final handler = pipeline.addHandler(router.handler);
 
     return handler;
-  }
-
-  Handler _adaptLogging(Handler innerHandler) {
-    return (request) {
-      var streamSubscription =
-          Logger.root.onRecord.listen(_perRequestLogProcessor);
-      return new Future.sync(() => innerHandler(request)).whenComplete(() {
-        streamSubscription.cancel();
-      });
-    };
   }
 }
 
