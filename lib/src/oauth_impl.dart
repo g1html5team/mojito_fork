@@ -114,9 +114,7 @@ class OAuth1RouteBuilderImpl implements OAuth1RouteBuilder {
 
   @override
   void addClient(
-//      path,
       OAuth1Token consumerToken,
-//      OAuth1Provider oauthProvider,
       OAuth1RequestTokenSecretStore tokenStore,
       UriTemplate completionRedirectUrl,
       {requestTokenPath: '/requestToken',
