@@ -29,6 +29,10 @@ abstract class Router implements r.Router<Router> {
       // optional. Only if want absolute url
       String callbackUrl});
 
+  /// Creates routes to implement the 'client' part of the
+  /// [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1).
+  ///
+  ///
   void addOAuth2Provider(
       path,
       ClientIdFactory clientIdFactory,
