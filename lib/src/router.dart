@@ -10,6 +10,7 @@ import 'package:shelf_rest/shelf_rest.dart' as r;
 import 'router_impl.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:uri/uri.dart';
+import 'package:mojito/src/oauth.dart';
 export 'package:shelf_oauth/shelf_oauth.dart'
     show OAuth1RequestTokenSecretStore, InMemoryOAuth1RequestTokenSecretStore;
 
@@ -63,6 +64,8 @@ abstract class Router implements r.Router<Router> {
       SessionIdentifierExtractor sessionIdExtractor,
       // optional. Only if want absolute url
       String callbackUrl});
+
+  OAuthRouteBuilder get oauth;
 
   /// Serves static assets.
   /// If not in `development` mode then assets are served from filesystem

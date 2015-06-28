@@ -25,13 +25,21 @@ main() {
 
   final oauthStorage = app.oauth.inMemoryStorage();
 
-  app.router.addOAuth2Provider(
-      'gh',
+  app.router.oauth.gitHub().addClient(
       (_) => new ClientId('your clientId', 'your secret'),
-      (_) => app.oauth.authorizationServers.gitHubOAuth2,
-      oauthStorage.oauth2CSRFStateStore,
-      oauthStorage.oauth2TokenStore,
-      new UriTemplate('/foo'));
+      oauthStorage,
+      new UriTemplate(
+          'http://example.com/loginComplete{?type,token,secret,context}'));
+
+  // TODO: kinda weird to put path in the .oauth2 bit instead of .addClient
+  // TODO: probably should remove oauth from Mojito class. Fits better in router
+  app.router.oauth
+      .oauth2('notGithub', (_) => app.oauth.authorizationServers.gitHubOAuth2)
+      .addClient(
+          (_) => new ClientId('your clientId', 'your secret'),
+          oauthStorage,
+          new UriTemplate(
+              'http://example.com/loginComplete{?type,token,secret,context}'));
 
   app.start();
 }
