@@ -24,11 +24,10 @@ main() {
   app.router.get('/hi', () => 'hi');
 
   final oauth = app.router.oauth;
-  final oauthStorage = oauth.storage.inMemory();
 
   oauth.gitHub().addClient(
       (_) => new ClientId('your clientId', 'your secret'),
-      oauthStorage,
+      oauth.storage.inMemory(),
       new UriTemplate(
           'http://example.com/loginComplete{?type,token,secret,context}'));
 
@@ -38,7 +37,7 @@ main() {
       .oauth2('notGithub', (_) => commonAuthorizationServers.gitHubOAuth2)
       .addClient(
           (_) => new ClientId('your clientId', 'your secret'),
-          oauthStorage,
+          oauth.storage.inMemory(),
           new UriTemplate(
               'http://example.com/loginComplete{?type,token,secret,context}'));
 

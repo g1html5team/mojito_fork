@@ -6,13 +6,13 @@
 library mojito.oauth;
 
 import 'package:shelf_oauth/shelf_oauth.dart';
-import 'package:shelf_oauth_memcache/shelf_oauth_memcache.dart' as memcache;
+import 'package:shelf_oauth_memcache/shelf_oauth_memcache.dart' as omem;
 import 'package:uri/uri.dart';
 
 abstract class MojitoOAuthStorage {
   OAuthStorage inMemory();
 
-  OAuthStorage memcache(memcache.MemcacheProvider memcacheProvider,
+  OAuthStorage memcache(omem.MemcacheProvider memcacheProvider,
       {Duration shortTermStorageExpiration: const Duration(minutes: 2),
       Duration sessionStorageExpiration: const Duration(hours: 1)});
 }

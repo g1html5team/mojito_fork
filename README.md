@@ -94,7 +94,9 @@ var app = init(isDevMode: () => Platform.environment['GAE_PARTITION'] == 'dev');
 
 ## Routing
 
-[Mojito][mojito] comes with a very feature rich router. To get a good overview of the options you have, have a read of the blog post [Routing Options in Shelf][routing_blog].
+[Mojito][mojito] comes with a very feature rich router. You access the root router by calling `app.router`.
+
+To get a good overview of the options you have, read the blog post [Routing Options in Shelf][routing_blog].
 
 The mojito router extends [shelf_rest][shelf_rest]'s router. As this is documented extensively in the [shelf_rest documentation][shelf_rest] I won't repeat it here.
 
@@ -114,6 +116,46 @@ app.router.addStaticAssetHandler('/ui');
 ```  
 
 *Note: under the covers `addStaticAssetHandler` uses [shelf_static] and [shelf_proxy] to handle the static assets.*
+
+
+### OAuth (1 & 2) Client
+
+The Mojito router provides methods to set up the routes required to implement the 'client' part of the [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1) and similar routes for OAuth1
+
+This allows developers to write web applications that interact with OAuth enabled services like:
+
+ - google
+ - github
+ - bitbucket
+ - hipchat
+ - many many more
+
+To simplify this even further, mojito supports several authorisation servers out of the box. The following example shows how to add a github client when deploying on Google Appengine using memcache to store the OAuth2 data.
+
+```
+final oauth = app.router.oauth;
+
+oauth.gitHub().addClient(
+    (_) => new ClientId('your clientId', 'your secret'),
+    oauth.storage.memcache(() => context.services.memcache),
+    new UriTemplate(
+        'http://example.com/loginComplete{?type,token,secret,context}'));
+```
+
+You access the route builders for oauth by calling `router.oauth`. From there you have access to out of the box oauth storage (such as memcache and in memory for development), plus customised route builders for common authorisation servers like `github` (PRs welcome for more servers).
+
+When you start this up you will see two routes created for the github flow
+
+```
+2015-06-29 08:44:51.503 [INFO] mojito: GET	->	/github/userGrant
+2015-06-29 08:44:51.503 [INFO] mojito: GET	->	/github/authToken
+```
+
+The `userGrant` route is where you send the users browser to to initiate the flow. It will redirect to github for the user to grant access, upon which github will redirect the user back to the `authToken` route.
+
+On successful completion of the auth flow, the users browser will be redirected back to the url you provided ('http://example.com/loginComplete' in this example) with the query params for `type, token, secret and context` populated accordingly.
+
+*Note: mojito uses [shelf_oauth][shelf_oauth] to implement these flows*
 
 
 
