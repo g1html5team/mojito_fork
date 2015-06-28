@@ -33,6 +33,8 @@ abstract class Router implements r.Router<Router> {
   /// [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1).
   ///
   ///
+  /// By default a shelf_auth session identifier will be assumed. Pass in a
+  /// value for [sessionIdExtractor] to override
   void addOAuth2Provider(
       path,
       ClientIdFactory clientIdFactory,
@@ -40,10 +42,10 @@ abstract class Router implements r.Router<Router> {
       OAuth2CSRFStateStore stateStore,
       OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
-      SessionIdentifierExtractor sessionIdExtractor,
       List<String> scopes,
       {userGrantPath: '/userGrant',
       authTokenPath: '/authToken',
+      SessionIdentifierExtractor sessionIdExtractor,
       // optional. Only if want absolute url
       String callbackUrl});
 
