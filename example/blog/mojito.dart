@@ -23,9 +23,10 @@ main() {
 
   app.router.get('/hi', () => 'hi');
 
-  final oauthStorage = app.oauth.inMemoryStorage();
+  final oauth = app.router.oauth;
+  final oauthStorage = oauth.storage.inMemory();
 
-  app.router.oauth.gitHub().addClient(
+  oauth.gitHub().addClient(
       (_) => new ClientId('your clientId', 'your secret'),
       oauthStorage,
       new UriTemplate(
@@ -33,8 +34,8 @@ main() {
 
   // TODO: kinda weird to put path in the .oauth2 bit instead of .addClient
   // TODO: probably should remove oauth from Mojito class. Fits better in router
-  app.router.oauth
-      .oauth2('notGithub', (_) => app.oauth.authorizationServers.gitHubOAuth2)
+  oauth
+      .oauth2('notGithub', (_) => commonAuthorizationServers.gitHubOAuth2)
       .addClient(
           (_) => new ClientId('your clientId', 'your secret'),
           oauthStorage,

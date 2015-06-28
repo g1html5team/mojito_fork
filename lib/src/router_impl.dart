@@ -18,9 +18,12 @@ import 'package:shelf_bind/shelf_bind.dart';
 import 'dart:async';
 import 'package:shelf_auth/shelf_auth.dart';
 import 'package:http_exception/http_exception.dart';
+import 'package:mojito/src/oauth_impl.dart';
 
 class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
+  OAuthRouteBuilderImpl get oauth => new OAuthRouteBuilderImpl(this);
+
   MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
       : super(

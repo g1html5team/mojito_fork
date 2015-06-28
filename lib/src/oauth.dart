@@ -9,20 +9,12 @@ import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:shelf_oauth_memcache/shelf_oauth_memcache.dart' as memcache;
 import 'package:uri/uri.dart';
 
-abstract class MojitoOAuth {
-  OAuthStorage inMemoryStorage();
+abstract class MojitoOAuthStorage {
+  OAuthStorage inMemory();
 
-  OAuthStorage memcacheStorage(memcache.MemcacheProvider memcacheProvider,
+  OAuthStorage memcache(memcache.MemcacheProvider memcacheProvider,
       {Duration shortTermStorageExpiration: const Duration(minutes: 2),
       Duration sessionStorageExpiration: const Duration(hours: 1)});
-
-  CommonAuthorizationServers get authorizationServers;
-}
-
-abstract class CommonAuthorizationServers {
-  OAuth1Provider get bitBucketOAuth1;
-
-  OAuth2AuthorizationServer get gitHubOAuth2;
 }
 
 abstract class OAuth2RouteBuilder {
@@ -33,7 +25,8 @@ abstract class OAuth2RouteBuilder {
       List<String> scopes: const [],
       SessionIdentifierExtractor sessionIdExtractor,
       // optional. Only if want absolute url
-      String callbackUrl});
+      String callbackUrl,
+      bool storeTokens: true});
 }
 
 abstract class OAuthRouteBuilder {
@@ -42,29 +35,7 @@ abstract class OAuthRouteBuilder {
   OAuth2RouteBuilder oauth2(
       path, OAuth2AuthorizationServerFactory authorizationServerFactory);
 
-//  void addGitHubClient(
-//      path,
-//      ClientIdFactory clientIdFactory,
-//      OAuth2CSRFStateStore stateStore,
-//      OAuth2TokenStore tokenStore,
-//      UriTemplate completionRedirectUrl,
-//      {userGrantPath: '/userGrant',
-//      authTokenPath: '/authToken',
-//      List<String> scopes: const [],
-//      SessionIdentifierExtractor sessionIdExtractor,
-//      // optional. Only if want absolute url
-//      String callbackUrl});
-
-//  void addOAuth1Client(
-//      path,
-//      OAuth1Token consumerToken,
-//      OAuth1Provider oauthProvider,
-//      OAuth1RequestTokenSecretStore tokenStore,
-//      UriTemplate completionRedirectUrl,
-//      {requestTokenPath: '/requestToken',
-//      authTokenPath: '/authToken',
-//      // optional. Only if want absolute url
-//      String callbackUrl});
+  MojitoOAuthStorage get storage;
 
   /// Creates routes to implement the 'client' part of the
   /// [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1).

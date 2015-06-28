@@ -41,7 +41,6 @@ Mojito init(
 abstract class Mojito {
   Router get router;
   MojitoAuth get auth;
-  MojitoOAuth get oauth;
   MojitoAuthorisation get authorisation;
   MojitoSessionStorage get sessionStorage;
   MojitoMiddleware get middleware;

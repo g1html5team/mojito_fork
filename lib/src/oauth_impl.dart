@@ -6,35 +6,99 @@
 library mojito.oauth.impl;
 
 import 'package:shelf_oauth/shelf_oauth.dart';
-import 'package:shelf_oauth_memcache/shelf_oauth_memcache.dart' as memcache;
+import 'package:shelf_oauth_memcache/shelf_oauth_memcache.dart' as omem;
 import 'package:mojito/src/oauth.dart';
+import 'package:uri/uri.dart';
+import 'package:mojito/src/router.dart';
+import 'package:shelf/shelf.dart';
+import 'dart:async';
+import 'package:http_exception/http_exception.dart';
+import 'package:shelf_auth/shelf_auth.dart';
+import 'package:option/option.dart';
 
-class MojitoOAuthImpl implements MojitoOAuth {
-  OAuthStorage inMemoryStorage() => new InMemoryOAuthStorage();
+class MojitoOAuthStorageImpl implements MojitoOAuthStorage {
+  OAuthStorage inMemory() => new InMemoryOAuthStorage();
 
-  OAuthStorage memcacheStorage(memcache.MemcacheProvider memcacheProvider,
+  OAuthStorage memcache(omem.MemcacheProvider memcacheProvider,
           {Duration shortTermStorageExpiration: const Duration(minutes: 2),
           Duration sessionStorageExpiration: const Duration(hours: 1)}) =>
-      memcache.oauthStorage(memcacheProvider,
+      omem.oauthStorage(memcacheProvider,
           shortTermStorageExpiration: shortTermStorageExpiration,
           sessionStorageExpiration: sessionStorageExpiration);
-
-  final CommonAuthorizationServers authorizationServers =
-      new CommonAuthorizationServersImpl();
 }
 
-class CommonAuthorizationServersImpl implements CommonAuthorizationServers {
-  static const _bitBucketOAuth1UrlBase = 'https://bitbucket.org/api/1.0/oauth';
+class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
+  final Router routerBuilder;
+  final MojitoOAuthStorageImpl storage = new MojitoOAuthStorageImpl();
 
-  OAuth1Provider get bitBucketOAuth1 => new OAuth1Provider(
-      Uri.parse('$_bitBucketOAuth1UrlBase/request_token'),
-      Uri.parse('$_bitBucketOAuth1UrlBase/access_token'),
-      Uri.parse('$_bitBucketOAuth1UrlBase/authenticate'));
+  OAuthRouteBuilderImpl(this.routerBuilder);
 
-  static const _githubOAuthUrlBase = 'https://github.com/login/oauth';
+  @override
+  OAuth2RouteBuilder gitHub({path: 'github'}) =>
+      oauth2(path, (_) => commonAuthorizationServers.gitHubOAuth2);
 
-  OAuth2AuthorizationServer get gitHubOAuth2 =>
-      new OAuth2AuthorizationServer.std(
-          Uri.parse('$_githubOAuthUrlBase/authorize'),
-          Uri.parse('$_githubOAuthUrlBase/access_token'));
+  @override
+  OAuth2RouteBuilder oauth2(
+      path, OAuth2AuthorizationServerFactory authorizationServerFactory) {
+    return new OAuth2RouteBuilderImpl(
+        routerBuilder, authorizationServerFactory, path);
+  }
+}
+
+class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
+  final Router routerBuilder;
+  final OAuth2AuthorizationServerFactory authorizationServerFactory;
+  final path;
+
+  OAuth2RouteBuilderImpl(
+      this.routerBuilder, this.authorizationServerFactory, this.path);
+
+  @override
+  void addClient(ClientIdFactory clientIdFactory, OAuthStorage oauthStore,
+      UriTemplate completionRedirectUrl,
+      {userGrantPath: '/userGrant',
+      authTokenPath: '/authToken',
+      List<String> scopes: const [],
+      SessionIdentifierExtractor sessionIdExtractor,
+      String callbackUrl,
+      bool storeTokens: true}) {
+    final atp = authTokenPath.toString();
+
+    final cb = callbackUrl != null
+        ? callbackUrl
+        : atp.startsWith('/') ? atp.substring(1) : atp;
+
+    final _sessionIdExtractor = sessionIdExtractor != null
+        ? sessionIdExtractor
+        : _extractShelfAuthSessionId;
+
+    final dancer = new OAuth2ProviderHandlers(
+        clientIdFactory,
+        authorizationServerFactory,
+        Uri.parse(cb),
+        oauthStore.oauth2CSRFStateStore,
+        oauthStore.oauth2TokenStore,
+        completionRedirectUrl,
+        _sessionIdExtractor,
+        scopes,
+        storeTokens: storeTokens);
+
+    routerBuilder.addAll((Router r) => r
+      ..get(userGrantPath, dancer.authorizationRequestHandler())
+      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
+  }
+}
+
+Future<String> _extractShelfAuthSessionId(Request request) async {
+  final sessionId = getAuthenticatedContext(request)
+      .expand((authContext) => authContext is SessionAuthenticatedContext
+          ? new Some(authContext.sessionIdentifier)
+          : const None())
+      .getOrElse(() => _badRequest('no corresponding session identifier'));
+
+  return new Future.value(sessionId);
+}
+
+void _badRequest(String msg) {
+  throw new BadRequestException({'error': msg}, msg);
 }

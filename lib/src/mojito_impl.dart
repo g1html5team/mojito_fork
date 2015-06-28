@@ -31,7 +31,6 @@ bool defaultIsDevMode() =>
 class MojitoImpl implements Mojito {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
-  final MojitoOAuthImpl oauth = new MojitoOAuthImpl();
   final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
