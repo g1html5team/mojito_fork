@@ -43,6 +43,20 @@ class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
     return new OAuth2RouteBuilderImpl(
         routerBuilder, authorizationServerFactory, path);
   }
+
+  @override
+  OAuth2RouteBuilder bitBucket({path: 'bitbucket'}) =>
+      oauth2(path, (_) => commonAuthorizationServers.bitBucketOAuth2);
+
+  @override
+  OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'}) =>
+      oauth1(path, commonAuthorizationServers.bitBucketOAuth1);
+
+  @override
+  OAuth1RouteBuilder oauth1(path, OAuth1Provider authorizationServerFactory) {
+    return new OAuth1RouteBuilderImpl(
+        routerBuilder, authorizationServerFactory, path);
+  }
 }
 
 class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
@@ -85,6 +99,40 @@ class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
 
     routerBuilder.addAll((Router r) => r
       ..get(userGrantPath, dancer.authorizationRequestHandler())
+      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
+  }
+}
+
+class OAuth1RouteBuilderImpl implements OAuth1RouteBuilder {
+  final Router routerBuilder;
+  // TODO: should be a factory
+  final OAuth1Provider authorizationServerFactory;
+  final path;
+
+  OAuth1RouteBuilderImpl(
+      this.routerBuilder, this.authorizationServerFactory, this.path);
+
+  @override
+  void addClient(
+//      path,
+      OAuth1Token consumerToken,
+//      OAuth1Provider oauthProvider,
+      OAuth1RequestTokenSecretStore tokenStore,
+      UriTemplate completionRedirectUrl,
+      {requestTokenPath: '/requestToken',
+      authTokenPath: '/authToken',
+      String callbackUrl}) {
+    final atp = authTokenPath.toString();
+
+    final cb = callbackUrl != null
+        ? callbackUrl
+        : atp.startsWith('/') ? atp.substring(1) : atp;
+
+    final dancer = new OAuth1ProviderHandlers(consumerToken,
+        authorizationServerFactory, cb, tokenStore, completionRedirectUrl);
+
+    routerBuilder.addAll((Router r) => r
+      ..get(requestTokenPath, dancer.tokenRequestHandler())
       ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
   }
 }

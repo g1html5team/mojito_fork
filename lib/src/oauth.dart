@@ -29,13 +29,32 @@ abstract class OAuth2RouteBuilder {
       bool storeTokens: true});
 }
 
+abstract class OAuth1RouteBuilder {
+  void addClient(
+//      path,
+      OAuth1Token consumerToken,
+//      OAuth1Provider oauthProvider,
+      OAuth1RequestTokenSecretStore tokenStore,
+      UriTemplate completionRedirectUrl,
+      {requestTokenPath: '/requestToken',
+      authTokenPath: '/authToken',
+      // optional. Only if want absolute url
+      String callbackUrl});
+}
+
 abstract class OAuthRouteBuilder {
+  MojitoOAuthStorage get storage;
+
   OAuth2RouteBuilder gitHub({path: 'github'});
+
+  OAuth2RouteBuilder bitBucket({path: 'bitbucket'});
+  OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'});
 
   OAuth2RouteBuilder oauth2(
       path, OAuth2AuthorizationServerFactory authorizationServerFactory);
 
-  MojitoOAuthStorage get storage;
+  // TODO: rename OAuth1Provider
+  OAuth1RouteBuilder oauth1(path, OAuth1Provider authorizationServerFactory);
 
   /// Creates routes to implement the 'client' part of the
   /// [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1).
