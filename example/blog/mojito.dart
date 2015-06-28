@@ -28,8 +28,7 @@ main() {
   app.router.addOAuth2Provider(
       'gh',
       (_) => new ClientId('your clientId', 'your secret'),
-      (_) => new OAuth2AuthorizationServer.std(
-          Uri.parse('https://foo'), Uri.parse('https://bar')),
+      (_) => app.oauth.authorizationServers.gitHubOAuth2,
       oauthStorage.oauth2CSRFStateStore,
       oauthStorage.oauth2TokenStore,
       new UriTemplate('/foo'));
@@ -87,8 +86,7 @@ void yeah() {
 
   app.router
     ..addStaticAssetHandler('/ui')
-    ..addAll(new BacklogResource(), path: '/api/v1/backlogs')
-    ..addOAuth2Provider('github');
+    ..addAll(new BacklogResource(), path: '/api/v1/backlogs');
 
   app.start();
 }

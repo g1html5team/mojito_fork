@@ -47,7 +47,12 @@ class MojitoImpl implements Mojito {
       {IsDevMode isDevMode})
       : router = createRootRouter != null ? createRootRouter() : mr.router() {
     IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
-    _context = new MojitoContextImpl(_isDevMode());
+
+    if (_context != null) {
+      throw new ArgumentError('can only initialise mojito once');
+    }
+
+    _context = new MojitoContextImpl(_isDevMode(), this);
 
     if (createRootLogger) {
       Logger.root.onRecord.listen((LogRecord lr) {
