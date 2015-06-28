@@ -21,6 +21,7 @@ import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
 import 'dart:io';
 import 'package:shelf_route/extend.dart';
+import 'package:mojito/src/oauth_impl.dart';
 
 final Logger _log = new Logger('mojito');
 
@@ -30,6 +31,7 @@ bool defaultIsDevMode() =>
 class MojitoImpl implements Mojito {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
+  final MojitoOAuthImpl oauth = new MojitoOAuthImpl();
   final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();

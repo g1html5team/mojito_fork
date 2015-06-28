@@ -32,19 +32,34 @@ abstract class Router implements r.Router<Router> {
   /// Creates routes to implement the 'client' part of the
   /// [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1).
   ///
+  /// Provide a [path] relative to the current router of where to
+  /// mount the routes.
+  ///
+  /// You need to obtain a client id and secret from the authorization provider
+  /// you want to authenticate against. In some cases the client id differs
+  /// per request. If not then you can simply pass the value as
+  /// `(_) => myFixedClientId`
+  ///
+  /// A [OAuth2AuthorizationServer] defines the details of the server the routes
+  /// will be set up to authenticate against. In some cases this will also differ
+  /// per request.
+  ///
+  /// Storage is required for the short lived tokens that guard against CSRF
+  /// attacks and for the token
+  ///
   ///
   /// By default a shelf_auth session identifier will be assumed. Pass in a
   /// value for [sessionIdExtractor] to override
   void addOAuth2Provider(
       path,
       ClientIdFactory clientIdFactory,
-      OAuth2ProviderFactory oauthProviderFactory,
+      OAuth2AuthorizationServerFactory authorizationServerFactory,
       OAuth2CSRFStateStore stateStore,
       OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
-      List<String> scopes,
       {userGrantPath: '/userGrant',
       authTokenPath: '/authToken',
+      List<String> scopes: const [],
       SessionIdentifierExtractor sessionIdExtractor,
       // optional. Only if want absolute url
       String callbackUrl});

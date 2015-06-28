@@ -1,5 +1,6 @@
 import 'package:mojito/mojito.dart';
 import 'dart:async';
+import 'package:uri/uri.dart';
 
 /*
 GET 	->	/ui
@@ -21,6 +22,17 @@ main() {
   var app = init(isDevMode: () => true);
 
   app.router.get('/hi', () => 'hi');
+
+  final oauthStorage = app.oauth.inMemoryStorage();
+
+  app.router.addOAuth2Provider(
+      'gh',
+      (_) => new ClientId('your clientId', 'your secret'),
+      (_) => new OAuth2AuthorizationServer.std(
+          Uri.parse('https://foo'), Uri.parse('https://bar')),
+      oauthStorage.oauth2CSRFStateStore,
+      oauthStorage.oauth2TokenStore,
+      new UriTemplate('/foo'));
 
   app.start();
 }

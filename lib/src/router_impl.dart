@@ -77,13 +77,13 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   void addOAuth2Provider(
       path,
       ClientIdFactory clientIdFactory,
-      OAuth2ProviderFactory oauthProviderFactory,
+      OAuth2AuthorizationServerFactory authorizationServerFactory,
       OAuth2CSRFStateStore stateStore,
       OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
-      List<String> scopes,
       {userGrantPath: '/userGrant',
       authTokenPath: '/authToken',
+      List<String> scopes: const [],
       String callbackUrl,
       SessionIdentifierExtractor sessionIdExtractor,
       bool storeTokens: true}) {
@@ -99,7 +99,7 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
 
     final dancer = new OAuth2ProviderHandlers(
         clientIdFactory,
-        oauthProviderFactory,
+        authorizationServerFactory,
         Uri.parse(cb),
         stateStore,
         tokenStore,

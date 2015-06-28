@@ -14,6 +14,7 @@ import 'mojito_impl.dart' as impl;
 import 'middleware.dart';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage.dart';
+import 'package:mojito/src/oauth.dart';
 
 typedef Router RouteCreator();
 
@@ -40,6 +41,7 @@ Mojito init(
 abstract class Mojito {
   Router get router;
   MojitoAuth get auth;
+  MojitoOAuth get oauth;
   MojitoAuthorisation get authorisation;
   MojitoSessionStorage get sessionStorage;
   MojitoMiddleware get middleware;
