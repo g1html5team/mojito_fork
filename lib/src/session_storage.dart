@@ -11,7 +11,7 @@ import 'package:shelf_auth_session/shelf_auth_session.dart';
 abstract class MojitoSessionStorage {
   void add(SessionRepository repository);
 
-  void inMemory();
+//  void inMemory();
 
 //  /// builder for authentication middleware to be applied all routes
 //  AuthenticationBuilder get global;

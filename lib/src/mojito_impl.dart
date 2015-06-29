@@ -91,9 +91,9 @@ class MojitoImpl implements Mojito {
 
       // TODO: check auth middleware has session handler ???
       // TODO: error out if session set wo auth
-      final sessMiddleware = sessionStorage.middleware;
-      if (sessMiddleware != null) {
-        pipeline = pipeline.addMiddleware(sessMiddleware);
+      final sessionMiddleware = sessionStorage.middleware;
+      if (sessionMiddleware != null) {
+        pipeline = pipeline.addMiddleware(sessionMiddleware);
       }
     }
 

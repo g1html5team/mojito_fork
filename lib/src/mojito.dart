@@ -24,7 +24,7 @@ const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 
 /// By default the environment variable `MOJITO_IS_DEV_MODE` is used to
 /// determine if the server is running in development mode. This can be
-/// overriden by providing [isDevMode]. For example in appengine you can do
+/// overridden by providing [isDevMode]. For example in appengine you can do
 ///
 ///     isDevMode: () => const String.fromEnvironment('GAE_PARTITION') == 'dev'
 ///

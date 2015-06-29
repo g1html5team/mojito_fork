@@ -32,15 +32,18 @@ main() {
   app.sessionStorage.add(new InMemorySessionRepository());
 
   app.router
-    ..get('/hi', () {
+    ..get('hi', () {
       String username = context.auth
           .map((authContext) => authContext.principal.name)
           .getOrElse(() => 'guest');
 
       return 'hello $username';
     })
+    // try me: curl 'http://localhost:9999/privates' -H 'Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
+    ..get('privates', () => 'this is only for the privileged few',
+        middleware: app.authorisation.builder().authenticatedOnly().build())
     ..get(
-        '/randomness',
+        'randomness',
         () {
           String username = context.auth
               .map((authContext) => authContext.principal.name)
