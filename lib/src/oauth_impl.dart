@@ -46,7 +46,7 @@ class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
 
   @override
   OAuth2RouteBuilder bitBucket({path: 'bitbucket'}) =>
-      oauth2(path, (_) => commonAuthorizationServers.bitBucketOAuth2);
+      oauth2(path, (_) => commonAuthorizationServers.bitbucketOAuth2);
 
   @override
   OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'}) =>
