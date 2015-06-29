@@ -6,16 +6,27 @@ import 'package:shelf/shelf.dart';
 import 'package:uuid/uuid.dart';
 import 'package:logging/logging.dart';
 
+/// To try this example, simply run this dart script and then open a browser to
+/// one of the user grant urls such as:
+///
+/// * http://localhost:9999/oauth/github/userGrant
+/// * http://localhost:9999/oauth/bitbucket/userGrant
+/// * http://localhost:9999/oauth/google/userGrant
 main() {
   var app = init(isDevMode: () => true);
   Logger.root.level = Level.ALL;
 
-  app.auth.global
-//      .basic(_lookup)
-      .authenticator(new TestAuthenticator())
-      .jwtSession('moi', 'shh', (username) => _lookup(username, null))
-        ..allowHttp = true
-        ..allowAnonymousAccess = true;
+  // Note: currently mojito doesn't support oauth as the primary authentication
+  // mechanism. It assumes you have authenticated in some other way and have
+  // a session.
+  // This will likely change in the future, but for now we just mock this up
+  // with a dummy test authenticator.
+  // Note also the example uses in memory storage for everything which is
+  // typically only appropriate in development
+  app.auth.global.authenticator(new TestAuthenticator()).jwtSession(
+      'acme corp', new Uuid().v4(), (username) => _lookup(username, null))
+      ..allowHttp = true
+      ..allowAnonymousAccess = true;
 
   app.sessionStorage.add(new InMemorySessionRepository());
 
@@ -23,8 +34,10 @@ main() {
       new UriTemplate('/ui/loginComplete{?type,token,context}');
 
   app.router
-    ..get('/ui/loginComplete{?type,token,context}',
-        (String type, String token, String context) => "yippee")
+    ..get(
+        '/ui/loginComplete{?type,token,context}',
+        (String type, String token, String context) =>
+            "yippee - we got da token: $token. Now profit")
     ..addAll((Router r) {
       final storage = r.oauth.storage.inMemory();
 
