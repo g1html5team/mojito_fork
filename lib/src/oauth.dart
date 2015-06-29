@@ -50,6 +50,8 @@ abstract class OAuthRouteBuilder {
   OAuth2RouteBuilder bitBucket({path: 'bitbucket'});
   OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'});
 
+  OAuth2RouteBuilder google({path: 'google'});
+
   OAuth2RouteBuilder oauth2(
       path, OAuth2AuthorizationServerFactory authorizationServerFactory);
 

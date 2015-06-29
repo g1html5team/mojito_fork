@@ -53,6 +53,10 @@ class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
       oauth1(path, commonAuthorizationServers.bitBucketOAuth1);
 
   @override
+  OAuth2RouteBuilder google({path: 'google'}) =>
+      oauth2(path, (_) => commonAuthorizationServers.googleOAuth2);
+
+  @override
   OAuth1RouteBuilder oauth1(path, OAuth1Provider authorizationServerFactory) {
     return new OAuth1RouteBuilderImpl(
         routerBuilder, authorizationServerFactory, path);
