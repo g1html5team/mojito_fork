@@ -13,19 +13,33 @@ dependencies:
   shelf_proxy: '^0.1.0+2'
   shelf_static: '^0.2.2'
   shelf_auth: 
-    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth
+    git: 
+      ref: 7c766c0c99ae6720cffacca255280bdba9845e44
+      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
   shelf_auth_session: 
-    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth_session
+    git: 
+      ref: 90d41481702f6fce29e6e18c4948e9a1b1df8772
+      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
   shelf_bind: 
-    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_bind
+    git: 
+      ref: 0e2bebd39704b90ac84421eac322229fdc0ad7d7
+      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
   shelf_oauth: 
-    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth
-  shelf_oauth_memcache:
-    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth_memcache
-  shelf_path:
-    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_path
+    git: 
+      ref: 4d8ec1323d9195658c5e8ea4c15ea7c242d80e57
+      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
+  shelf_oauth_memcache: 
+    git: 
+      ref: 1149538140f25c86e42118e8323a5f247687fdcc
+      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
+  shelf_path: 
+    git: 
+      ref: 060318b435e847254e331cee5f24dd823dfac4a4
+      url: git@bitbucket.org:andersmholmgren/shelf_path.git
   shelf_rest: 
-    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_rest
+    git: 
+      ref: fe36d5b4fb9fbf9d4922b2cc187748c34440ab6b
+      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
