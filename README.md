@@ -168,11 +168,25 @@ http://localhost:9999/oauth/github/userGrant
 
 *Note: mojito uses [shelf_oauth][shelf_oauth] to implement the oauth flows*
 
+## Context
 
+Mojito makes some things, such as the currently logged in user, available via a `context` property. To access simply import mojito. For example
 
+```
+import 'package:mojito/mojito.dart';
 
+somefunction() {
+  print(context.auth);
+}
+```
 
-Set up some global authentication. These will be applied to all routes. 
+## Authentication
+
+Mojito exposes helpers for setting up authentication via `app.auth`. If you want to apply it to all routes then use the `global` builder.
+
+### Global Authentication
+For example the following sets the application to use basic authentication, allowing access over http (a bad idea other than in development) and allows anonymous access. 
+
 ```
   app.auth.global
     .basic(_lookup)
@@ -180,13 +194,21 @@ Set up some global authentication. These will be applied to all routes.
     ..allowAnonymousAccess=true;
 ```
 
+*Note the `allowAnonymousAccess` is actually a form of authorisation (rather than authentication) and is simply a convenience. See the Authorisation section below for more options.*
 
-Set up a route and get the authenticated users name from the context. *Note: Mojito makes the logged in user available in the current zone.*
+
+
+### Currently Authenticated User
+
+The currently authenticated user (if there is one) is available via the mojito context.
+
+It is defined as an `Option` which will be `None` if there is no currently authenticated user and `Some` if there is.
+
+For example, the following gets the logged in user's username, if there is one, or sets it to `'guest'` otherwise.
 
 ```
 app.router..get('/hi', () {
-  var auth = app.context.auth;
-  var username = auth.map((authContext) =>
+  var username = context.auth.map((authContext) =>
       authContext.principal.name)
       .getOrElse(() => 'guest');
 
@@ -194,11 +216,43 @@ app.router..get('/hi', () {
 });
 ```
 
-Start serving the app
+### Route Specific Authentication
+
+To apply a particular authentication to only some routes use the auth `builder()` and add it using the named parameter `middleware` on the desired route.
 
 ```
-app.start();
+  var randomAuthenticator = (app.auth
+      .builder()
+      .authenticator(new RandomNameAuthenticator())..allowHttp = true).build();
+
+  app.router
+    ..get(
+        '/randomness',
+        () {
+          String username = context.auth
+              .map((authContext) => authContext.principal.name)
+              .getOrElse(() => 'guest');
+
+          return 'who are you today $username';
+        },
+        middleware: randomAuthenticator);
 ```
+
+Here the `'/randomness'` route has `middleware: randomAuthenticator` which applies that authenticator to the route. 
+
+> **Pro Tips**
+> 
+>* If you add authentication middleware to a route defined with `router.addAll` then it will apply to all it's child routes.
+>* See basic_example.dart in the examples folder to see how `RandomNameAuthenticator` is implemented
+>* mojito uses [shelf_auth][shelf_auth] for authentication support
+
+## Authorisation
+
+*Note: mojito uses [shelf_auth][shelf_auth] for authorisation support*
+
+## Other Middleware
+
+
 
 ## Under the hood
 
