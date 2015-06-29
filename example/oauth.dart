@@ -26,15 +26,16 @@ main() {
       final storage = r.oauth.storage.inMemory();
 
       r.oauth.gitHub().addClient(
-          (_) => new ClientId('your clientId', 'your secret'),
+          (_) => new ClientId('b809a75bb449d81e7234',
+              'cad56a6f39361f31ba5b5ffa11f6722536004f08'),
           storage,
-          new UriTemplate('/ui/loginComplete{?type,token,secret,context}'));
+          new UriTemplate('/ui/loginComplete{?type,token,context}'));
 
       r.oauth.bitBucket().addClient(
           (_) => new ClientId(
               'v7hRrM2WRpQe2Nff86', 'pLfwBAa7aBESdzWusUGaNU2S5RH2RScD'),
           storage,
-          new UriTemplate('/ui/loginComplete{?type,token,secret,context}'));
+          new UriTemplate('/ui/loginComplete{?type,token,context}'));
     }, path: 'oauth');
 
   app.start();
