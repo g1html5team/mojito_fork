@@ -100,7 +100,7 @@ To get a good overview of the options you have, read the blog post [Routing Opti
 
 The mojito router extends [shelf_rest][shelf_rest]'s router. As this is documented extensively in the [shelf_rest documentation][shelf_rest] I won't repeat it here.
 
-Additionally, mojito provides the following routing methods.
+Additionally, mojito provides routing methods for the following tasks.
 
 ### Static Asset Handling
 Static assets such as html and css are a mainstay of most web applications.
@@ -115,7 +115,9 @@ The following example sets that up a route for all requests starting with `/ui` 
 app.router.addStaticAssetHandler('/ui');
 ```  
 
-*Note: under the covers `addStaticAssetHandler` uses [shelf_static] and [shelf_proxy] to handle the static assets.*
+>**Pro Tip**
+>
+>Under the covers `addStaticAssetHandler` uses [shelf_static] and [shelf_proxy] to handle the static assets. 
 
 
 ### OAuth (1 & 2) Client
@@ -166,7 +168,9 @@ This sets up routes for the out of the box integrations. You can then try it out
 http://localhost:9999/oauth/github/userGrant
 ```
 
-*Note: mojito uses [shelf_oauth][shelf_oauth] to implement the oauth flows*
+>**Pro Tip**
+>
+>Mojito uses [shelf_oauth][shelf_oauth] to implement the oauth flows. 
 
 ## Context
 
@@ -244,14 +248,25 @@ Here the `'/randomness'` route has `middleware: randomAuthenticator` which appli
 > 
 >* If you add authentication middleware to a route defined with `router.addAll` then it will apply to all it's child routes.
 >* See basic_example.dart in the examples folder to see how `RandomNameAuthenticator` is implemented
->* mojito uses [shelf_auth][shelf_auth] for authentication support
+>* mojito uses [shelf_auth][shelf_auth] for authentication support. Consult the [shelf_auth docs][shelf_auth] for more details
 
 ## Authorisation
+Mojito exposes helpers for setting up authorisation via `app.authorisation`. Similarly to authentication, if you want to apply it to all routes then use the `global` builder, otherwise use the `builder()`.
 
-*Note: mojito uses [shelf_auth][shelf_auth] for authorisation support*
+The following shows how to enforce that only authenticated users can access a particular route. This is useful, for example if you set up a global authenticator that allows anonymous access and you want to block anonymous access to some routes.
+ 
+```
+app.router.get('privates', () => 'this is only for the privileged few',
+        middleware: app.authorisation.builder().authenticatedOnly().build())
+```
+
+> **Pro Tip**
+> 
+>* Mojito uses [shelf_auth][shelf_auth] for authorisation support. Consult the [shelf_auth docs][shelf_auth] for more details
 
 ## Other Middleware
 
+Mojito exposes helpers for setting up other middleware via `app.middleware`. Similarly to authentication, if you want to apply it to all routes then use the `global` builder, otherwise use the `builder()`.
 
 
 ## Under the hood
@@ -269,7 +284,6 @@ Mojito bundles lots of existing shelf libraries and integrates them for easier u
  - [Shelf Static][shelf_static]
  - [Shelf Exception Handler][shelf_exception_handler]
 
-More doco to come...
 
 
 [mojito]: https://pub.dartlang.org/packages/mojito

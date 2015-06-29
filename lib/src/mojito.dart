@@ -14,7 +14,6 @@ import 'mojito_impl.dart' as impl;
 import 'middleware.dart';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage.dart';
-import 'package:mojito/src/oauth.dart';
 
 typedef Router RouteCreator();
 
