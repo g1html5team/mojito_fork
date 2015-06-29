@@ -9,15 +9,23 @@ dependencies:
   oauth: '>=0.3.0 <0.4.0'
   option: '>=0.3.0 <2.0.0'
   shelf: '^0.6.0'
-  shelf_auth: '>=0.6.3 <0.6.4'
-  shelf_auth_session: '>=0.4.4 <0.4.5'
-  shelf_bind: '^0.8.5'
   shelf_exception_handler: '^0.1.0'
-  shelf_oauth: '>=0.6.4 <0.6.5'
-  shelf_path: '^0.1.6'
   shelf_proxy: '^0.1.0+2'
-  shelf_rest: '>=0.2.1 <0.2.2'
   shelf_static: '^0.2.2'
+  shelf_auth: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth
+  shelf_auth_session: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth_session
+  shelf_bind: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_bind
+  shelf_oauth: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth
+  shelf_oauth_memcache:
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth_memcache
+  shelf_path:
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_path
+  shelf_rest: 
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_rest
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'

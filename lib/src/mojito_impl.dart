@@ -21,6 +21,7 @@ import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
 import 'dart:io';
 import 'package:shelf_route/extend.dart';
+import 'package:mojito/src/oauth_impl.dart';
 
 final Logger _log = new Logger('mojito');
 
@@ -34,19 +35,29 @@ class MojitoImpl implements Mojito {
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
-  final LogRecordProcessor _perRequestLogProcessor;
 
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
 
   final bool _logRequests;
 
-  MojitoImpl(RouteCreator createRootRouter, this._logRequests,
-      {LogRecordProcessor perRequestLogProcessor, IsDevMode isDevMode})
-      : this._perRequestLogProcessor = perRequestLogProcessor,
-        router = createRootRouter != null ? createRootRouter() : mr.router() {
+  MojitoImpl(
+      RouteCreator createRootRouter, this._logRequests, bool createRootLogger,
+      {IsDevMode isDevMode})
+      : router = createRootRouter != null ? createRootRouter() : mr.router() {
     IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
-    _context = new MojitoContextImpl(_isDevMode());
+
+    if (_context != null) {
+      throw new ArgumentError('can only initialise mojito once');
+    }
+
+    _context = new MojitoContextImpl(_isDevMode(), this);
+
+    if (createRootLogger) {
+      Logger.root.onRecord.listen((LogRecord lr) {
+        print('${lr.time} $lr');
+      });
+    }
   }
 
   Future start({int port: 9999}) {
@@ -66,10 +77,6 @@ class MojitoImpl implements Mojito {
 
     var pipeline = const Pipeline();
 
-    if (_perRequestLogProcessor != null) {
-      pipeline = pipeline.addMiddleware(_adaptLogging);
-    }
-
     if (_logRequests) {
       pipeline = pipeline.addMiddleware(logRequests());
     }
@@ -84,9 +91,9 @@ class MojitoImpl implements Mojito {
 
       // TODO: check auth middleware has session handler ???
       // TODO: error out if session set wo auth
-      final sessMiddleware = sessionStorage.middleware;
-      if (sessMiddleware != null) {
-        pipeline = pipeline.addMiddleware(sessMiddleware);
+      final sessionMiddleware = sessionStorage.middleware;
+      if (sessionMiddleware != null) {
+        pipeline = pipeline.addMiddleware(sessionMiddleware);
       }
     }
 
@@ -103,16 +110,6 @@ class MojitoImpl implements Mojito {
     final handler = pipeline.addHandler(router.handler);
 
     return handler;
-  }
-
-  Handler _adaptLogging(Handler innerHandler) {
-    return (request) {
-      var streamSubscription =
-          Logger.root.onRecord.listen(_perRequestLogProcessor);
-      return new Future.sync(() => innerHandler(request)).whenComplete(() {
-        streamSubscription.cancel();
-      });
-    };
   }
 }
 

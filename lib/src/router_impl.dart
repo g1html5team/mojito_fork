@@ -15,9 +15,15 @@ import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
 import 'package:shelf_bind/shelf_bind.dart';
+import 'dart:async';
+import 'package:shelf_auth/shelf_auth.dart';
+import 'package:http_exception/http_exception.dart';
+import 'package:mojito/src/oauth_impl.dart';
 
 class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
+  OAuthRouteBuilderImpl get oauth => new OAuthRouteBuilderImpl(this);
+
   MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
       : super(
@@ -74,15 +80,15 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   void addOAuth2Provider(
       path,
       ClientIdFactory clientIdFactory,
-      OAuth2ProviderFactory oauthProviderFactory,
+      OAuth2AuthorizationServerFactory authorizationServerFactory,
       OAuth2CSRFStateStore stateStore,
       OAuth2TokenStore tokenStore,
       UriTemplate completionRedirectUrl,
-      SessionIdentifierExtractor sessionIdExtractor,
-      List<String> scopes,
       {userGrantPath: '/userGrant',
       authTokenPath: '/authToken',
+      List<String> scopes: const [],
       String callbackUrl,
+      SessionIdentifierExtractor sessionIdExtractor,
       bool storeTokens: true}) {
     final atp = authTokenPath.toString();
 
@@ -90,14 +96,18 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
         ? callbackUrl
         : atp.startsWith('/') ? atp.substring(1) : atp;
 
+    final _sessionIdExtractor = sessionIdExtractor != null
+        ? sessionIdExtractor
+        : _extractShelfAuthSessionId;
+
     final dancer = new OAuth2ProviderHandlers(
         clientIdFactory,
-        oauthProviderFactory,
+        authorizationServerFactory,
         Uri.parse(cb),
         stateStore,
         tokenStore,
         completionRedirectUrl,
-        sessionIdExtractor,
+        _sessionIdExtractor,
         scopes,
         storeTokens: storeTokens);
 
@@ -140,3 +150,17 @@ Option<Handler> _pubServeHandler(
 
 r.HandlerAdapter _createHandlerAdapter(r.HandlerAdapter ha) =>
     ha != null ? ha : handlerAdapter();
+
+Future<String> _extractShelfAuthSessionId(Request request) async {
+  final sessionId = getAuthenticatedContext(request)
+      .expand((authContext) => authContext is SessionAuthenticatedContext
+          ? new Some(authContext.sessionIdentifier)
+          : const None())
+      .getOrElse(() => _badRequest('no corresponding session identifier'));
+
+  return new Future.value(sessionId);
+}
+
+void _badRequest(String msg) {
+  throw new BadRequestException({'error': msg}, msg);
+}

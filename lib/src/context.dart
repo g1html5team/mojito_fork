@@ -7,15 +7,12 @@ library mojito.context;
 
 import 'package:shelf_auth/shelf_auth.dart';
 import 'package:option/option.dart';
-
-//MojitoContext contextFromRequest(Request request) =>
-//    new MojitoContextImpl();
+import 'package:mojito/src/mojito.dart';
 
 abstract class MojitoContext {
   Option<AuthenticatedContext> get auth;
-//  Option<Session> get session;
 
   bool get isDevelopmentMode;
 
-//  factory MojitoContext() => new MojitoContextImpl();
+  Mojito get app;
 }
