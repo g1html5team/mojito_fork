@@ -2,7 +2,7 @@ author: Anders Holmgren <andersmholmgren@gmail.com>
 description: A micro framework for modern web apps built from the ground up on the shelf framework
 homepage: https://bitbucket.org/andersmholmgren/mojito
 name: mojito
-version: 0.4.0
+version: 0.4.0+1
 dependencies: 
   http_exception: '^0.1.0'
   matcher: '>=0.10.0 <0.13.0'

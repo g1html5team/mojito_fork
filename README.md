@@ -94,7 +94,23 @@ var app = init(isDevMode: () => Platform.environment['GAE_PARTITION'] == 'dev');
 
 ## Routing
 
-[Mojito][mojito] comes with a very feature rich router. You access the root router by calling `app.router`.
+[Mojito][mojito] comes with a very feature rich router. You access the root router by calling `app.router`. It supports several styles for creating routes such as:
+
+* route annotations
+```
+@Get('{accountId}')
+Account find(String accountId) => new Account.build(accountId: accountId);
+```
+* using the fluent Router api
+```
+router.get('{accountId}', (String accountId) => new Account.build(accountId: accountId));
+```
+* in built support for CRUD style methods and so on
+
+All styles support:
+
+ - adding middleware at any point in the route hierarchy
+ - automatic conversion to / from JSON and your Dart classes
 
 To get a good overview of the options you have, read the blog post [Routing Options in Shelf][routing_blog].
 
@@ -117,10 +133,11 @@ app.router.addStaticAssetHandler('/ui');
 
 >**Pro Tip**
 >
->Under the covers `addStaticAssetHandler` uses [shelf_static] and [shelf_proxy] to handle the static assets. 
+>Under the covers `addStaticAssetHandler` uses [shelf_static][shelf_static] and 
+[shelf_proxy][shelf_proxy] to handle the static assets. 
 
 
-### OAuth (1 & 2) Client
+### OAuth (1 and 2) Client
 
 The Mojito router provides methods to set up the routes required to implement the 'client' part of the [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1) and similar routes for OAuth1
 
