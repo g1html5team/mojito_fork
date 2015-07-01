@@ -57,7 +57,8 @@ class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
       oauth2(path, (_) => commonAuthorizationServers.googleOAuth2);
 
   @override
-  OAuth1RouteBuilder oauth1(path, OAuth1AuthorizationServer authorizationServerFactory) {
+  OAuth1RouteBuilder oauth1(
+      path, OAuth1AuthorizationServer authorizationServerFactory) {
     return new OAuth1RouteBuilderImpl(
         routerBuilder, authorizationServerFactory, path);
   }

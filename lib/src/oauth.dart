@@ -56,7 +56,8 @@ abstract class OAuthRouteBuilder {
       path, OAuth2AuthorizationServerFactory authorizationServerFactory);
 
   // TODO: rename OAuth1Provider
-  OAuth1RouteBuilder oauth1(path, OAuth1AuthorizationServer authorizationServerFactory);
+  OAuth1RouteBuilder oauth1(
+      path, OAuth1AuthorizationServer authorizationServerFactory);
 
   /// Creates routes to implement the 'client' part of the
   /// [OAuth 2 Authorization Code Flow](http://tools.ietf.org/html/rfc6749#section-4.1).
