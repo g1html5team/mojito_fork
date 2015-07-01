@@ -8,16 +8,17 @@ library mojito.router.impl;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_rest/extend.dart' as r;
 import 'router.dart';
-import 'package:shelf_oauth/shelf_oauth.dart';
-import 'package:uri/uri.dart';
 import 'mojito.dart';
 import 'package:shelf_static/shelf_static.dart';
 import 'package:shelf_proxy/shelf_proxy.dart';
 import 'package:option/option.dart';
 import 'package:shelf_bind/shelf_bind.dart';
+import 'package:mojito/src/oauth_impl.dart';
 
 class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
+  OAuthRouteBuilderImpl get oauth => new OAuthRouteBuilderImpl(this);
+
   MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
       : super(
@@ -45,66 +46,6 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
           r.RouterAdapter routerAdapter, Middleware middleware) =>
       new MojitoRouterBuilder.internal(
           fallbackHandler, name, path, routerAdapter, routeable, middleware);
-
-  @override
-  void addOAuth1Provider(
-      path,
-      OAuth1Token consumerToken,
-      OAuth1Provider oauthProvider,
-      OAuth1RequestTokenSecretStore tokenStore,
-      UriTemplate completionRedirectUrl,
-      {requestTokenPath: '/requestToken',
-      authTokenPath: '/authToken',
-      String callbackUrl}) {
-    final atp = authTokenPath.toString();
-
-    final cb = callbackUrl != null
-        ? callbackUrl
-        : atp.startsWith('/') ? atp.substring(1) : atp;
-
-    final dancer = new OAuth1ProviderHandlers(
-        consumerToken, oauthProvider, cb, tokenStore, completionRedirectUrl);
-
-    addAll((Router r) => r
-      ..get(requestTokenPath, dancer.tokenRequestHandler())
-      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
-  }
-
-  @override
-  void addOAuth2Provider(
-      path,
-      ClientIdFactory clientIdFactory,
-      OAuth2ProviderFactory oauthProviderFactory,
-      OAuth2CSRFStateStore stateStore,
-      OAuth2TokenStore tokenStore,
-      UriTemplate completionRedirectUrl,
-      SessionIdentifierExtractor sessionIdExtractor,
-      List<String> scopes,
-      {userGrantPath: '/userGrant',
-      authTokenPath: '/authToken',
-      String callbackUrl,
-      bool storeTokens: true}) {
-    final atp = authTokenPath.toString();
-
-    final cb = callbackUrl != null
-        ? callbackUrl
-        : atp.startsWith('/') ? atp.substring(1) : atp;
-
-    final dancer = new OAuth2ProviderHandlers(
-        clientIdFactory,
-        oauthProviderFactory,
-        Uri.parse(cb),
-        stateStore,
-        tokenStore,
-        completionRedirectUrl,
-        sessionIdExtractor,
-        scopes,
-        storeTokens: storeTokens);
-
-    addAll((Router r) => r
-      ..get(userGrantPath, dancer.authorizationRequestHandler())
-      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
-  }
 
   @override
   void addStaticAssetHandler(path,

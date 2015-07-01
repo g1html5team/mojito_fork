@@ -8,8 +8,7 @@ library mojito.router;
 import 'package:shelf/shelf.dart';
 import 'package:shelf_rest/shelf_rest.dart' as r;
 import 'router_impl.dart';
-import 'package:shelf_oauth/shelf_oauth.dart';
-import 'package:uri/uri.dart';
+import 'package:mojito/src/oauth.dart';
 export 'package:shelf_oauth/shelf_oauth.dart'
     show OAuth1RequestTokenSecretStore, InMemoryOAuth1RequestTokenSecretStore;
 
@@ -18,30 +17,8 @@ typedef MojitoRouteableFunction(Router r);
 
 /// A shelf_route router that adds some methods
 abstract class Router implements r.Router<Router> {
-  void addOAuth1Provider(
-      path,
-      OAuth1Token consumerToken,
-      OAuth1Provider oauthProvider,
-      OAuth1RequestTokenSecretStore tokenStore,
-      UriTemplate completionRedirectUrl,
-      {requestTokenPath: '/requestToken',
-      authTokenPath: '/authToken',
-      // optional. Only if want absolute url
-      String callbackUrl});
-
-  void addOAuth2Provider(
-      path,
-      ClientIdFactory clientIdFactory,
-      OAuth2ProviderFactory oauthProviderFactory,
-      OAuth2CSRFStateStore stateStore,
-      OAuth2TokenStore tokenStore,
-      UriTemplate completionRedirectUrl,
-      SessionIdentifierExtractor sessionIdExtractor,
-      List<String> scopes,
-      {userGrantPath: '/userGrant',
-      authTokenPath: '/authToken',
-      // optional. Only if want absolute url
-      String callbackUrl});
+  /// route builders for oauth clients
+  OAuthRouteBuilder get oauth;
 
   /// Serves static assets.
   /// If not in `development` mode then assets are served from filesystem

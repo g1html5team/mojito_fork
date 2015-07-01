@@ -10,7 +10,7 @@ import 'auth.dart';
 import 'base_builder_impl.dart';
 
 class MojitoAuthImpl extends BaseBuilderImpl implements MojitoAuth {
-  /// builder for authenitcation middleware that you choose where to include
+  /// builder for authentication middleware that you choose where to include
   AuthenticationBuilder builder() => new AuthenticationBuilder();
 
   @override
