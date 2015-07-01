@@ -50,14 +50,15 @@ class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
 
   @override
   OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'}) =>
-      oauth1(path, commonAuthorizationServers.bitBucketOAuth1);
+      oauth1(path, (_) => commonAuthorizationServers.bitBucketOAuth1);
 
   @override
   OAuth2RouteBuilder google({path: 'google'}) =>
       oauth2(path, (_) => commonAuthorizationServers.googleOAuth2);
 
   @override
-  OAuth1RouteBuilder oauth1(path, OAuth1Provider authorizationServerFactory) {
+  OAuth1RouteBuilder oauth1(
+      path, OAuth1AuthorizationServerFactory authorizationServerFactory) {
     return new OAuth1RouteBuilderImpl(
         routerBuilder, authorizationServerFactory, path);
   }
@@ -110,7 +111,7 @@ class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
 class OAuth1RouteBuilderImpl implements OAuth1RouteBuilder {
   final Router routerBuilder;
   // TODO: should be a factory
-  final OAuth1Provider authorizationServerFactory;
+  final OAuth1AuthorizationServerFactory authorizationServerFactory;
   final path;
 
   OAuth1RouteBuilderImpl(

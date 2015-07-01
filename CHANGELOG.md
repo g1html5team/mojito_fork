@@ -1,3 +1,16 @@
+## 0.4.0
+
+* Significantly improved Readme, dartdocs and examples
+* Revamped oauth client support
+  * removed addOAuth2Provider and addOAuth1Provider from router
+  * added oauth property to router providing access to new builders
+  * out of the box support for creating oauth clients for:
+    * github
+    * bitbucket
+    * google
+* Removed perRequestLogProcessor as wasn't viable
+* create a root Logger by default
+
 ## 0.3.0
 
 * Now extends the new `shelf_rest` `router` and inherits its shiny new features

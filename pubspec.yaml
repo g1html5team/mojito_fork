@@ -2,7 +2,7 @@ author: Anders Holmgren <andersmholmgren@gmail.com>
 description: A micro framework for modern web apps built from the ground up on the shelf framework
 homepage: https://bitbucket.org/andersmholmgren/mojito
 name: mojito
-version: 0.3.0
+version: 0.4.0
 dependencies: 
   http_exception: '^0.1.0'
   matcher: '>=0.10.0 <0.13.0'
@@ -13,33 +13,19 @@ dependencies:
   shelf_proxy: '^0.1.0+2'
   shelf_static: '^0.2.2'
   shelf_auth: 
-    git: 
-      ref: 69edb12d31a9534619a370bce58a04ba8bc65770
-      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth
   shelf_auth_session: 
-    git: 
-      ref: 1661a03650ebea0f9c8048457e62c0dc8725a127
-      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_auth_session
   shelf_bind: 
-    git: 
-      ref: 0e2bebd39704b90ac84421eac322229fdc0ad7d7
-      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_bind
   shelf_oauth: 
-    git: 
-      ref: 4d8ec1323d9195658c5e8ea4c15ea7c242d80e57
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth
   shelf_oauth_memcache: 
-    git: 
-      ref: 1149538140f25c86e42118e8323a5f247687fdcc
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth_memcache
   shelf_path: 
-    git: 
-      ref: 060318b435e847254e331cee5f24dd823dfac4a4
-      url: git@bitbucket.org:andersmholmgren/shelf_path.git
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_path
   shelf_rest: 
-    git: 
-      ref: fe36d5b4fb9fbf9d4922b2cc187748c34440ab6b
-      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
+    path: /Users/blah/dart/newbacklogio/gitbacklog_root/gissue_root/shelfish_root/shelf_rest
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
