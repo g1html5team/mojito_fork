@@ -14,11 +14,11 @@ dependencies:
   shelf_static: '^0.2.2'
   shelf_auth: 
     git: 
-      ref: 7c766c0c99ae6720cffacca255280bdba9845e44
+      ref: 69edb12d31a9534619a370bce58a04ba8bc65770
       url: git@bitbucket.org:andersmholmgren/shelf_auth.git
   shelf_auth_session: 
     git: 
-      ref: 90d41481702f6fce29e6e18c4948e9a1b1df8772
+      ref: 1661a03650ebea0f9c8048457e62c0dc8725a127
       url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
   shelf_bind: 
     git: 
