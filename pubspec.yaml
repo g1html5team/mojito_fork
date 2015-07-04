@@ -2,22 +2,22 @@ author: Anders Holmgren <andersmholmgren@gmail.com>
 description: A micro framework for modern web apps built from the ground up on the shelf framework
 homepage: https://bitbucket.org/andersmholmgren/mojito
 name: mojito
-version: 0.4.0+1
+version: 0.4.1
 dependencies: 
   http_exception: '^0.1.0'
   matcher: '>=0.10.0 <0.13.0'
   oauth: '>=0.3.0 <0.4.0'
   option: '>=0.3.0 <2.0.0'
   shelf: '^0.6.0'
-  shelf_auth: '>=0.6.5 <0.6.6'
-  shelf_auth_session: '>=0.4.5 <0.4.6'
-  shelf_bind: '^0.8.6'
+  shelf_auth: '>=0.6.6 <0.6.7'
+  shelf_auth_session: '>=0.4.6 <0.4.7'
+  shelf_bind: '^0.8.7'
   shelf_exception_handler: '^0.1.0'
   shelf_oauth: '>=0.7.0 <0.7.1'
   shelf_oauth_memcache: '^0.3.4'
   shelf_path: '^0.1.6'
   shelf_proxy: '^0.1.0+2'
-  shelf_rest: '>=0.2.2 <0.2.3'
+  shelf_rest: '>=0.2.3 <0.2.4'
   shelf_static: '^0.2.2'
 dependency_overrides: 
 dev_dependencies: 
