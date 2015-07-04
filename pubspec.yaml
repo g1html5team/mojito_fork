@@ -9,37 +9,16 @@ dependencies:
   oauth: '>=0.3.0 <0.4.0'
   option: '>=0.3.0 <2.0.0'
   shelf: '^0.6.0'
+  shelf_auth: '>=0.6.6 <0.6.7'
+  shelf_auth_session: '>=0.4.6 <0.4.7'
+  shelf_bind: '^0.8.7'
   shelf_exception_handler: '^0.1.0'
+  shelf_oauth: '>=0.7.0 <0.7.1'
+  shelf_oauth_memcache: '^0.3.4'
+  shelf_path: '^0.1.6'
   shelf_proxy: '^0.1.0+2'
+  shelf_rest: '>=0.2.3 <0.2.4'
   shelf_static: '^0.2.2'
-  shelf_auth: 
-    git: 
-      ref: 0d8a50381a687d6700ac75229c2e168aaf7c9338
-      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
-  shelf_auth_session: 
-    git: 
-      ref: 8eac7fb5b4d10698137a5979b6cb7cf8ad7c50fa
-      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
-  shelf_bind: 
-    git: 
-      ref: 5554e35a1388363bffd1b77cfe12722f96919db7
-      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
-  shelf_oauth: 
-    git: 
-      ref: 99edee1518518101239516c0fab1c515ce759f7e
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
-  shelf_oauth_memcache: 
-    git: 
-      ref: 7327478d3e92275bfd8700c90d8a14b8e0c902df
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
-  shelf_path: 
-    git: 
-      ref: 060318b435e847254e331cee5f24dd823dfac4a4
-      url: git@bitbucket.org:andersmholmgren/shelf_path.git
-  shelf_rest: 
-    git: 
-      ref: f7113629cb0cb4ac194dde03658542f5364c38a6
-      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
