@@ -19,12 +19,12 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
   OAuthRouteBuilderImpl get oauth => new OAuthRouteBuilderImpl(this);
 
-  MojitoRouterBuilder.internal(Function fallbackHandler, String name, path,
+  MojitoRouterBuilder(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
       : super(
             fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
-  MojitoRouterBuilder(
+  MojitoRouterBuilder.create(
       {Function fallbackHandler,
       r.HandlerAdapter handlerAdapter,
       r.RouteableAdapter routeableAdapter,
@@ -44,7 +44,7 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   @override
   MojitoRouterBuilder createChild(String name, path, routeable,
           r.RouterAdapter routerAdapter, Middleware middleware) =>
-      new MojitoRouterBuilder.internal(
+      new MojitoRouterBuilder(
           fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
   @override
