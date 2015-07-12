@@ -52,8 +52,9 @@ main() {
           return 'who are you today $username';
         },
         middleware: randomAuthenticator)
-//    ..get('fooo', () => { 'foo': 'blah' }, middleware: randomAuthenticator)
-//    ..post('fooo', (@RequestBody() Map m) => m, middleware: randomAuthenticator)
+//    ..get('fooo{?name}', (String name) => {'foo': name},
+//        middleware: randomAuthenticator)
+//    ..post('fooo', (Map m) => m, middleware: randomAuthenticator)
     ..addStaticAssetHandler('/ui');
 
   app.start();
