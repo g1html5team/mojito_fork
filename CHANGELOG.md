@@ -1,3 +1,8 @@
+## 0.5.0
+
+* includes [shelf_bind][shelf_bind] 0.9.0 which has many significant and some **BREAKING**
+changes. Consult the change logs for [shelf_bind][shelf_bind]
+
 ## 0.4.0
 
 * Significantly improved Readme, dartdocs and examples
@@ -67,3 +72,19 @@ being 'offline'
 ## 0.0.1
 
 * First version 
+
+
+[mojito]: https://pub.dartlang.org/packages/mojito
+[shelf]: https://pub.dartlang.org/packages/shelf
+[shelf_auth]: https://pub.dartlang.org/packages/shelf_auth
+[shelf_auth_session]: https://pub.dartlang.org/packages/shelf_auth_session
+[shelf_route]: https://pub.dartlang.org/packages/shelf_route
+[shelf_static]: https://pub.dartlang.org/packages/shelf_static
+[shelf_proxy]: https://pub.dartlang.org/packages/shelf_proxy
+[shelf_bind]: https://pub.dartlang.org/packages/shelf_bind
+[shelf_rest]: https://pub.dartlang.org/packages/shelf_rest
+[shelf_oauth]: https://pub.dartlang.org/packages/shelf_oauth
+[shelf_oauth_memcache]: https://pub.dartlang.org/packages/shelf_oauth_memcache
+[shelf_exception_handler]: https://pub.dartlang.org/packages/shelf_exception_handler
+[backlog.io]: http://backlog.io
+[routing_blog]: http://blog.backlog.io/2015/06/completely-routed.html
