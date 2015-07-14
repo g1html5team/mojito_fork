@@ -9,16 +9,23 @@ dependencies:
   oauth: '>=0.3.0 <0.4.0'
   option: '>=0.3.0 <2.0.0'
   shelf: '^0.6.0'
-  shelf_auth: '>=0.6.7 <0.6.8'
-  shelf_auth_session: '>=0.4.7 <0.4.8'
-  shelf_bind: '^0.9.0'
   shelf_exception_handler: '^0.1.0'
-  shelf_oauth: '>=0.7.0 <0.7.1'
-  shelf_oauth_memcache: '^0.3.4'
-  shelf_path: '^0.1.6'
   shelf_proxy: '^0.1.0+2'
-  shelf_rest: '>=0.3.0 <0.3.1'
   shelf_static: '^0.2.2'
+  shelf_auth: 
+    path: /Users/aholmgren/Projects/dart/connect/jefe-acdart/new-acdart_root/shelfish_root/shelf_auth
+  shelf_auth_session: 
+    path: /Users/aholmgren/Projects/dart/connect/jefe-acdart/new-acdart_root/shelfish_root/shelf_auth_session
+  shelf_bind: 
+    path: /Users/aholmgren/Projects/dart/connect/jefe-acdart/new-acdart_root/shelfish_root/shelf_bind
+  shelf_oauth: 
+    path: /Users/aholmgren/Projects/dart/connect/jefe-acdart/new-acdart_root/shelfish_root/shelf_oauth
+  shelf_oauth_memcache: 
+    path: /Users/aholmgren/Projects/dart/connect/jefe-acdart/new-acdart_root/shelfish_root/shelf_oauth_memcache
+  shelf_path: 
+    path: /Users/aholmgren/Projects/dart/connect/jefe-acdart/new-acdart_root/shelfish_root/shelf_path
+  shelf_rest: 
+    path: /Users/aholmgren/Projects/dart/connect/jefe-acdart/new-acdart_root/shelfish_root/shelf_rest
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'

@@ -47,7 +47,7 @@ Router router(
         r.PathAdapter pathAdapter,
         Function fallbackHandler,
         Middleware middleware}) =>
-    new MojitoRouterBuilder(
+    new MojitoRouterBuilder.create(
         handlerAdapter: handlerAdapter,
         pathAdapter: pathAdapter,
         fallbackHandler: fallbackHandler,
