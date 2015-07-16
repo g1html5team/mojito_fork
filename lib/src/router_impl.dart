@@ -22,24 +22,19 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   MojitoRouterBuilder(Function fallbackHandler, String name, path,
       r.RouterAdapter routerAdapter, routeable, Middleware middleware)
       : super(
-            fallbackHandler, name, path, routerAdapter, routeable, middleware);
+          fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
-  MojitoRouterBuilder.create(
-      {Function fallbackHandler,
-      r.HandlerAdapter handlerAdapter,
-      r.RouteableAdapter routeableAdapter,
-      r.PathAdapter pathAdapter,
-      Middleware middleware,
-      path: '/',
-      String name})
+  MojitoRouterBuilder.create({Function fallbackHandler,
+      r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
+      r.PathAdapter pathAdapter, Middleware middleware, path: '/', String name})
       : super.create(
-            fallbackHandler: fallbackHandler,
-            handlerAdapter: _createHandlerAdapter(handlerAdapter),
-            routeableAdapter: routeableAdapter,
-            pathAdapter: pathAdapter,
-            middleware: middleware,
-            path: path,
-            name: name);
+          fallbackHandler: fallbackHandler,
+          handlerAdapter: _createHandlerAdapter(handlerAdapter),
+          routeableAdapter: routeableAdapter,
+          pathAdapter: pathAdapter,
+          middleware: middleware,
+          path: path,
+          name: name);
 
   @override
   MojitoRouterBuilder createChild(String name, path, routeable,
@@ -48,12 +43,9 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
           fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
   @override
-  void addStaticAssetHandler(path,
-      {String fileSystemPath: 'build/web',
-      bool serveFilesOutsidePath: false,
-      String defaultDocument,
-      bool usePubServeInDev: true,
-      String pubServeUrlString,
+  void addStaticAssetHandler(path, {String fileSystemPath: 'build/web',
+      bool serveFilesOutsidePath: false, String defaultDocument,
+      bool usePubServeInDev: true, String pubServeUrlString,
       Middleware middleware}) {
     final usePubServe = usePubServeInDev && context.isDevelopmentMode;
 

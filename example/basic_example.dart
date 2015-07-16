@@ -19,11 +19,10 @@ main() {
 
   final app = init(isDevMode: () => true);
 
-  app.auth.global
-      .basic(_lookup)
-      .jwtSession('moi', 'shh', (username) => _lookup(username, null))
-        ..allowHttp = true
-        ..allowAnonymousAccess = true;
+  app.auth.global.basic(_lookup).jwtSession(
+      'moi', 'shh', (username) => _lookup(username, null))
+    ..allowHttp = true
+    ..allowAnonymousAccess = true;
 
   var randomAuthenticator = (app.auth
       .builder()
@@ -42,16 +41,13 @@ main() {
     // try me: curl 'http://localhost:9999/privates' -H 'Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ=='
     ..get('privates', () => 'this is only for the privileged few',
         middleware: app.authorisation.builder().authenticatedOnly().build())
-    ..get(
-        'randomness',
-        () {
-          String username = context.auth
-              .map((authContext) => authContext.principal.name)
-              .getOrElse(() => 'guest');
+    ..get('randomness', () {
+      String username = context.auth
+          .map((authContext) => authContext.principal.name)
+          .getOrElse(() => 'guest');
 
-          return 'who are you today $username';
-        },
-        middleware: randomAuthenticator)
+      return 'who are you today $username';
+    }, middleware: randomAuthenticator)
 //    ..get('fooo{?name}', (String name) => {'foo': name},
 //        middleware: randomAuthenticator)
 //    ..post('fooo', (Map m) => m, middleware: randomAuthenticator)
@@ -70,11 +66,8 @@ class RandomNameAuthenticator extends Authenticator {
   Future<Option<AuthenticatedContext<Principal>>> authenticate(
       Request request) async {
     var name = _names[new Random().nextInt(3)];
-    return await new Some(new SessionAuthenticatedContext(
-        new Principal(name),
-        new Uuid().v4(),
-        new DateTime.now(),
-        new DateTime.now(),
+    return await new Some(new SessionAuthenticatedContext(new Principal(name),
+        new Uuid().v4(), new DateTime.now(), new DateTime.now(),
         new DateTime.now().add(const Duration(days: 30))));
   }
 
