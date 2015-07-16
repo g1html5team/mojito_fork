@@ -8,6 +8,7 @@ library mojito;
 export 'src/mojito.dart';
 export 'src/context.dart';
 export 'src/auth.dart';
+export 'src/oauth.dart';
 export 'src/authorisation.dart';
 export 'src/router.dart';
 
