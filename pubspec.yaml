@@ -13,19 +13,33 @@ dependencies:
   shelf_proxy: '^0.1.0+2'
   shelf_static: '^0.2.2'
   shelf_auth: 
-    path: /Users/aholmgren/Projects/dart/connect/hc/hcaddontest_root/new-acdart_root/shelfish_root/shelf_auth
+    git: 
+      ref: e2448c42bc1e6f8488777c4c0c7ce364edde1c70
+      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
   shelf_auth_session: 
-    path: /Users/aholmgren/Projects/dart/connect/hc/hcaddontest_root/new-acdart_root/shelfish_root/shelf_auth_session
+    git: 
+      ref: e12b06d07c8819ad4836914169b81bff4280e359
+      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
   shelf_bind: 
-    path: /Users/aholmgren/Projects/dart/connect/hc/hcaddontest_root/new-acdart_root/shelfish_root/shelf_bind
+    git: 
+      ref: 9cd289ef1c75a992f90db0425e53009f50605a7b
+      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
   shelf_oauth: 
-    path: /Users/aholmgren/Projects/dart/connect/hc/hcaddontest_root/new-acdart_root/shelfish_root/shelf_oauth
+    git: 
+      ref: 24ef30a5d3b80fa20367ead869dc076129cf6ac9
+      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
   shelf_oauth_memcache: 
-    path: /Users/aholmgren/Projects/dart/connect/hc/hcaddontest_root/new-acdart_root/shelfish_root/shelf_oauth_memcache
+    git: 
+      ref: adae7cb9f77c7729ce2e7e21da52dc68740152f8
+      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
   shelf_path: 
-    path: /Users/aholmgren/Projects/dart/connect/hc/hcaddontest_root/new-acdart_root/shelfish_root/shelf_path
+    git: 
+      ref: 7c910514e97cfd2aa47f0d1ba8733b00d925578a
+      url: git@bitbucket.org:andersmholmgren/shelf_path.git
   shelf_rest: 
-    path: /Users/aholmgren/Projects/dart/connect/hc/hcaddontest_root/new-acdart_root/shelfish_root/shelf_rest
+    git: 
+      ref: f5726d6a9710714f027052a5aa8761dd85cedd94
+      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
