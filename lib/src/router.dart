@@ -31,22 +31,16 @@ abstract class Router implements r.Router<Router> {
   /// back to `http://localhost:8080`
   /// Note: if more than one route is set up to use [serveStaticAssets] then
   /// it only makes sense to use pub serve on one of them
-  void addStaticAssetHandler(path,
-      {String fileSystemPath: 'build/web',
-      bool serveFilesOutsidePath: false,
-      String defaultDocument,
-      bool usePubServeInDev: true,
-      String pubServeUrlString,
+  void addStaticAssetHandler(path, {String fileSystemPath: 'build/web',
+      bool serveFilesOutsidePath: false, String defaultDocument,
+      bool usePubServeInDev: true, String pubServeUrlString,
       Middleware middleware});
 }
 
 /// Creates a mojito router
-Router router(
-        {r.HandlerAdapter handlerAdapter,
-        r.RouteableAdapter routeableAdapter,
-        r.PathAdapter pathAdapter,
-        Function fallbackHandler,
-        Middleware middleware}) =>
+Router router({r.HandlerAdapter handlerAdapter,
+        r.RouteableAdapter routeableAdapter, r.PathAdapter pathAdapter,
+        Function fallbackHandler, Middleware middleware}) =>
     new MojitoRouterBuilder.create(
         handlerAdapter: handlerAdapter,
         pathAdapter: pathAdapter,
