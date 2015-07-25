@@ -13,33 +13,19 @@ dependencies:
   shelf_proxy: '^0.1.0+2'
   shelf_static: '^0.2.2'
   shelf_auth: 
-    git: 
-      ref: 47a14e8169d433c1a1c4edb3cf4a4d3f5a071f22
-      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_auth
   shelf_auth_session: 
-    git: 
-      ref: b7e9c72e421cff92e4ba843940bcf7f3e960b31e
-      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_auth_session
   shelf_bind: 
-    git: 
-      ref: c7239ddc6f40a76dd904d5ec7a232bb7bdf3d766
-      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_bind
   shelf_oauth: 
-    git: 
-      ref: 24ef30a5d3b80fa20367ead869dc076129cf6ac9
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_oauth
   shelf_oauth_memcache: 
-    git: 
-      ref: adae7cb9f77c7729ce2e7e21da52dc68740152f8
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_oauth_memcache
   shelf_path: 
-    git: 
-      ref: 576008dc882081198873a15498cea07754d15a1e
-      url: git@bitbucket.org:andersmholmgren/shelf_path.git
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_path
   shelf_rest: 
-    git: 
-      ref: dcff5acbf05bb46ab4e119292319968df92972cb
-      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_rest
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
