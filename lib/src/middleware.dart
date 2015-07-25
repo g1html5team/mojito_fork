@@ -23,5 +23,7 @@ abstract class MiddlewareBuilder {
 
   MiddlewareBuilder logRequests({void logger(String msg, bool isError)});
 
+  MiddlewareBuilder cors({String domain: '*'});
+
   Middleware build();
 }

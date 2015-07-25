@@ -34,6 +34,7 @@ class MojitoImpl implements Mojito {
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
+//  Map<String, String> _defaultResponseHeaders = const {};
 
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
@@ -59,10 +60,22 @@ class MojitoImpl implements Mojito {
     }
   }
 
-  Future start({int port: 9999}) {
-    return io.serve(handler, InternetAddress.ANY_IP_V6, port).then((server) {
-      _log.info('Serving at http://${server.address.host}:${server.port}');
-    });
+  Future start({int port: 9999}) async {
+    final HttpServer server =
+        await HttpServer.bind(InternetAddress.ANY_IP_V6, port);
+//    final headers = <String, String>{};
+//    server.defaultResponseHeaders.forEach((k, v) {
+//      headers[k] = v.join(',');
+//    });
+//    this._defaultResponseHeaders = headers;
+
+    server.defaultResponseHeaders.remove('x-frame-options', 'SAMEORIGIN');
+    io.serveRequests(server, handler);
+    _log.info('Serving at http://${server.address.host}:${server.port}');
+
+//    return io.serve(handler, InternetAddress.ANY_IP_V6, port).then((server) {
+//      _log.info('Serving at http://${server.address.host}:${server.port}');
+//    });
   }
 
 //  Future start({ int port: 9999 }) async {
@@ -82,6 +95,7 @@ class MojitoImpl implements Mojito {
 
     pipeline = pipeline.addMiddleware(exceptionHandler());
     pipeline = pipeline.addMiddleware(logExceptions());
+    pipeline = pipeline.addMiddleware(_xFrameOptionsMiddleware());
 
     final authMiddleware = auth.middleware;
 
@@ -110,6 +124,22 @@ class MojitoImpl implements Mojito {
 
     return handler;
   }
+}
+
+/// dart:io http server sets 'x-frame-options': 'SAMEORIGIN' by default. As
+/// there is no value you can set that to to turn it off that all the browsers
+/// support, we remove it from the default headers and add it back here as
+/// required.
+Middleware _xFrameOptionsMiddleware() {
+  return createMiddleware(responseHandler: (Response response) {
+    if (
+//    response.headers.containsKey('x-frame-options') ||
+        response.headers.containsKey('access-control-allow-origin')) {
+      return response;
+    } else {
+      return response.change(headers: {'x-frame-options': 'SAMEORIGIN'});
+    }
+  });
 }
 
 // just a trick as Mojito has a property called context which points to this one
