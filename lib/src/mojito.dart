@@ -21,6 +21,16 @@ typedef Router RouteCreator();
 
 typedef bool IsDevMode();
 
+typedef String EnvironmentNameResolver();
+
+EnvironmentNameResolver defaultEnvironmentNameResolver(IsDevMode isDevMode) {
+  return () {
+    return isDevMode()
+        ? StandardEnvironmentNames.development
+        : StandardEnvironmentNames.production;
+  };
+}
+
 const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 
 /// By default the environment variable `MOJITO_IS_DEV_MODE` is used to
@@ -37,8 +47,8 @@ Mojito init({RouteCreator createRootRouter, bool logRequests: true,
     createRootRouter, logRequests, createRootLogger, isDevMode: isDevMode);
 
 Mojito initWithConfig(ConfigFactory<MojitoConfig> configFactory,
-        {IsDevMode isDevMode}) =>
-    new impl.MojitoImpl.fromConfig(configFactory, isDevMode);
+        {EnvironmentNameResolver environmentNameResolver}) =>
+    new impl.MojitoImpl.fromConfig(configFactory, environmentNameResolver);
 
 abstract class Mojito<C extends MojitoConfig> {
   Router get router;
