@@ -39,7 +39,19 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
-  final C config;
+  final ConfigFactory<C> _configFactory;
+  final EnvironmentNameResolver _environmentNameResolver;
+
+  C get config {
+    final environmentName = _environmentNameResolver();
+    final configOpt = _configFactory.configFor(environmentName);
+    if (configOpt == null) {
+      throw new ArgumentError.value(
+          'No config for environment namded $environmentName');
+    }
+
+    return configOpt.get();
+  }
 
   MojitoImpl._(
       MojitoConfig config, EnvironmentNameResolver environmentNameResolver)
