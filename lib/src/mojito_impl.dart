@@ -21,44 +21,77 @@ import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
 import 'dart:io';
 import 'package:shelf_route/extend.dart';
+import 'package:config/config.dart';
+import 'package:mojito/src/config.dart';
 
 final Logger _log = new Logger('mojito');
 
 bool defaultIsDevMode() =>
     const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
 
-class MojitoImpl implements Mojito {
+class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
-//  Map<String, String> _defaultResponseHeaders = const {};
-
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
+  final C config;
+  bool get _logRequests => config.logRequests;
+  final IsDevMode _isDevMode;
 
-  final bool _logRequests;
-
-  MojitoImpl(
-      RouteCreator createRootRouter, this._logRequests, bool createRootLogger,
-      {IsDevMode isDevMode})
-      : router = createRootRouter != null ? createRootRouter() : mr.router() {
-    IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
-
+  MojitoImpl._(MojitoConfig config, IsDevMode isDevMode)
+      : this.config = config,
+        this._isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode,
+        this.router = config.createRootRouter != null
+            ? config.createRootRouter()
+            : mr.router() {
     if (_context != null) {
       throw new ArgumentError('can only initialise mojito once');
     }
 
     _context = new MojitoContextImpl(_isDevMode(), this);
 
-    if (createRootLogger) {
+    if (config.createRootLogger) {
       Logger.root.onRecord.listen((LogRecord lr) {
         print('${lr.time} $lr');
       });
     }
   }
+
+  factory MojitoImpl.fromConfig(
+      ConfigFactory<MojitoConfig> configFactory, IsDevMode isDevMode) {
+    IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
+
+    if (configFactory == null) {
+      throw new ArgumentError.notNull('configFactory');
+    }
+    final String environmentName = _isDevMode()
+        ? StandardEnvironmentNames.development
+        : StandardEnvironmentNames.production;
+
+    final configOpt = configFactory.configFor(environmentName);
+    if (configOpt == null) {
+      throw new ArgumentError.value(
+          'No config for environment namded $environmentName');
+    }
+
+    final config = configOpt.get();
+
+    return new MojitoImpl._(config, _isDevMode);
+  }
+
+//  Map<String, String> _defaultResponseHeaders = const {};
+
+  MojitoImpl(
+      RouteCreator createRootRouter, bool logRequests, bool createRootLogger,
+      {IsDevMode isDevMode})
+      : this._(new MojitoConfig(
+          createRootRouter: createRootRouter,
+          logRequests: logRequests,
+          createRootLogger: createRootLogger), isDevMode);
 
   Future start({int port: 9999}) async {
     final HttpServer server =

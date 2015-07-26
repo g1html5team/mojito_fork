@@ -14,6 +14,8 @@ import 'mojito_impl.dart' as impl;
 import 'middleware.dart';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage.dart';
+import 'package:config/config.dart';
+import 'package:mojito/src/config.dart';
 
 typedef Router RouteCreator();
 
@@ -30,11 +32,17 @@ const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 /// By default mojito will create a root [Logger]. If you want to control the
 /// setup of the logger yourself then pass [createRootLogger]: false
 Mojito init({RouteCreator createRootRouter, bool logRequests: true,
-    bool createRootLogger: true, IsDevMode isDevMode}) => new impl.MojitoImpl(
+    bool createRootLogger: true, IsDevMode isDevMode,
+    ConfigFactory configFactory}) => new impl.MojitoImpl(
     createRootRouter, logRequests, createRootLogger, isDevMode: isDevMode);
 
-abstract class Mojito {
+Mojito initWithConfig(ConfigFactory<MojitoConfig> configFactory,
+        {IsDevMode isDevMode}) =>
+    new impl.MojitoImpl.fromConfig(configFactory, isDevMode);
+
+abstract class Mojito<C extends MojitoConfig> {
   Router get router;
+  C get config;
   MojitoAuth get auth;
   MojitoAuthorisation get authorisation;
   MojitoSessionStorage get sessionStorage;

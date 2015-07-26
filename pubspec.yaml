@@ -26,7 +26,9 @@ dependencies:
     path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_path
   shelf_rest: 
     path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/shelf_rest
-dependency_overrides: 
+  config:
+    path: /Users/aholmgren/Projects/dart/connect/addons/bb/bbclienttest_jefe_root/new-acdart_root/shelfish_root/config
+dependency_overrides:
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
   test: '^0.12.0'
