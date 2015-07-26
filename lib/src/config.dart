@@ -24,6 +24,7 @@ class MojitoServerConfig extends Config<MojitoServerConfig> {
   final RouteCreator createRootRouter;
   final bool logRequests;
   final bool createRootLogger;
+  final int serverPort;
 
   MojitoServerConfig(
       {this.createRootRouter, this.logRequests, this.createRootLogger});
