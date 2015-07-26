@@ -40,7 +40,6 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
   final C config;
-  bool get _logRequests => config.logRequests;
 
   MojitoImpl._(
       MojitoConfig config, EnvironmentNameResolver environmentNameResolver)
@@ -62,6 +61,25 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
         print('${lr.time} $lr');
       });
     }
+  }
+
+  MojitoImpl._fromConfig(ConfigFactory<MojitoConfig> configFactory,
+      EnvironmentNameResolver environmentNameResolver) {
+    checkNotNull(configFactory, message: 'configFactory is mandatory');
+    checkNotNull(environmentNameResolver,
+        message: 'environmentNameResolver is mandatory');
+
+    final String environmentName = environmentNameResolver();
+
+    final configOpt = configFactory.configFor(environmentName);
+    if (configOpt == null) {
+      throw new ArgumentError.value(
+          'No config for environment namded $environmentName');
+    }
+
+    final config = configOpt.get();
+
+    return new MojitoImpl._(config, environmentNameResolver);
   }
 
   factory MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
@@ -123,7 +141,7 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
 
     var pipeline = const Pipeline();
 
-    if (_logRequests) {
+    if (config.logRequests) {
       pipeline = pipeline.addMiddleware(logRequests());
     }
 
