@@ -39,21 +39,9 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
-  final ConfigFactory<C> _configFactory;
-  final EnvironmentNameResolver _environmentNameResolver;
+  final C config;
 
-  C get config {
-    final environmentName = _environmentNameResolver();
-    final configOpt = _configFactory.configFor(environmentName);
-    if (configOpt == null) {
-      throw new ArgumentError.value(
-          'No config for environment namded $environmentName');
-    }
-
-    return configOpt.get();
-  }
-
-  MojitoImpl._(
+  MojitoImpl(
       MojitoConfig config, EnvironmentNameResolver environmentNameResolver)
       : this.config = config,
         this.router = config.createRootRouter != null
@@ -62,6 +50,10 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
     if (_context != null) {
       throw new ArgumentError('can only initialise mojito once');
     }
+
+    // TODO: this is a mess
+    checkNotNull(environmentNameResolver,
+        message: 'environmentNameResolver is mandatory');
 
     bool _isDevMode =
         environmentNameResolver() == StandardEnvironmentNames.development;
@@ -75,7 +67,7 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
     }
   }
 
-  MojitoImpl._fromConfig(ConfigFactory<MojitoConfig> configFactory,
+  static Config resolveConfig(ConfigFactory configFactory,
       EnvironmentNameResolver environmentNameResolver) {
     checkNotNull(configFactory, message: 'configFactory is mandatory');
     checkNotNull(environmentNameResolver,
@@ -83,42 +75,18 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
 
     final String environmentName = environmentNameResolver();
 
-    final configOpt = configFactory.configFor(environmentName);
-    if (configOpt == null) {
-      throw new ArgumentError.value(
-          'No config for environment namded $environmentName');
-    }
-
-    final config = configOpt.get();
-
-    return new MojitoImpl._(config, environmentNameResolver);
+    return configFactory.requiredConfigFor(environmentName);
   }
 
-  factory MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
-      EnvironmentNameResolver environmentNameResolver) {
-    checkNotNull(configFactory, message: 'configFactory is mandatory');
-    checkNotNull(environmentNameResolver,
-        message: 'environmentNameResolver is mandatory');
+  MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
+      EnvironmentNameResolver environmentNameResolver)
+      : this(resolveConfig(configFactory, environmentNameResolver),
+          environmentNameResolver);
 
-    final String environmentName = environmentNameResolver();
-
-    final configOpt = configFactory.configFor(environmentName);
-    if (configOpt == null) {
-      throw new ArgumentError.value(
-          'No config for environment namded $environmentName');
-    }
-
-    final config = configOpt.get();
-
-    return new MojitoImpl._(config, environmentNameResolver);
-  }
-
-//  Map<String, String> _defaultResponseHeaders = const {};
-
-  MojitoImpl(
+  MojitoImpl.simple(
       RouteCreator createRootRouter, bool logRequests, bool createRootLogger,
       {IsDevMode isDevMode})
-      : this._(new MojitoConfig(
+      : this(new MojitoConfig(
               createRootRouter: createRootRouter,
               logRequests: logRequests,
               createRootLogger: createRootLogger),

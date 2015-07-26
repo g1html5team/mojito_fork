@@ -16,6 +16,7 @@ import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage.dart';
 import 'package:config/config.dart';
 import 'package:mojito/src/config.dart';
+import 'dart:io';
 
 typedef Router RouteCreator();
 
@@ -29,6 +30,32 @@ EnvironmentNameResolver defaultEnvironmentNameResolver(IsDevMode isDevMode) {
         ? StandardEnvironmentNames.development
         : StandardEnvironmentNames.production;
   };
+}
+
+EnvironmentNameResolver environmentNameFromKey(String environmentKey,
+    {bool defaultToDevelopment: true}) {
+  return () {
+    final lookupName = _rawFromEnvironment(environmentKey);
+    final name = lookupName != null
+        ? lookupName
+        : defaultToDevelopment ? StandardEnvironmentNames.development : null;
+
+    if (name == null) {
+      throw new StateError(
+          'Unable to determine environment name from key: $environmentKey');
+    }
+
+    return name;
+  };
+}
+
+String _rawFromEnvironment(String key) {
+  final String systemProperty = new String.fromEnvironment(key);
+  if (systemProperty != null) {
+    return systemProperty;
+  }
+
+  return Platform.environment[key];
 }
 
 const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
