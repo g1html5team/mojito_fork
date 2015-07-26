@@ -10,16 +10,27 @@ import 'package:mojito/src/mojito.dart';
 import 'package:quiver/core.dart';
 
 class MojitoConfig extends Config<MojitoConfig> {
+  final MojitoServerConfig server;
+
+  MojitoConfig({this.server});
+
+  @override
+  MojitoConfig merge(MojitoConfig other) {
+    return new MojitoConfig(server: mergeChildConfigs(server, other.server));
+  }
+}
+
+class MojitoServerConfig extends Config<MojitoServerConfig> {
   final RouteCreator createRootRouter;
   final bool logRequests;
   final bool createRootLogger;
 
-  MojitoConfig(
+  MojitoServerConfig(
       {this.createRootRouter, this.logRequests, this.createRootLogger});
 
   @override
-  MojitoConfig merge(MojitoConfig other) {
-    return new MojitoConfig(
+  MojitoServerConfig merge(MojitoServerConfig other) {
+    return new MojitoServerConfig(
         createRootRouter: firstNonNull(
             other.createRootRouter, createRootRouter),
         logRequests: firstNonNull(other.logRequests, logRequests, true),
