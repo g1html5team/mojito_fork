@@ -39,4 +39,12 @@ class MojitoServerConfig extends Config<MojitoServerConfig> {
             other.createRootLogger, createRootLogger, true),
         serverPort: firstNonNull(other.serverPort, serverPort));
   }
+
+  MojitoServerConfig change({RouteCreator createRootRouter}) {
+    return new MojitoServerConfig(
+        createRootRouter: firstNonNull(createRootRouter, this.createRootRouter),
+        logRequests: logRequests,
+        createRootLogger: createRootLogger,
+        serverPort: serverPort);
+  }
 }
