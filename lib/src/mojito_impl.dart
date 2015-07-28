@@ -30,7 +30,7 @@ final Logger _log = new Logger('mojito');
 bool defaultIsDevMode() =>
     const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
 
-class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
+class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
@@ -41,8 +41,8 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   Handler get handler => _createHandler();
   final C config;
 
-  MojitoImpl(
-      MojitoConfig config, EnvironmentNameResolver environmentNameResolver)
+  MojitoImpl(MojitoServerConfig config,
+      EnvironmentNameResolver environmentNameResolver)
       : this.config = config,
         this.router = config.createRootRouter != null
             ? config.createRootRouter()
@@ -86,7 +86,7 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   MojitoImpl.simple(
       RouteCreator createRootRouter, bool logRequests, bool createRootLogger,
       {IsDevMode isDevMode})
-      : this(new MojitoConfig(
+      : this(new MojitoServerConfig(
               createRootRouter: createRootRouter,
               logRequests: logRequests,
               createRootLogger: createRootLogger),
