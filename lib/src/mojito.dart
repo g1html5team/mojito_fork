@@ -17,6 +17,7 @@ import 'package:mojito/src/session_storage.dart';
 import 'package:config/config.dart';
 import 'package:mojito/src/config.dart';
 import 'dart:io';
+import 'package:quiver/check.dart';
 
 typedef Router RouteCreator();
 
@@ -25,6 +26,7 @@ typedef bool IsDevMode();
 typedef String EnvironmentNameResolver();
 
 EnvironmentNameResolver defaultEnvironmentNameResolver(IsDevMode isDevMode) {
+  checkNotNull(isDevMode);
   return () {
     return isDevMode()
         ? StandardEnvironmentNames.development
