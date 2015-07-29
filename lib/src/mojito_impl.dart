@@ -67,7 +67,7 @@ class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
     }
   }
 
-  static Config resolveConfig(ConfigFactory configFactory,
+  static MojitoConfig resolveConfig(ConfigFactory<MojitoConfig> configFactory,
       EnvironmentNameResolver environmentNameResolver) {
     checkNotNull(configFactory, message: 'configFactory is mandatory');
     checkNotNull(environmentNameResolver,
@@ -80,7 +80,7 @@ class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
 
   MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
       EnvironmentNameResolver environmentNameResolver)
-      : this(resolveConfig(configFactory, environmentNameResolver),
+      : this(resolveConfig(configFactory, environmentNameResolver).server,
           environmentNameResolver);
 
   MojitoImpl.simple(
