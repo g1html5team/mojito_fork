@@ -75,7 +75,7 @@ class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
 
     final String environmentName = environmentNameResolver();
 
-    return configFactory.requiredConfigFor(environmentName);
+    return configFactory.configFor(environmentName);
   }
 
   MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
