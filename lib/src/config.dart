@@ -8,6 +8,7 @@ library mojito.config;
 import 'package:config/config.dart';
 import 'package:mojito/src/mojito.dart';
 import 'package:quiver/core.dart';
+import 'package:mojito/src/router.dart';
 
 class MojitoConfig extends Config<MojitoConfig> {
   final MojitoServerConfig server;
@@ -26,8 +27,9 @@ class MojitoServerConfig extends Config<MojitoServerConfig> {
   final bool createRootLogger;
   final int serverPort;
 
-  MojitoServerConfig({this.createRootRouter, this.logRequests,
-      this.createRootLogger, this.serverPort});
+  MojitoServerConfig({RouteCreator createRootRouter, this.logRequests: true,
+      this.createRootLogger: true, this.serverPort: 9999})
+      : this.createRootRouter = firstNonNull(createRootRouter, router);
 
   @override
   MojitoServerConfig merge(MojitoServerConfig other) {
@@ -37,7 +39,7 @@ class MojitoServerConfig extends Config<MojitoServerConfig> {
         logRequests: firstNonNull(other.logRequests, logRequests, true),
         createRootLogger: firstNonNull(
             other.createRootLogger, createRootLogger, true),
-        serverPort: firstNonNull(other.serverPort, serverPort));
+        serverPort: firstNonNull(other.serverPort, serverPort, 9999));
   }
 
   MojitoServerConfig change({RouteCreator createRootRouter}) {
