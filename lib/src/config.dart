@@ -10,14 +10,17 @@ import 'package:mojito/src/mojito.dart';
 import 'package:quiver/core.dart';
 import 'package:mojito/src/router.dart';
 
-class MojitoConfig extends Config<MojitoConfig> {
+class MojitoConfig<A extends Config> extends Config<MojitoConfig> {
   final MojitoServerConfig server;
+  final A app;
 
-  MojitoConfig({this.server});
+  MojitoConfig({this.server, this.app});
 
   @override
   MojitoConfig merge(MojitoConfig other) {
-    return new MojitoConfig(server: mergeChildConfigs(server, other.server));
+    return new MojitoConfig(
+        server: mergeChildConfigs(server, other.server),
+        app: mergeChildConfigs(app, other.app));
   }
 }
 
