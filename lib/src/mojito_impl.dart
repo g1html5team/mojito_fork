@@ -30,7 +30,7 @@ final Logger _log = new Logger('mojito');
 bool defaultIsDevMode() =>
     const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
 
-class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
+class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
@@ -41,11 +41,11 @@ class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
   Handler get handler => _createHandler();
   final C config;
 
-  MojitoImpl(MojitoServerConfig config,
-      EnvironmentNameResolver environmentNameResolver)
+  MojitoImpl(
+      MojitoConfig config, EnvironmentNameResolver environmentNameResolver)
       : this.config = config,
-        this.router = config.createRootRouter != null
-            ? config.createRootRouter()
+        this.router = config.server.createRootRouter != null
+            ? config.server.createRootRouter()
             : mr.router() {
     if (_context != null) {
       throw new ArgumentError('can only initialise mojito once');
@@ -60,7 +60,7 @@ class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
 
     _context = new MojitoContextImpl(_isDevMode, this);
 
-    if (config.createRootLogger) {
+    if (config.server.createRootLogger) {
       Logger.root.onRecord.listen((LogRecord lr) {
         print('${lr.time} $lr');
       });
@@ -80,15 +80,17 @@ class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
 
   MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
       EnvironmentNameResolver environmentNameResolver)
-      : this(resolveConfig(configFactory, environmentNameResolver).server,
+      : this(resolveConfig(configFactory, environmentNameResolver),
           environmentNameResolver);
 
   MojitoImpl.simple({RouteCreator createRootRouter, bool logRequests: true,
       bool createRootLogger: true, IsDevMode isDevMode: defaultIsDevMode})
-      : this(new MojitoServerConfig(
-          createRootRouter: createRootRouter,
-          logRequests: logRequests,
-          createRootLogger: createRootLogger), defaultEnvironmentNameResolver(
+      : this(new MojitoConfig(
+              server: new MojitoServerConfig(
+                  createRootRouter: createRootRouter,
+                  logRequests: logRequests,
+                  createRootLogger: createRootLogger)),
+          defaultEnvironmentNameResolver(
               isDevMode != null ? isDevMode : defaultIsDevMode));
 
   Future start({int port: 9999}) async {
@@ -120,7 +122,7 @@ class MojitoImpl<C extends MojitoServerConfig> implements Mojito<C> {
 
     var pipeline = const Pipeline();
 
-    if (config.logRequests) {
+    if (config.server.logRequests) {
       pipeline = pipeline.addMiddleware(logRequests());
     }
 
