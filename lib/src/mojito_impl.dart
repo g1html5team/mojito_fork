@@ -21,44 +21,77 @@ import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
 import 'dart:io';
 import 'package:shelf_route/extend.dart';
+import 'package:config/config.dart';
+import 'package:mojito/src/config.dart';
+import 'package:quiver/check.dart';
 
 final Logger _log = new Logger('mojito');
 
 bool defaultIsDevMode() =>
     const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
 
-class MojitoImpl implements Mojito {
+class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
-//  Map<String, String> _defaultResponseHeaders = const {};
-
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
-
-  final bool _logRequests;
+  final C config;
 
   MojitoImpl(
-      RouteCreator createRootRouter, this._logRequests, bool createRootLogger,
-      {IsDevMode isDevMode})
-      : router = createRootRouter != null ? createRootRouter() : mr.router() {
-    IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
-
+      MojitoConfig config, EnvironmentNameResolver environmentNameResolver)
+      : this.config = config,
+        this.router = config.server.createRootRouter != null
+            ? config.server.createRootRouter()
+            : mr.router() {
     if (_context != null) {
       throw new ArgumentError('can only initialise mojito once');
     }
 
-    _context = new MojitoContextImpl(_isDevMode(), this);
+    // TODO: this is a mess
+    checkNotNull(environmentNameResolver,
+        message: 'environmentNameResolver is mandatory');
 
-    if (createRootLogger) {
+    bool _isDevMode =
+        environmentNameResolver() == StandardEnvironmentNames.development;
+
+    _context = new MojitoContextImpl(_isDevMode, this);
+
+    if (config.server.createRootLogger) {
       Logger.root.onRecord.listen((LogRecord lr) {
         print('${lr.time} $lr');
       });
     }
   }
+
+  static MojitoConfig resolveConfig(ConfigFactory<MojitoConfig> configFactory,
+      EnvironmentNameResolver environmentNameResolver) {
+    checkNotNull(configFactory, message: 'configFactory is mandatory');
+    checkNotNull(environmentNameResolver,
+        message: 'environmentNameResolver is mandatory');
+
+    final String environmentName = environmentNameResolver();
+
+    return configFactory.configFor(environmentName);
+  }
+
+  MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
+      EnvironmentNameResolver environmentNameResolver)
+      : this(resolveConfig(configFactory, environmentNameResolver),
+          environmentNameResolver);
+
+  MojitoImpl.simple({RouteCreator createRootRouter, bool logRequests: true,
+      bool createRootLogger: true, IsDevMode isDevMode: defaultIsDevMode})
+      : this(new MojitoConfig(
+              server: new MojitoServerConfig(
+                  createRootRouter: createRootRouter,
+                  logRequests: logRequests,
+                  createRootLogger: createRootLogger)),
+          defaultEnvironmentNameResolver(
+              isDevMode != null ? isDevMode : defaultIsDevMode));
 
   Future start({int port: 9999}) async {
     final HttpServer server =
@@ -89,7 +122,7 @@ class MojitoImpl implements Mojito {
 
     var pipeline = const Pipeline();
 
-    if (_logRequests) {
+    if (config.server.logRequests) {
       pipeline = pipeline.addMiddleware(logRequests());
     }
 
@@ -143,13 +176,13 @@ Middleware _xFrameOptionsMiddleware() {
 }
 
 // just a trick as Mojito has a property called context which points to this one
-MojitoContext _getContext() => context;
+MojitoContext _getContext() => contextImpl;
 
 const Symbol _MOJITO_CONTEXT = #mojito_context;
 
 MojitoContextImpl _context;
 //final MojitoContext context = new MojitoContextImpl();
-MojitoContext get context {
+MojitoContext get contextImpl {
   if (_context == null) {
     throw new StateError('you must call the init method first');
   }
