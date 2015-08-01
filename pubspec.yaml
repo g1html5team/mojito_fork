@@ -13,37 +13,21 @@ dependencies:
   shelf_proxy: '^0.1.0+2'
   shelf_static: '^0.2.2'
   config: 
-    git: 
-      ref: e73aa7b82df4e1985093ea5e8be80b2543825706
-      url: git@bitbucket.org:andersmholmgren/config.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/config
   shelf_auth: 
-    git: 
-      ref: d4a7e078c7f0f3d8ee26499e39c592e89cc7bdc4
-      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth
   shelf_auth_session: 
-    git: 
-      ref: 3232ed92e3954b70c4f648ff1816f9156e353437
-      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth_session
   shelf_bind: 
-    git: 
-      ref: b1d57b33792e41e4d181e5373f12c039359005b5
-      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_bind
   shelf_oauth: 
-    git: 
-      ref: 6894886740d8ab0a4a4941e16a877fd1e7b51848
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth
   shelf_oauth_memcache: 
-    git: 
-      ref: f0ae500f8e94cd64663e10e2c5c1a8d6f89f1d86
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth_memcache
   shelf_path: 
-    git: 
-      ref: 65dbbd7126d99512038a16d03a04daabc5ab1196
-      url: git@bitbucket.org:andersmholmgren/shelf_path.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_path
   shelf_rest: 
-    git: 
-      ref: 5ef3aab32cd5c8d863ddbc54c9b776a4b6a20293
-      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_rest
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
