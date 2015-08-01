@@ -85,4 +85,4 @@ abstract class Mojito<C extends MojitoConfig> {
   void start({int port: 9999});
 }
 
-MojitoContext get context => impl.context;
+MojitoContext get context => impl.contextImpl;

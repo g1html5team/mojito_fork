@@ -176,13 +176,13 @@ Middleware _xFrameOptionsMiddleware() {
 }
 
 // just a trick as Mojito has a property called context which points to this one
-MojitoContext _getContext() => context;
+MojitoContext _getContext() => contextImpl;
 
 const Symbol _MOJITO_CONTEXT = #mojito_context;
 
 MojitoContextImpl _context;
 //final MojitoContext context = new MojitoContextImpl();
-MojitoContext get context {
+MojitoContext get contextImpl {
   if (_context == null) {
     throw new StateError('you must call the init method first');
   }
