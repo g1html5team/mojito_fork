@@ -81,17 +81,21 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
       EnvironmentNameResolver environmentNameResolver)
       : this(resolveConfig(configFactory, environmentNameResolver),
-          environmentNameResolver);
+            environmentNameResolver);
 
-  MojitoImpl.simple({RouteCreator createRootRouter, bool logRequests: true,
-      bool createRootLogger: true, IsDevMode isDevMode: defaultIsDevMode})
-      : this(new MojitoConfig(
-              server: new MojitoServerConfig(
-                  createRootRouter: createRootRouter,
-                  logRequests: logRequests,
-                  createRootLogger: createRootLogger)),
-          defaultEnvironmentNameResolver(
-              isDevMode != null ? isDevMode : defaultIsDevMode));
+  MojitoImpl.simple(
+      {RouteCreator createRootRouter,
+      bool logRequests: true,
+      bool createRootLogger: true,
+      IsDevMode isDevMode: defaultIsDevMode})
+      : this(
+            new MojitoConfig(
+                server: new MojitoServerConfig(
+                    createRootRouter: createRootRouter,
+                    logRequests: logRequests,
+                    createRootLogger: createRootLogger)),
+            defaultEnvironmentNameResolver(
+                isDevMode != null ? isDevMode : defaultIsDevMode));
 
   Future start({int port: 9999}) async {
     final HttpServer server =

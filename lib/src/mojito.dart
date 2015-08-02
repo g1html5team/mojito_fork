@@ -60,8 +60,11 @@ const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 ///
 /// By default mojito will create a root [Logger]. If you want to control the
 /// setup of the logger yourself then pass [createRootLogger]: false
-Mojito init({RouteCreator createRootRouter, bool logRequests: true,
-        bool createRootLogger: true, IsDevMode isDevMode}) =>
+Mojito init(
+        {RouteCreator createRootRouter,
+        bool logRequests: true,
+        bool createRootLogger: true,
+        IsDevMode isDevMode}) =>
     new impl.MojitoImpl.simple(
         createRootRouter: createRootRouter,
         logRequests: logRequests,

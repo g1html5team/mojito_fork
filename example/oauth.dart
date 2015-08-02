@@ -25,8 +25,8 @@ main() {
   // typically only appropriate in development
   app.auth.global.authenticator(new TestAuthenticator()).jwtSession(
       'acme corp', new Uuid().v4(), (username) => _lookup(username, null))
-    ..allowHttp = true
-    ..allowAnonymousAccess = true;
+      ..allowHttp = true
+      ..allowAnonymousAccess = true;
 
   app.sessionStorage.add(new InMemorySessionRepository());
 
@@ -34,23 +34,31 @@ main() {
       new UriTemplate('/ui/loginComplete{?type,token,context}');
 
   app.router
-    ..get('/ui/loginComplete{?type,token,context}', (String type, String token,
-        String context) => "yippee - we got da token: $token. Now profit")
+    ..get(
+        '/ui/loginComplete{?type,token,context}',
+        (String type, String token, String context) =>
+            "yippee - we got da token: $token. Now profit")
     ..addAll((Router r) {
       final storage = r.oauth.storage.inMemory();
 
-      r.oauth.gitHub().addClient((_) async => await new ClientId(
-              'b809a75bb449d81e7234',
-              'cad56a6f39361f31ba5b5ffa11f6722536004f08'), storage,
+      r.oauth.gitHub().addClient(
+          (_) async => await new ClientId('b809a75bb449d81e7234',
+              'cad56a6f39361f31ba5b5ffa11f6722536004f08'),
+          storage,
           loginCompleteTemplate);
 
-      r.oauth.bitBucket().addClient((_) async => await new ClientId(
+      r.oauth.bitBucket().addClient(
+          (_) async => await new ClientId(
               'v7hRrM2WRpQe2Nff86', 'pLfwBAa7aBESdzWusUGaNU2S5RH2RScD'),
-          storage, loginCompleteTemplate);
+          storage,
+          loginCompleteTemplate);
 
-      r.oauth.google().addClient((_) async => await new ClientId(
+      r.oauth.google().addClient(
+          (_) async => await new ClientId(
               '986084708845-etbrd3jkeddhsc5119pfl16cbl502e7j.apps.googleusercontent.com',
-              'e28hMJcnXM4_f_VGgRRIR9Pt'), storage, loginCompleteTemplate,
+              'e28hMJcnXM4_f_VGgRRIR9Pt'),
+          storage,
+          loginCompleteTemplate,
           scopes: ['email']);
     }, path: 'oauth');
 
@@ -64,8 +72,11 @@ Future<Option<Principal>> _lookup(String username, String password) {
 class TestAuthenticator extends Authenticator {
   Future<Option<AuthenticatedContext<Principal>>> authenticate(
       Request request) async {
-    return await new Some(new SessionAuthenticatedContext(new Principal('fred'),
-        new Uuid().v4(), new DateTime.now(), new DateTime.now(),
+    return await new Some(new SessionAuthenticatedContext(
+        new Principal('fred'),
+        new Uuid().v4(),
+        new DateTime.now(),
+        new DateTime.now(),
         new DateTime.now().add(const Duration(days: 30))));
   }
 

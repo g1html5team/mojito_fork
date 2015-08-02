@@ -30,8 +30,11 @@ class MojitoServerConfig extends Config<MojitoServerConfig> {
   final bool createRootLogger;
   final int serverPort;
 
-  MojitoServerConfig({RouteCreator createRootRouter, this.logRequests: true,
-      this.createRootLogger: true, this.serverPort: 9999})
+  MojitoServerConfig(
+      {RouteCreator createRootRouter,
+      this.logRequests: true,
+      this.createRootLogger: true,
+      this.serverPort: 9999})
       : this.createRootRouter = firstNonNull(createRootRouter, router);
 
   @override

@@ -64,11 +64,13 @@ abstract class OAuth2RouteBuilder {
   /// value for [sessionIdExtractor] to override
   Oauth2RouteNames addClient(ClientIdFactory clientIdFactory,
       OAuthStorage oauthStore, UriTemplate completionRedirectUrl,
-      {userGrantPath: '/userGrant', authTokenPath: '/authToken',
+      {userGrantPath: '/userGrant',
+      authTokenPath: '/authToken',
       List<String> scopes: const [],
       SessionIdentifierExtractor sessionIdExtractor,
       // optional. Only if want absolute url
-      String callbackUrl, bool storeTokens: true});
+      String callbackUrl,
+      bool storeTokens: true});
 
   static String userGrantRouteName(String oauthProviderName) =>
       'oauthprovider.$oauthProviderName.userGrantRoute';
@@ -84,7 +86,8 @@ abstract class OAuth1RouteBuilder {
       OAuth1Token consumerToken,
 //      OAuth1Provider oauthProvider,
       OAuth1RequestTokenSecretStore tokenStore,
-      UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',
+      UriTemplate completionRedirectUrl,
+      {requestTokenPath: '/requestToken',
       authTokenPath: '/authToken',
       // optional. Only if want absolute url
       String callbackUrl});
