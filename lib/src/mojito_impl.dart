@@ -127,7 +127,16 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
     var pipeline = const Pipeline();
 
     if (config.server.logRequests) {
-      pipeline = pipeline.addMiddleware(logRequests());
+      final lr = logRequests();
+      Middleware wrapper = (Handler innerHandler) {
+        if (Logger.root.level <= Level.FINE) {
+          return lr(innerHandler);
+        }
+        else {
+          return innerHandler;
+        }
+      };
+      pipeline = pipeline.addMiddleware(wrapper);
     }
 
     pipeline = pipeline.addMiddleware(exceptionHandler());
