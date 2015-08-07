@@ -18,21 +18,22 @@ import 'package:mojito/src/oauth_impl.dart';
 class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
   OAuthRouteBuilderImpl get oauth => new OAuthRouteBuilderImpl(this);
+  final IsDevMode _isDevMode;
+  IsDevMode get isDevMode =>
+      _isDevMode != null ? _isDevMode : () => context.isDevelopmentMode;
 
   MojitoRouterBuilder(Function fallbackHandler, String name, path,
-      r.RouterAdapter routerAdapter, routeable, Middleware middleware)
+      r.RouterAdapter routerAdapter, routeable, Middleware middleware,
+      this._isDevMode)
       : super(
-            fallbackHandler, name, path, routerAdapter, routeable, middleware);
+          fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
-  MojitoRouterBuilder.create(
-      {Function fallbackHandler,
-      r.HandlerAdapter handlerAdapter,
-      r.RouteableAdapter routeableAdapter,
-      r.PathAdapter pathAdapter,
-      Middleware middleware,
-      path: '/',
-      String name})
-      : super.create(
+  MojitoRouterBuilder.create({Function fallbackHandler,
+      r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
+      r.PathAdapter pathAdapter, Middleware middleware, path: '/', String name,
+      IsDevMode isDevMode})
+      : this._isDevMode = isDevMode,
+        super.create(
             fallbackHandler: fallbackHandler,
             handlerAdapter: _createHandlerAdapter(handlerAdapter),
             routeableAdapter: routeableAdapter,
@@ -44,18 +45,15 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   @override
   MojitoRouterBuilder createChild(String name, path, routeable,
           r.RouterAdapter routerAdapter, Middleware middleware) =>
-      new MojitoRouterBuilder(
-          fallbackHandler, name, path, routerAdapter, routeable, middleware);
+      new MojitoRouterBuilder(fallbackHandler, name, path, routerAdapter,
+          routeable, middleware, isDevMode);
 
   @override
-  void addStaticAssetHandler(path,
-      {String fileSystemPath: 'build/web',
-      bool serveFilesOutsidePath: false,
-      String defaultDocument,
-      bool usePubServeInDev: true,
-      String pubServeUrlString,
+  void addStaticAssetHandler(path, {String fileSystemPath: 'build/web',
+      bool serveFilesOutsidePath: false, String defaultDocument,
+      bool usePubServeInDev: true, String pubServeUrlString,
       Middleware middleware}) {
-    final usePubServe = usePubServeInDev && context.isDevelopmentMode;
+    final usePubServe = usePubServeInDev && isDevMode();
 
     final handler = _pubServeHandler(usePubServe, pubServeUrlString).getOrElse(
         () => createStaticHandler(fileSystemPath,
