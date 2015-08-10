@@ -100,26 +100,11 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   Future start({int port: 9999}) async {
     final HttpServer server =
         await HttpServer.bind(InternetAddress.ANY_IP_V6, port);
-//    final headers = <String, String>{};
-//    server.defaultResponseHeaders.forEach((k, v) {
-//      headers[k] = v.join(',');
-//    });
-//    this._defaultResponseHeaders = headers;
 
     server.defaultResponseHeaders.remove('x-frame-options', 'SAMEORIGIN');
     io.serveRequests(server, handler);
     _log.info('Serving at http://${server.address.host}:${server.port}');
-
-//    return io.serve(handler, InternetAddress.ANY_IP_V6, port).then((server) {
-//      _log.info('Serving at http://${server.address.host}:${server.port}');
-//    });
   }
-
-//  Future start({ int port: 9999 }) async {
-//    final server = await io.serve(handler, InternetAddress.ANY_IP_V6, port);
-//    _log.info('Serving at http://${server.address.host}:${server.port}');
-//    return null;
-//  }
 
   Handler _createHandler() {
     r.printRoutes(router, printer: _log.info);
@@ -178,9 +163,7 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
 /// required.
 Middleware _xFrameOptionsMiddleware() {
   return createMiddleware(responseHandler: (Response response) {
-    if (
-//    response.headers.containsKey('x-frame-options') ||
-        response.headers.containsKey('access-control-allow-origin')) {
+    if (response.headers.containsKey('access-control-allow-origin')) {
       return response;
     } else {
       return response.change(headers: {'x-frame-options': 'SAMEORIGIN'});
