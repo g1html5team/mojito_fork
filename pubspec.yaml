@@ -13,21 +13,37 @@ dependencies:
   shelf_proxy: '^0.1.0+2'
   shelf_static: '^0.2.2'
   config: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/config
+    git: 
+      ref: 0aa934d4438e6759bdd8406b44f7603badc93f18
+      url: git@bitbucket.org:andersmholmgren/config.git
   shelf_auth: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth
+    git: 
+      ref: 3730326278b82ee98609dfec375e1ca608a24597
+      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
   shelf_auth_session: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth_session
+    git: 
+      ref: 69cfacd03df57a461c08aed577f53ed1ba6a7bfa
+      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
   shelf_bind: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_bind
+    git: 
+      ref: a50ed6e4c997fe122083605ea102777f3bfa1ef9
+      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
   shelf_oauth: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth
+    git: 
+      ref: 1978e5c3233dd627f1ba601c1983fec9ff2d46c2
+      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
   shelf_oauth_memcache: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth_memcache
+    git: 
+      ref: 104cce90f1a46959921a2863336f7706572176df
+      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
   shelf_path: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_path
+    git: 
+      ref: 65dbbd7126d99512038a16d03a04daabc5ab1196
+      url: git@bitbucket.org:andersmholmgren/shelf_path.git
   shelf_rest: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_rest
+    git: 
+      ref: 0f260358f4a5d19700110560398b82a9b8f95789
+      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
 dependency_overrides: 
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
