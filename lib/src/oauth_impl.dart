@@ -20,9 +20,9 @@ class MojitoOAuthStorageImpl implements MojitoOAuthStorage {
   OAuthStorage inMemory() => new InMemoryOAuthStorage();
 
   OAuthStorage memcache(omem.MemcacheProvider memcacheProvider,
-      {Duration shortTermStorageExpiration: const Duration(minutes: 2),
-      Duration sessionStorageExpiration: const Duration(hours: 1)}) => omem
-      .oauthStorage(memcacheProvider,
+          {Duration shortTermStorageExpiration: const Duration(minutes: 2),
+          Duration sessionStorageExpiration: const Duration(hours: 1)}) =>
+      omem.oauthStorage(memcacheProvider,
           shortTermStorageExpiration: shortTermStorageExpiration,
           sessionStorageExpiration: sessionStorageExpiration);
 }
@@ -34,29 +34,33 @@ class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
   OAuthRouteBuilderImpl(this.routerBuilder);
 
   @override
-  OAuth2RouteBuilder gitHub({path}) => oauth2(
-      'github', (_) => commonAuthorizationServers.gitHubOAuth2, path: path);
+  OAuth2RouteBuilder gitHub({path}) =>
+      oauth2('github', (_) => commonAuthorizationServers.gitHubOAuth2,
+          path: path);
 
   @override
-  OAuth2RouteBuilder bitBucket({path}) => oauth2(
-      'bitbucket', (_) => commonAuthorizationServers.bitbucketOAuth2,
-      path: path);
+  OAuth2RouteBuilder bitBucket({path}) =>
+      oauth2('bitbucket', (_) => commonAuthorizationServers.bitbucketOAuth2,
+          path: path);
 
   @override
   OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'}) =>
       oauth1(path, (_) => commonAuthorizationServers.bitBucketOAuth1);
 
   @override
-  OAuth2RouteBuilder google({path}) => oauth2(
-      'google', (_) => commonAuthorizationServers.googleOAuth2, path: path);
+  OAuth2RouteBuilder google({path}) =>
+      oauth2('google', (_) => commonAuthorizationServers.googleOAuth2,
+          path: path);
 
   @override
-  OAuth2RouteBuilder hipchat({path}) => oauth2(
-      'hipchat', (_) => commonAuthorizationServers.hipchatOAuth2, path: path);
+  OAuth2RouteBuilder hipchat({path}) =>
+      oauth2('hipchat', (_) => commonAuthorizationServers.hipchatOAuth2,
+          path: path);
 
   @override
   OAuth2RouteBuilder oauth2(String providerName,
-      OAuth2AuthorizationServerFactory authorizationServerFactory, {path}) {
+      OAuth2AuthorizationServerFactory authorizationServerFactory,
+      {path}) {
     return new OAuth2RouteBuilderImpl(
         routerBuilder, authorizationServerFactory, path, providerName);
   }
@@ -81,9 +85,11 @@ class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
   @override
   Oauth2RouteNames addClient(ClientIdFactory clientIdFactory,
       OAuthStorage oauthStore, UriTemplate completionRedirectUrl,
-      {userGrantPath: '/userGrant', authTokenPath: '/authToken',
+      {userGrantPath: '/userGrant',
+      authTokenPath: '/authToken',
       List<String> scopes: const [],
-      SessionIdentifierExtractor sessionIdExtractor, String callbackUrl,
+      SessionIdentifierExtractor sessionIdExtractor,
+      String callbackUrl,
       bool storeTokens: true}) {
     final atp = authTokenPath.toString();
 
@@ -95,20 +101,26 @@ class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
         ? sessionIdExtractor
         : _extractShelfAuthSessionId;
 
-    final dancer = new OAuth2ProviderHandlers(clientIdFactory,
-        authorizationServerFactory, Uri.parse(cb),
-        oauthStore.oauth2CSRFStateStore, oauthStore.oauth2TokenStore,
-        completionRedirectUrl, _sessionIdExtractor, scopes,
+    final dancer = new OAuth2ProviderHandlers(
+        clientIdFactory,
+        authorizationServerFactory,
+        Uri.parse(cb),
+        oauthStore.oauth2CSRFStateStore,
+        oauthStore.oauth2TokenStore,
+        completionRedirectUrl,
+        _sessionIdExtractor,
+        scopes,
         storeTokens: storeTokens);
 
     final routeNames = new Oauth2RouteNames(
         OAuth2RouteBuilder.userGrantRouteName(providerName),
         OAuth2RouteBuilder.authTokenRouteName(providerName));
 
-    routerBuilder.addAll((Router r) => r
-      ..get(userGrantPath, dancer.authorizationRequestHandler(),
-          name: routeNames.userGrantRoute)
-      ..get(authTokenPath, dancer.accessTokenRequestHandler()),
+    routerBuilder.addAll(
+        (Router r) => r
+          ..get(userGrantPath, dancer.authorizationRequestHandler(),
+              name: routeNames.userGrantRoute)
+          ..get(authTokenPath, dancer.accessTokenRequestHandler()),
         path: path != null ? path : providerName,
         name: routeNames.authTokenRoute);
 
@@ -126,10 +138,13 @@ class OAuth1RouteBuilderImpl implements OAuth1RouteBuilder {
       this.routerBuilder, this.authorizationServerFactory, this.path);
 
   @override
-  void addClient(OAuth1Token consumerToken,
+  void addClient(
+      OAuth1Token consumerToken,
       OAuth1RequestTokenSecretStore tokenStore,
-      UriTemplate completionRedirectUrl, {requestTokenPath: '/requestToken',
-      authTokenPath: '/authToken', String callbackUrl}) {
+      UriTemplate completionRedirectUrl,
+      {requestTokenPath: '/requestToken',
+      authTokenPath: '/authToken',
+      String callbackUrl}) {
     final atp = authTokenPath.toString();
 
     final cb = callbackUrl != null

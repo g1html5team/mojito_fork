@@ -81,41 +81,30 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
       EnvironmentNameResolver environmentNameResolver)
       : this(resolveConfig(configFactory, environmentNameResolver),
-          environmentNameResolver);
+            environmentNameResolver);
 
-  MojitoImpl.simple({RouteCreator createRootRouter, bool logRequests: true,
-      bool createRootLogger: true, IsDevMode isDevMode: defaultIsDevMode})
-      : this(new MojitoConfig(
-              server: new MojitoServerConfig(
-                  createRootRouter: createRootRouter,
-                  logRequests: logRequests,
-                  createRootLogger: createRootLogger)),
-          defaultEnvironmentNameResolver(
-              isDevMode != null ? isDevMode : defaultIsDevMode));
+  MojitoImpl.simple(
+      {RouteCreator createRootRouter,
+      bool logRequests: true,
+      bool createRootLogger: true,
+      IsDevMode isDevMode: defaultIsDevMode})
+      : this(
+            new MojitoConfig(
+                server: new MojitoServerConfig(
+                    createRootRouter: createRootRouter,
+                    logRequests: logRequests,
+                    createRootLogger: createRootLogger)),
+            defaultEnvironmentNameResolver(
+                isDevMode != null ? isDevMode : defaultIsDevMode));
 
   Future start({int port: 9999}) async {
     final HttpServer server =
         await HttpServer.bind(InternetAddress.ANY_IP_V6, port);
-//    final headers = <String, String>{};
-//    server.defaultResponseHeaders.forEach((k, v) {
-//      headers[k] = v.join(',');
-//    });
-//    this._defaultResponseHeaders = headers;
 
     server.defaultResponseHeaders.remove('x-frame-options', 'SAMEORIGIN');
     io.serveRequests(server, handler);
     _log.info('Serving at http://${server.address.host}:${server.port}');
-
-//    return io.serve(handler, InternetAddress.ANY_IP_V6, port).then((server) {
-//      _log.info('Serving at http://${server.address.host}:${server.port}');
-//    });
   }
-
-//  Future start({ int port: 9999 }) async {
-//    final server = await io.serve(handler, InternetAddress.ANY_IP_V6, port);
-//    _log.info('Serving at http://${server.address.host}:${server.port}');
-//    return null;
-//  }
 
   Handler _createHandler() {
     r.printRoutes(router, printer: _log.info);
@@ -123,7 +112,16 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
     var pipeline = const Pipeline();
 
     if (config.server.logRequests) {
-      pipeline = pipeline.addMiddleware(logRequests());
+      final lr = logRequests();
+      Middleware wrapper = (Handler innerHandler) {
+        if (Logger.root.level <= Level.FINE) {
+          return lr(innerHandler);
+        }
+        else {
+          return innerHandler;
+        }
+      };
+      pipeline = pipeline.addMiddleware(wrapper);
     }
 
     pipeline = pipeline.addMiddleware(exceptionHandler());
@@ -165,9 +163,7 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
 /// required.
 Middleware _xFrameOptionsMiddleware() {
   return createMiddleware(responseHandler: (Response response) {
-    if (
-//    response.headers.containsKey('x-frame-options') ||
-        response.headers.containsKey('access-control-allow-origin')) {
+    if (response.headers.containsKey('access-control-allow-origin')) {
       return response;
     } else {
       return response.change(headers: {'x-frame-options': 'SAMEORIGIN'});
