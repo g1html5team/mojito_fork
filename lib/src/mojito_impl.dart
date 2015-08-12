@@ -21,67 +21,112 @@ import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage_impl.dart';
 import 'dart:io';
 import 'package:shelf_route/extend.dart';
+import 'package:config/config.dart';
+import 'package:mojito/src/config.dart';
+import 'package:quiver/check.dart';
 
 final Logger _log = new Logger('mojito');
 
 bool defaultIsDevMode() =>
     const bool.fromEnvironment(MOJITO_IS_DEV_MODE_ENV_VARIABLE);
 
-class MojitoImpl implements Mojito {
+class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   final mr.Router router;
   final MojitoAuthImpl auth = new MojitoAuthImpl();
   final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
-
   MojitoContext get context => _getContext();
   Handler get handler => _createHandler();
-
-  final bool _logRequests;
+  final C config;
 
   MojitoImpl(
-      RouteCreator createRootRouter, this._logRequests, bool createRootLogger,
-      {IsDevMode isDevMode})
-      : router = createRootRouter != null ? createRootRouter() : mr.router() {
-    IsDevMode _isDevMode = isDevMode != null ? isDevMode : defaultIsDevMode;
-
+      MojitoConfig config, EnvironmentNameResolver environmentNameResolver)
+      : this.config = config,
+        this.router = config.server.createRootRouter != null
+            ? config.server.createRootRouter()
+            : mr.router() {
     if (_context != null) {
       throw new ArgumentError('can only initialise mojito once');
     }
 
-    _context = new MojitoContextImpl(_isDevMode(), this);
+    // TODO: this is a mess
+    checkNotNull(environmentNameResolver,
+        message: 'environmentNameResolver is mandatory');
 
-    if (createRootLogger) {
+    bool _isDevMode =
+        environmentNameResolver() == StandardEnvironmentNames.development;
+
+    _context = new MojitoContextImpl(_isDevMode, this);
+
+    if (config.server.createRootLogger) {
       Logger.root.onRecord.listen((LogRecord lr) {
         print('${lr.time} $lr');
       });
     }
   }
 
-  Future start({int port: 9999}) {
-    return io.serve(handler, InternetAddress.ANY_IP_V6, port).then((server) {
-      _log.info('Serving at http://${server.address.host}:${server.port}');
-    });
+  static MojitoConfig resolveConfig(ConfigFactory<MojitoConfig> configFactory,
+      EnvironmentNameResolver environmentNameResolver) {
+    checkNotNull(configFactory, message: 'configFactory is mandatory');
+    checkNotNull(environmentNameResolver,
+        message: 'environmentNameResolver is mandatory');
+
+    final String environmentName = environmentNameResolver();
+
+    return configFactory.configFor(environmentName);
   }
 
-//  Future start({ int port: 9999 }) async {
-//    final server = await io.serve(handler, InternetAddress.ANY_IP_V6, port);
-//    _log.info('Serving at http://${server.address.host}:${server.port}');
-//    return null;
-//  }
+  MojitoImpl.fromConfig(ConfigFactory<MojitoConfig> configFactory,
+      EnvironmentNameResolver environmentNameResolver)
+      : this(resolveConfig(configFactory, environmentNameResolver),
+            environmentNameResolver);
+
+  MojitoImpl.simple(
+      {RouteCreator createRootRouter,
+      bool logRequests: true,
+      bool createRootLogger: true,
+      IsDevMode isDevMode: defaultIsDevMode})
+      : this(
+            new MojitoConfig(
+                server: new MojitoServerConfig(
+                    createRootRouter: createRootRouter,
+                    logRequests: logRequests,
+                    createRootLogger: createRootLogger)),
+            defaultEnvironmentNameResolver(
+                isDevMode != null ? isDevMode : defaultIsDevMode));
+
+  Future start({int port: 9999}) async {
+    final HttpServer server =
+        await HttpServer.bind(InternetAddress.ANY_IP_V6, port);
+
+    server.defaultResponseHeaders.remove('x-frame-options', 'SAMEORIGIN');
+    io.serveRequests(server, handler);
+    _log.info('Serving at http://${server.address.host}:${server.port}');
+  }
 
   Handler _createHandler() {
     r.printRoutes(router, printer: _log.info);
 
     var pipeline = const Pipeline();
 
-    if (_logRequests) {
-      pipeline = pipeline.addMiddleware(logRequests());
+    if (config.server.logRequests) {
+      final lr = logRequests();
+      Middleware wrapper = (Handler innerHandler) {
+        if (Logger.root.level <= Level.FINE) {
+          return lr(innerHandler);
+        }
+        else {
+          return innerHandler;
+        }
+      };
+      pipeline = pipeline.addMiddleware(wrapper);
     }
 
     pipeline = pipeline.addMiddleware(exceptionHandler());
     pipeline = pipeline.addMiddleware(logExceptions());
+    pipeline = pipeline.addMiddleware(_xFrameOptionsMiddleware());
 
     final authMiddleware = auth.middleware;
 
@@ -112,14 +157,28 @@ class MojitoImpl implements Mojito {
   }
 }
 
+/// dart:io http server sets 'x-frame-options': 'SAMEORIGIN' by default. As
+/// there is no value you can set that to to turn it off that all the browsers
+/// support, we remove it from the default headers and add it back here as
+/// required.
+Middleware _xFrameOptionsMiddleware() {
+  return createMiddleware(responseHandler: (Response response) {
+    if (response.headers.containsKey('access-control-allow-origin')) {
+      return response;
+    } else {
+      return response.change(headers: {'x-frame-options': 'SAMEORIGIN'});
+    }
+  });
+}
+
 // just a trick as Mojito has a property called context which points to this one
-MojitoContext _getContext() => context;
+MojitoContext _getContext() => contextImpl;
 
 const Symbol _MOJITO_CONTEXT = #mojito_context;
 
 MojitoContextImpl _context;
 //final MojitoContext context = new MojitoContextImpl();
-MojitoContext get context {
+MojitoContext get contextImpl {
   if (_context == null) {
     throw new StateError('you must call the init method first');
   }

@@ -286,6 +286,50 @@ app.router.get('privates', () => 'this is only for the privileged few',
 Mojito exposes helpers for setting up other middleware via `app.middleware`. Similarly to authentication, if you want to apply it to all routes then use the `global` builder, otherwise use the `builder()`.
 
 
+## Integrating with other Shelf Packages
+
+It is also easy to use any [shelf][shelf] packages that are not bundled with [mojito][mojito].
+
+[shelf][shelf] packages will expose a shelf `Handler`. 
+All the main mojito router methods take a `handler` argument, so it is largely a matter
+of plugging the handler from the shelf package you want to integrate, into the
+router method you want to use.
+
+If the package will support more than one http method or if it serves more than
+a single set path then the `add` method should be used.
+
+_Note: if you can also use the `@Add` annotation if you prefer_
+
+### Example - integrating shelf_rpc
+
+
+```
+
+import 'package:mojito/mojito.dart';
+import 'package:shelf_rpc/shelf_rpc.dart' as shelf_rpc;
+import 'package:rpc/rpc.dart';
+
+main() {
+
+  var app = init();
+
+  var apiServer = <create rpc apiServer somehow>;
+  // create a shelf handler from the api
+  var handler = shelf_rpc.createRpcHandler(apiServer);
+
+  // create a route for the handler. 
+  app.router
+    ..add('rpc', null, handler, exactMatch: false);
+
+  app.start();
+}
+
+```
+
+Note `exactMatch: false` is needed as shelf_rpc serves many sub routes. Also
+passing `null` as the value of the `methods` argument is used so that all
+methods are passed to the api.
+
 ## Under the hood
 
 Mojito bundles lots of existing shelf libraries and integrates them for easier use. These include:

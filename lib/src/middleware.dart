@@ -6,6 +6,7 @@
 library mojito.middleware;
 
 import 'package:shelf/shelf.dart';
+import 'middleware_impl.dart';
 
 abstract class MojitoMiddleware {
   /// builder for middleware to be applied all routes
@@ -16,9 +17,13 @@ abstract class MojitoMiddleware {
 }
 
 abstract class MiddlewareBuilder {
+  factory MiddlewareBuilder() = MiddlewareBuilderImpl;
+
   MiddlewareBuilder addMiddleware(Middleware middleware);
 
   MiddlewareBuilder logRequests({void logger(String msg, bool isError)});
+
+  MiddlewareBuilder cors({String domain: '*'});
 
   Middleware build();
 }

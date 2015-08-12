@@ -14,16 +14,19 @@ abstract class OAuthRouteBuilder {
   MojitoOAuthStorage get storage;
 
   /// builder for oauth2 clients authenticating with github
-  OAuth2RouteBuilder gitHub({path: 'github'});
+  OAuth2RouteBuilder gitHub({path});
 
   /// builder for oauth2 clients authenticating with bitbucket
-  OAuth2RouteBuilder bitBucket({path: 'bitbucket'});
+  OAuth2RouteBuilder bitBucket({path});
 
   /// builder for oauth1 clients authenticating with bitbucket
-  OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'});
+  OAuth1RouteBuilder bitBucketOAuth1({path});
 
   /// builder for oauth2 clients authenticating with google
-  OAuth2RouteBuilder google({path: 'google'});
+  OAuth2RouteBuilder google({path});
+
+  /// builder for oauth2 clients authenticating with hipchat
+  OAuth2RouteBuilder hipchat({path});
 
   /// builder for other oauth2 clients
   OAuth2RouteBuilder oauth2(
@@ -59,8 +62,8 @@ abstract class OAuth2RouteBuilder {
   ///
   /// By default a shelf_auth session identifier will be assumed. Pass in a
   /// value for [sessionIdExtractor] to override
-  void addClient(ClientIdFactory clientIdFactory, OAuthStorage oauthStore,
-      UriTemplate completionRedirectUrl,
+  Oauth2RouteNames addClient(ClientIdFactory clientIdFactory,
+      OAuthStorage oauthStore, UriTemplate completionRedirectUrl,
       {userGrantPath: '/userGrant',
       authTokenPath: '/authToken',
       List<String> scopes: const [],
@@ -68,6 +71,12 @@ abstract class OAuth2RouteBuilder {
       // optional. Only if want absolute url
       String callbackUrl,
       bool storeTokens: true});
+
+  static String userGrantRouteName(String oauthProviderName) =>
+      'oauthprovider.$oauthProviderName.userGrantRoute';
+
+  static String authTokenRouteName(String oauthProviderName) =>
+      'oauthprovider.$oauthProviderName.authTokenRoute';
 }
 
 /// Route builder for oauth1 clients
@@ -90,4 +99,11 @@ abstract class MojitoOAuthStorage {
   OAuthStorage memcache(omem.MemcacheProvider memcacheProvider,
       {Duration shortTermStorageExpiration: const Duration(minutes: 2),
       Duration sessionStorageExpiration: const Duration(hours: 1)});
+}
+
+class Oauth2RouteNames {
+  final String userGrantRoute;
+  final String authTokenRoute;
+
+  Oauth2RouteNames(this.userGrantRoute, this.authTokenRoute);
 }

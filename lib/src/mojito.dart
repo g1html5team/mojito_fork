@@ -14,10 +14,41 @@ import 'mojito_impl.dart' as impl;
 import 'middleware.dart';
 import 'package:logging/logging.dart';
 import 'package:mojito/src/session_storage.dart';
+import 'package:config/config.dart';
+import 'package:mojito/src/config.dart';
+import 'package:quiver/check.dart';
 
 typedef Router RouteCreator();
 
 typedef bool IsDevMode();
+
+typedef String EnvironmentNameResolver();
+
+EnvironmentNameResolver defaultEnvironmentNameResolver(IsDevMode isDevMode) {
+  checkNotNull(isDevMode);
+  return () {
+    return isDevMode()
+        ? StandardEnvironmentNames.development
+        : StandardEnvironmentNames.production;
+  };
+}
+
+EnvironmentNameResolver environmentNameFromKey(String environmentKey,
+    {bool defaultToDevelopment: true}) {
+  return () {
+    final lookupName = fromEnvironment(environmentKey);
+    final name = lookupName != null
+        ? lookupName
+        : defaultToDevelopment ? StandardEnvironmentNames.development : null;
+
+    if (name == null) {
+      throw new StateError(
+          'Unable to determine environment name from key: $environmentKey');
+    }
+
+    return name;
+  };
+}
 
 const String MOJITO_IS_DEV_MODE_ENV_VARIABLE = 'MOJITO_IS_DEV_MODE';
 
@@ -34,11 +65,19 @@ Mojito init(
         bool logRequests: true,
         bool createRootLogger: true,
         IsDevMode isDevMode}) =>
-    new impl.MojitoImpl(createRootRouter, logRequests, createRootLogger,
+    new impl.MojitoImpl.simple(
+        createRootRouter: createRootRouter,
+        logRequests: logRequests,
+        createRootLogger: createRootLogger,
         isDevMode: isDevMode);
 
-abstract class Mojito {
+Mojito initWithConfig(ConfigFactory<MojitoConfig> configFactory,
+        {EnvironmentNameResolver environmentNameResolver}) =>
+    new impl.MojitoImpl.fromConfig(configFactory, environmentNameResolver);
+
+abstract class Mojito<C extends MojitoConfig> {
   Router get router;
+  C get config;
   MojitoAuth get auth;
   MojitoAuthorisation get authorisation;
   MojitoSessionStorage get sessionStorage;
@@ -49,4 +88,4 @@ abstract class Mojito {
   void start({int port: 9999});
 }
 
-MojitoContext get context => impl.context;
+MojitoContext get context => impl.contextImpl;

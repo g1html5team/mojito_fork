@@ -34,27 +34,36 @@ class OAuthRouteBuilderImpl implements OAuthRouteBuilder {
   OAuthRouteBuilderImpl(this.routerBuilder);
 
   @override
-  OAuth2RouteBuilder gitHub({path: 'github'}) =>
-      oauth2(path, (_) => commonAuthorizationServers.gitHubOAuth2);
+  OAuth2RouteBuilder gitHub({path}) =>
+      oauth2('github', (_) => commonAuthorizationServers.gitHubOAuth2,
+          path: path);
 
   @override
-  OAuth2RouteBuilder oauth2(
-      path, OAuth2AuthorizationServerFactory authorizationServerFactory) {
-    return new OAuth2RouteBuilderImpl(
-        routerBuilder, authorizationServerFactory, path);
-  }
-
-  @override
-  OAuth2RouteBuilder bitBucket({path: 'bitbucket'}) =>
-      oauth2(path, (_) => commonAuthorizationServers.bitbucketOAuth2);
+  OAuth2RouteBuilder bitBucket({path}) =>
+      oauth2('bitbucket', (_) => commonAuthorizationServers.bitbucketOAuth2,
+          path: path);
 
   @override
   OAuth1RouteBuilder bitBucketOAuth1({path: 'bitbucket'}) =>
       oauth1(path, (_) => commonAuthorizationServers.bitBucketOAuth1);
 
   @override
-  OAuth2RouteBuilder google({path: 'google'}) =>
-      oauth2(path, (_) => commonAuthorizationServers.googleOAuth2);
+  OAuth2RouteBuilder google({path}) =>
+      oauth2('google', (_) => commonAuthorizationServers.googleOAuth2,
+          path: path);
+
+  @override
+  OAuth2RouteBuilder hipchat({path}) =>
+      oauth2('hipchat', (_) => commonAuthorizationServers.hipchatOAuth2,
+          path: path);
+
+  @override
+  OAuth2RouteBuilder oauth2(String providerName,
+      OAuth2AuthorizationServerFactory authorizationServerFactory,
+      {path}) {
+    return new OAuth2RouteBuilderImpl(
+        routerBuilder, authorizationServerFactory, path, providerName);
+  }
 
   @override
   OAuth1RouteBuilder oauth1(
@@ -68,13 +77,14 @@ class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
   final Router routerBuilder;
   final OAuth2AuthorizationServerFactory authorizationServerFactory;
   final path;
+  final String providerName;
 
-  OAuth2RouteBuilderImpl(
-      this.routerBuilder, this.authorizationServerFactory, this.path);
+  OAuth2RouteBuilderImpl(this.routerBuilder, this.authorizationServerFactory,
+      this.path, this.providerName);
 
   @override
-  void addClient(ClientIdFactory clientIdFactory, OAuthStorage oauthStore,
-      UriTemplate completionRedirectUrl,
+  Oauth2RouteNames addClient(ClientIdFactory clientIdFactory,
+      OAuthStorage oauthStore, UriTemplate completionRedirectUrl,
       {userGrantPath: '/userGrant',
       authTokenPath: '/authToken',
       List<String> scopes: const [],
@@ -102,9 +112,19 @@ class OAuth2RouteBuilderImpl implements OAuth2RouteBuilder {
         scopes,
         storeTokens: storeTokens);
 
-    routerBuilder.addAll((Router r) => r
-      ..get(userGrantPath, dancer.authorizationRequestHandler())
-      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
+    final routeNames = new Oauth2RouteNames(
+        OAuth2RouteBuilder.userGrantRouteName(providerName),
+        OAuth2RouteBuilder.authTokenRouteName(providerName));
+
+    routerBuilder.addAll(
+        (Router r) => r
+          ..get(userGrantPath, dancer.authorizationRequestHandler(),
+              name: routeNames.userGrantRoute)
+          ..get(authTokenPath, dancer.accessTokenRequestHandler()),
+        path: path != null ? path : providerName,
+        name: routeNames.authTokenRoute);
+
+    return routeNames;
   }
 }
 

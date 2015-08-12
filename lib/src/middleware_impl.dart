@@ -7,6 +7,7 @@ library mojito.middleware.impl;
 
 import 'package:shelf/shelf.dart' as s;
 import 'middleware.dart';
+import 'package:shelf/shelf.dart';
 
 class MojitoMiddlewareImpl implements MojitoMiddleware {
   s.Middleware _middleware;
@@ -49,6 +50,25 @@ class MiddlewareBuilderImpl implements MiddlewareBuilder {
     pipeline = pipeline.addMiddleware(middleware);
     return this;
   }
+
+  @override
+  MiddlewareBuilder cors({String domain: '*'}) =>
+      addMiddleware(createMiddleware(responseHandler: (Response response) {
+        final corsHeaders = {'access-control-allow-origin': domain};
+        if (response.headers.containsKey('x-frame-options')) {
+          final newHeaders = new Map.from(response.headers)
+            ..remove('x-frame-options')
+            ..addAll(corsHeaders);
+
+          return new Response(response.statusCode,
+              headers: newHeaders,
+              body: response.read(),
+              context: response.context,
+              encoding: response.encoding);
+        } else {
+          return response.change(headers: corsHeaders);
+        }
+      }));
 }
 
 class _GlobalMiddlewareBuilder extends MiddlewareBuilderImpl {

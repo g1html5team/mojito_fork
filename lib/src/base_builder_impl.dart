@@ -25,7 +25,7 @@ abstract class BaseBuilderImpl<T extends MiddlewareBuilder> {
 
   BaseBuilderImpl();
 
-  /// builder for authenitcation middleware to be applied all routes
+  /// builder for authentication middleware to be applied all routes
   T get global {
     if (_global == null) {
       _global = createGlobalBuilder();

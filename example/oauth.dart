@@ -42,19 +42,19 @@ main() {
       final storage = r.oauth.storage.inMemory();
 
       r.oauth.gitHub().addClient(
-          (_) => new ClientId('b809a75bb449d81e7234',
+          (_) async => await new ClientId('b809a75bb449d81e7234',
               'cad56a6f39361f31ba5b5ffa11f6722536004f08'),
           storage,
           loginCompleteTemplate);
 
       r.oauth.bitBucket().addClient(
-          (_) => new ClientId(
+          (_) async => await new ClientId(
               'v7hRrM2WRpQe2Nff86', 'pLfwBAa7aBESdzWusUGaNU2S5RH2RScD'),
           storage,
           loginCompleteTemplate);
 
       r.oauth.google().addClient(
-          (_) => new ClientId(
+          (_) async => await new ClientId(
               '986084708845-etbrd3jkeddhsc5119pfl16cbl502e7j.apps.googleusercontent.com',
               'e28hMJcnXM4_f_VGgRRIR9Pt'),
           storage,
