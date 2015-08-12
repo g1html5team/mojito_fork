@@ -1,3 +1,9 @@
+## 0.6.0
+
+* added cors
+* support for config
+
+
 ## 0.5.0
 
 * includes [shelf_bind][shelf_bind] 0.9.0 which has many significant and some **BREAKING**
