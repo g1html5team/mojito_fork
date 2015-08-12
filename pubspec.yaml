@@ -18,11 +18,11 @@ dependencies:
       url: git@bitbucket.org:andersmholmgren/config.git
   shelf_auth: 
     git: 
-      ref: 3730326278b82ee98609dfec375e1ca608a24597
+      ref: 229a804fe5f26f5c3834e7049aab979252e737f6
       url: git@bitbucket.org:andersmholmgren/shelf_auth.git
   shelf_auth_session: 
     git: 
-      ref: 69cfacd03df57a461c08aed577f53ed1ba6a7bfa
+      ref: 65164b1d00da50c381f16f7835de55c0bf1b1b4b
       url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
   shelf_bind: 
     git: 
@@ -30,11 +30,11 @@ dependencies:
       url: git@bitbucket.org:andersmholmgren/shelf_bind.git
   shelf_oauth: 
     git: 
-      ref: 1978e5c3233dd627f1ba601c1983fec9ff2d46c2
+      ref: cb9262091a62213b6d886f5ff41dc1c44faf8bcc
       url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
   shelf_oauth_memcache: 
     git: 
-      ref: 104cce90f1a46959921a2863336f7706572176df
+      ref: f28391f1e7ae992f6160f107de930c3ab7ef9f6d
       url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
   shelf_path: 
     git: 
