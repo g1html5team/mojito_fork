@@ -1,3 +1,7 @@
+## 0.6.1
+
+* fixed: had git dependency for 'config'
+
 ## 0.6.0
 
 * added cors
