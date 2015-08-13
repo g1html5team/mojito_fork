@@ -2,7 +2,7 @@ author: Anders Holmgren <andersmholmgren@gmail.com>
 description: A micro framework for modern web apps built from the ground up on the shelf framework
 homepage: https://bitbucket.org/andersmholmgren/mojito
 name: mojito
-version: 0.6.1
+version: 0.6.2
 dependencies: 
   http_exception: '^0.1.0'
   matcher: '>=0.10.0 <0.13.0'
@@ -19,7 +19,7 @@ dependencies:
   shelf_proxy: '^0.1.0+2'
   shelf_rest: '>=0.3.2 <0.3.3'
   shelf_static: '^0.2.2'
-  config: '^0.0.2'
+  config: '^0.0.3'
 dependency_overrides:
 dev_dependencies: 
   mockito: '>=0.8.1 <0.11.0'
