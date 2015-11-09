@@ -17,6 +17,7 @@ import 'package:mojito/src/session_storage.dart';
 import 'package:config/config.dart';
 import 'package:mojito/src/config.dart';
 import 'package:quiver/check.dart';
+import 'dart:io';
 
 typedef Router RouteCreator();
 
@@ -85,7 +86,11 @@ abstract class Mojito<C extends MojitoConfig> {
   MojitoContext get context;
   Handler get handler;
 
-  void start({int port: 9999});
+  /// Starts a [HttpServer] on the given [address] and [port].
+  ///
+  /// If [address] is omitted or `null`, [InternetAddress.ANY_IP_V6] will be
+  /// used.
+  void start({InternetAddress address, int port: 9999});
 }
 
 MojitoContext get context => impl.contextImpl;
