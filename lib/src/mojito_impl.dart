@@ -97,9 +97,10 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
             defaultEnvironmentNameResolver(
                 isDevMode != null ? isDevMode : defaultIsDevMode));
 
-  Future start({int port: 9999}) async {
+  Future start({InternetAddress address, int port: 9999}) async {
+    if (address == null) address = InternetAddress.ANY_IP_V6;
     final HttpServer server =
-        await HttpServer.bind(InternetAddress.ANY_IP_V6, port);
+        await HttpServer.bind(address, port);
 
     server.defaultResponseHeaders.remove('x-frame-options', 'SAMEORIGIN');
     io.serveRequests(server, handler);
@@ -116,8 +117,7 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
       Middleware wrapper = (Handler innerHandler) {
         if (Logger.root.level <= Level.FINE) {
           return lr(innerHandler);
-        }
-        else {
+        } else {
           return innerHandler;
         }
       };
