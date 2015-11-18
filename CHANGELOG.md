@@ -1,3 +1,7 @@
+## 0.6.3
+
+* Add named parameter `address` to `Mojito.start`
+
 ## 0.6.1
 
 * fixed: had git dependency for 'config'
