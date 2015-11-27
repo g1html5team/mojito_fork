@@ -39,16 +39,23 @@ main() {
       return {"nome": bodies[0], "greenland": bodies[1]};
     })
     ..get('streamed', () {
-      final sc = new StreamController();
+      /*
+       * Here we make several simultaneous requests to the weather service
+       * and stream back the results. We add a delay and some new lines to
+       * make it easier to observe the streaming. Note the newlines seem to
+       * help dart:io to decide to send the events as they come
+       */
+      final sc = new StreamController<String>();
 
       int delay = 0;
 
       addResponse(http.Response r) async {
         await new Future.delayed(new Duration(seconds: delay++));
-        sc.add(new DateTime.now().toIso8601String());
-        sc.add('\n');
-        sc.add(r.body);
-        sc.add('\n\n\n');
+        sc
+          ..add(new DateTime.now().toIso8601String())
+          ..add('\n')
+          ..add(r.body)
+          ..add('\n\n\n');
       }
 
       final responseFutures = [nomeAKUrl, greenlandUrl, nomeAKUrl, greenlandUrl]
