@@ -53,25 +53,15 @@ main() {
 
       final responseFutures = [nomeAKUrl, greenlandUrl, nomeAKUrl, greenlandUrl]
           .map((url) => http.get(nomeAKUrl).then(addResponse));
-//      final nomeFuture = http.get(nomeAKUrl).then(addResponse);
-//      final nome2Future = http.get(nomeAKUrl).then(addResponse);
-//      final nome3Future = http.get(nomeAKUrl).then(addResponse);
-//      final greenlandFuture = http.get(greenlandUrl).then(addResponse);
-
-      _log.info('wait');
 
       Future.wait(responseFutures).then((_) {
-        _log.info('close');
         return sc.close();
       });
-
-      _log.info('return');
 
       final os = sc.stream.transform(UTF8.encoder);
 
       return new Response.ok(os, context: {"shelf.io.buffer_output": false});
-    })
-    ..get('users', getUsersHandler);
+    });
 
   app.start();
 }
