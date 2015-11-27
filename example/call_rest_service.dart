@@ -9,6 +9,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:shelf/shelf.dart';
 import 'package:logging/logging.dart';
+import 'package:stream_transformers/stream_transformers.dart';
 
 const String nomeAKUrl = 'https://query.yahooapis.com/v1/public/yql?'
     'q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20'
@@ -39,31 +40,38 @@ main() {
     })
     ..get('streamed', () {
       final sc = new StreamController();
-      final nomeFuture = http.get(nomeAKUrl).then((r) {
-        _log.info('nome');
 
-        return sc.add(r.body);
-      });
-      final greenlandFuture = http.get(greenlandUrl).then((r) async {
-        _log.info('greenland');
-        await new Future.delayed(const Duration(seconds: 10));
-        _log.info('after greenland');
-        return sc.add(r.body);
-      });
+      int delay = 0;
+
+      addResponse(http.Response r) async {
+        await new Future.delayed(new Duration(seconds: delay++));
+        sc.add(new DateTime.now().toIso8601String().codeUnits);
+        sc.add('\n'.codeUnits);
+        sc.add(r.body.codeUnits);
+        sc.add('\n\n\n'.codeUnits);
+      }
+
+      final nomeFuture = http.get(nomeAKUrl).then(addResponse);
+      final nome2Future = http.get(nomeAKUrl).then(addResponse);
+      final nome3Future = http.get(nomeAKUrl).then(addResponse);
+      final greenlandFuture = http.get(greenlandUrl).then(addResponse);
 
       _log.info('wait');
 
-      Future.wait([nomeFuture, greenlandFuture]).then((_) {
+      Future.wait([nomeFuture, nome2Future, nome3Future, greenlandFuture])
+          .then((_) {
         _log.info('close');
         return sc.close();
       });
 
       _log.info('return');
 
-      final os = sc.stream
+      final os = sc.stream.transform(new DoAction((v) {
+        print(v);
+      }));
 //              .map((r) => r.body)
 //              .transform(JSON.encoder)
-          .transform(UTF8.encoder);
+//          .transform(UTF8.encoder);
 
       return new Response.ok(os, context: {"shelf.io.buffer_output": false});
     })
