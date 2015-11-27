@@ -51,15 +51,16 @@ main() {
         sc.add('\n\n\n');
       }
 
-      final nomeFuture = http.get(nomeAKUrl).then(addResponse);
-      final nome2Future = http.get(nomeAKUrl).then(addResponse);
-      final nome3Future = http.get(nomeAKUrl).then(addResponse);
-      final greenlandFuture = http.get(greenlandUrl).then(addResponse);
+      final responseFutures = [nomeAKUrl, greenlandUrl, nomeAKUrl, greenlandUrl]
+          .map((url) => http.get(nomeAKUrl).then(addResponse));
+//      final nomeFuture = http.get(nomeAKUrl).then(addResponse);
+//      final nome2Future = http.get(nomeAKUrl).then(addResponse);
+//      final nome3Future = http.get(nomeAKUrl).then(addResponse);
+//      final greenlandFuture = http.get(greenlandUrl).then(addResponse);
 
       _log.info('wait');
 
-      Future.wait([nomeFuture, nome2Future, nome3Future, greenlandFuture])
-          .then((_) {
+      Future.wait(responseFutures).then((_) {
         _log.info('close');
         return sc.close();
       });
