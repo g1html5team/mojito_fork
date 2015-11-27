@@ -66,14 +66,7 @@ main() {
 
       _log.info('return');
 
-      final os = sc.stream
-          .transform(new DoAction((v) {
-        print(v);
-      }))
-//      );
-//              .map((r) => r.body)
-//              .transform(JSON.encoder)
-          .transform(UTF8.encoder);
+      final os = sc.stream.transform(UTF8.encoder);
 
       return new Response.ok(os, context: {"shelf.io.buffer_output": false});
     })
