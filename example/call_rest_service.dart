@@ -30,6 +30,10 @@ main() {
 
   app.router
     ..get('weather', () async {
+      /*
+       * Makes two simultaneous requests to the weather service and then sends
+       * both results back to the caller
+       */
       final nomeFuture = http.get(nomeAKUrl);
       final greenlandFuture = http.get(greenlandUrl);
 
@@ -41,9 +45,9 @@ main() {
     ..get('streamed', () {
       /*
        * Here we make several simultaneous requests to the weather service
-       * and stream back the results. We add a delay and some new lines to
-       * make it easier to observe the streaming. Note the newlines seem to
-       * help dart:io to decide to send the events as they come
+       * and stream back the results as they come. We add a delay and some new
+       * lines to make it easier to observe the streaming. Note the newlines
+       * seem to help dart:io to decide to send the events as they come
        */
       final sc = new StreamController<String>();
 
@@ -67,6 +71,8 @@ main() {
 
       final os = sc.stream.transform(UTF8.encoder);
 
+      // Note: the shelf.io.buffer_output context parameter must be set false
+      // to trigger the streaming of the results.
       return new Response.ok(os, context: {"shelf.io.buffer_output": false});
     });
 
