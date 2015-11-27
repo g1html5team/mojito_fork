@@ -3,13 +3,13 @@
 // All rights reserved. Use of this source code is governed by
 // a BSD 2-Clause License that can be found in the LICENSE file.
 
-import 'package:mojito/mojito.dart';
-import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
-import 'package:shelf/shelf.dart';
+
+import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
-import 'package:stream_transformers/stream_transformers.dart';
+import 'package:mojito/mojito.dart';
+import 'package:shelf/shelf.dart';
 
 const String nomeAKUrl = 'https://query.yahooapis.com/v1/public/yql?'
     'q=select%20*%20from%20weather.forecast%20where%20woeid%20in%20'
@@ -64,29 +64,4 @@ main() {
     });
 
   app.start();
-}
-
-Response getUsersHandler(Request request) {
-  Stream<List<int>> counterStream = timedCounter(const Duration(seconds: 1), 15)
-      .map((int x) => 'hello $x\n')
-      .transform(UTF8.encoder);
-
-  print(request.headers);
-  return new Response.ok(counterStream,
-      context: {"shelf.io.buffer_output": false});
-}
-
-Stream<int> timedCounter(Duration interval, [int maxCount]) {
-  StreamController<int> controller = new StreamController<int>();
-  int counter = 0;
-  void tick(Timer timer) {
-    counter++;
-    controller.add(counter); // Ask stream to send counter values as event.
-    if (maxCount != null && counter >= maxCount) {
-      timer.cancel();
-      controller.close(); // Ask stream to shut down and tell listeners.
-    }
-  }
-  new Timer.periodic(interval, tick); // BAD: Starts before it has subscribers.
-  return controller.stream;
 }
