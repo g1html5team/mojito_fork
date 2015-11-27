@@ -45,10 +45,10 @@ main() {
 
       addResponse(http.Response r) async {
         await new Future.delayed(new Duration(seconds: delay++));
-        sc.add(new DateTime.now().toIso8601String().codeUnits);
-        sc.add('\n'.codeUnits);
-        sc.add(r.body.codeUnits);
-        sc.add('\n\n\n'.codeUnits);
+        sc.add(new DateTime.now().toIso8601String());
+        sc.add('\n');
+        sc.add(r.body);
+        sc.add('\n\n\n');
       }
 
       final nomeFuture = http.get(nomeAKUrl).then(addResponse);
@@ -66,12 +66,14 @@ main() {
 
       _log.info('return');
 
-      final os = sc.stream.transform(new DoAction((v) {
+      final os = sc.stream
+          .transform(new DoAction((v) {
         print(v);
-      }));
+      }))
+//      );
 //              .map((r) => r.body)
 //              .transform(JSON.encoder)
-//          .transform(UTF8.encoder);
+          .transform(UTF8.encoder);
 
       return new Response.ok(os, context: {"shelf.io.buffer_output": false});
     })
