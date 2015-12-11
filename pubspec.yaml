@@ -1,53 +1,52 @@
-author: Anders Holmgren <andersmholmgren@gmail.com>
-description: A micro framework for modern web apps built from the ground up on the shelf framework
-homepage: https://bitbucket.org/andersmholmgren/mojito
-name: mojito
-version: 0.6.3
+author: "Anders Holmgren <andersmholmgren@gmail.com>"
+description: "A micro framework for modern web apps built from the ground up on the shelf framework"
+homepage: "https://bitbucket.org/andersmholmgren/mojito"
+name: "mojito"
+version: "0.6.3"
 dependencies: 
-  http_exception: '^0.1.0'
-  matcher: '>=0.10.0 <0.13.0'
-  oauth: '>=0.3.0 <0.4.0'
-  option: '>=0.3.0 <2.0.0'
-  quiver: '^0.20.0'
-  shelf: '^0.6.4+2'
-  shelf_exception_handler: '^0.1.0'
-  shelf_proxy: '^0.1.0+2'
-  shelf_static: '^0.2.2'
+  http_exception: "^0.1.0"
+  matcher: ">=0.10.0 <0.13.0"
+  oauth: ">=0.3.0 <0.4.0"
+  option: ">=0.3.0 <2.0.0"
+  quiver: "^0.20.0"
+  shelf: "^0.6.4+2"
+  shelf_exception_handler: "^0.1.0"
+  shelf_proxy: "^0.1.0+2"
+  shelf_static: "^0.2.2"
   config: 
     git: 
-      ref: 4f40c3b961a33395bab188ab99d85c4a8aa9f493
-      url: git@bitbucket.org:andersmholmgren/config.git
+      ref: "a91f420556aedd13cd04914201f419d90e87c2fc"
+      url: "git@bitbucket.org:andersmholmgren/config.git"
   shelf_auth: 
     git: 
-      ref: f006a63cdaf76cb50c3cd409e03ade0a8a74c1a7
-      url: git@bitbucket.org:andersmholmgren/shelf_auth.git
+      ref: "a3c4021ff3b99d207868336a5e135baf39ee9925"
+      url: "git@bitbucket.org:andersmholmgren/shelf_auth.git"
   shelf_auth_session: 
     git: 
-      ref: 82423b15ca86601136c6f62c64dcf236d69f532e
-      url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
+      ref: "b9b6cbf00d154fa75481bd377703d49a8b7ded3f"
+      url: "git@bitbucket.org:andersmholmgren/shelf_auth_session.git"
   shelf_bind: 
     git: 
-      ref: 0d18394d82838601384f3f07cb782adde0282f3e
-      url: git@bitbucket.org:andersmholmgren/shelf_bind.git
+      ref: "9986f610db7ea8e5bf350cc47ae052b46fe7f145"
+      url: "git@bitbucket.org:andersmholmgren/shelf_bind.git"
   shelf_oauth: 
     git: 
-      ref: d226e50f4fd521ae530684386cccca2233f66afd
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth.git
+      ref: "5b7d4540ce4b537ccbf00c6404293428b006b24f"
+      url: "git@bitbucket.org:andersmholmgren/shelf_oauth.git"
   shelf_oauth_memcache: 
     git: 
-      ref: 93af79282bf056e3af48645f99d45cf2842ac8fe
-      url: git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git
+      ref: "db26dfb7ecaefa54bafad0e30b648014c94b040b"
+      url: "git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git"
   shelf_path: 
     git: 
-      ref: 0a492247f2c3c244b02641152a512d88480f6cf8
-      url: git@bitbucket.org:andersmholmgren/shelf_path.git
+      ref: "f78020ac323436fe18bbc1e154adb669deec93c3"
+      url: "git@bitbucket.org:andersmholmgren/shelf_path.git"
   shelf_rest: 
     git: 
-      ref: 862439993d258d5437e93a28b060667dc25f37b0
-      url: git@bitbucket.org:andersmholmgren/shelf_rest.git
-dependency_overrides: 
+      ref: "5b84f28eb65e6bf1fd0e329d78b3bfee30160f86"
+      url: "git@bitbucket.org:andersmholmgren/shelf_rest.git"
 dev_dependencies: 
-  mockito: '>=0.8.1 <0.11.0'
-  test: '^0.12.0'
+  mockito: ">=0.8.1 <0.11.0"
+  test: "^0.12.0"
 environment: 
-  sdk: '>=1.9.0 <2.0.0'
+  sdk: ">=1.9.0 <2.0.0"
