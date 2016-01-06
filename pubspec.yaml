@@ -1,52 +1,38 @@
-author: "Anders Holmgren <andersmholmgren@gmail.com>"
-description: "A micro framework for modern web apps built from the ground up on the shelf framework"
-homepage: "https://bitbucket.org/andersmholmgren/mojito"
-name: "mojito"
-version: "0.6.3"
+author: Anders Holmgren <andersmholmgren@gmail.com>
+description: A micro framework for modern web apps built from the ground up on the shelf framework
+homepage: https://bitbucket.org/andersmholmgren/mojito
+name: mojito
+version: 0.6.3
 dependencies: 
-  http_exception: "^0.1.0"
-  matcher: ">=0.10.0 <0.13.0"
-  oauth: ">=0.3.0 <0.4.0"
-  option: ">=0.3.0 <2.0.0"
-  quiver: "^0.20.0"
-  shelf: "^0.6.4+2"
-  shelf_exception_handler: "^0.1.0"
-  shelf_proxy: "^0.1.0+2"
-  shelf_static: "^0.2.2"
+  http_exception: '^0.1.0'
+  matcher: '>=0.10.0 <0.13.0'
+  oauth: '>=0.3.0 <0.4.0'
+  option: '>=0.3.0 <2.0.0'
+  quiver: '^0.20.0'
+  shelf: '^0.6.4+2'
+  shelf_exception_handler: '^0.1.0'
+  shelf_proxy: '^0.1.0+2'
+  shelf_static: '^0.2.2'
   config: 
-    git: 
-      ref: "a91f420556aedd13cd04914201f419d90e87c2fc"
-      url: "git@bitbucket.org:andersmholmgren/config.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/config
   shelf_auth: 
-    git: 
-      ref: "a3c4021ff3b99d207868336a5e135baf39ee9925"
-      url: "git@bitbucket.org:andersmholmgren/shelf_auth.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth
   shelf_auth_session: 
-    git: 
-      ref: "b9b6cbf00d154fa75481bd377703d49a8b7ded3f"
-      url: "git@bitbucket.org:andersmholmgren/shelf_auth_session.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth_session
   shelf_bind: 
-    git: 
-      ref: "9986f610db7ea8e5bf350cc47ae052b46fe7f145"
-      url: "git@bitbucket.org:andersmholmgren/shelf_bind.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_bind
   shelf_oauth: 
-    git: 
-      ref: "5b7d4540ce4b537ccbf00c6404293428b006b24f"
-      url: "git@bitbucket.org:andersmholmgren/shelf_oauth.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth
   shelf_oauth_memcache: 
-    git: 
-      ref: "db26dfb7ecaefa54bafad0e30b648014c94b040b"
-      url: "git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth_memcache
   shelf_path: 
-    git: 
-      ref: "f78020ac323436fe18bbc1e154adb669deec93c3"
-      url: "git@bitbucket.org:andersmholmgren/shelf_path.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_path
   shelf_rest: 
-    git: 
-      ref: "5b84f28eb65e6bf1fd0e329d78b3bfee30160f86"
-      url: "git@bitbucket.org:andersmholmgren/shelf_rest.git"
+    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_rest
+dependency_overrides: 
 dev_dependencies: 
-  mockito: ">=0.8.1 <0.11.0"
-  test: "^0.12.0"
+  mockito: '>=0.8.1 <0.11.0'
+  stream_transformers: '^0.3.0+3'
+  test: '^0.12.0'
 environment: 
-  sdk: ">=1.9.0 <2.0.0"
+  sdk: '>=1.9.0 <2.0.0'
