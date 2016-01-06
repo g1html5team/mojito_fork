@@ -1,3 +1,8 @@
+## 0.6.4
+
+* added examples
+* updated many dependency versions
+
 ## 0.6.3
 
 * Add named parameter `address` to `Mojito.start`
