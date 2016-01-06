@@ -15,19 +15,19 @@ dependencies:
   shelf_static: '^0.2.2'
   config: 
     git: 
-      ref: 56385421e0df3e2c87bafb55b9aa06012918d15c
+      ref: 624854ebf68dadbaed1c62bb39291106384d5c70
       url: git@bitbucket.org:andersmholmgren/config.git
   shelf_auth: 
     git: 
-      ref: a1817dd5154fddb9a3b29a7951367e1e7847da50
+      ref: a7517515aed50b8f450620e7bc700d197c138883
       url: git@bitbucket.org:andersmholmgren/shelf_auth.git
   shelf_auth_session: 
     git: 
-      ref: bfc8984f1351b8b006901ce046c4e8a838e82eca
+      ref: 7f050d2602fdd34abd252d05981810cc7c4d1d7e
       url: git@bitbucket.org:andersmholmgren/shelf_auth_session.git
   shelf_bind: 
     git: 
-      ref: 0c1fa52427fb2ae3c47bd02049de52896ee8c625
+      ref: cccec25f6ba00db1deadbbc02ede9a23ea801a76
       url: git@bitbucket.org:andersmholmgren/shelf_bind.git
   shelf_oauth: 
     git: 
@@ -43,7 +43,7 @@ dependencies:
       url: git@bitbucket.org:andersmholmgren/shelf_path.git
   shelf_rest: 
     git: 
-      ref: e6e0d4a56fbdf6bc66de895975336fc50b89ce15
+      ref: 020c5a52e5a09e9c80d09dc964c2d741e7d07560
       url: git@bitbucket.org:andersmholmgren/shelf_rest.git
 dependency_overrides: 
 dev_dependencies: 
