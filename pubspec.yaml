@@ -15,19 +15,19 @@ dependencies:
   shelf_static: '^0.2.2'
   config: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/config
-  shelf_auth:
+  shelf_auth: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth
-  shelf_auth_session:
+  shelf_auth_session: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_auth_session
-  shelf_bind:
+  shelf_bind: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_bind
-  shelf_oauth:
+  shelf_oauth: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth
-  shelf_oauth_memcache:
+  shelf_oauth_memcache: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_oauth_memcache
-  shelf_path:
+  shelf_path: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_path
-  shelf_rest:
+  shelf_rest: 
     path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/new-acdart_root/shelfish_root/shelf_rest
 dependency_overrides: 
 dev_dependencies: 
