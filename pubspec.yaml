@@ -1,38 +1,38 @@
-author: Anders Holmgren <andersmholmgren@gmail.com>
-description: A micro framework for modern web apps built from the ground up on the shelf framework
-homepage: https://bitbucket.org/andersmholmgren/mojito
-name: mojito
-version: 0.6.4
+author: "Anders Holmgren <andersmholmgren@gmail.com>"
+description: "A micro framework for modern web apps built from the ground up on the shelf framework"
+homepage: "https://bitbucket.org/andersmholmgren/mojito"
+name: "mojito"
+version: "0.6.4"
 dependencies: 
-  http_exception: '^0.1.0'
-  matcher: '>=0.10.0 <0.13.0'
-  oauth: '>=0.3.0 <0.4.0'
-  option: '>=0.3.0 <2.0.0'
-  quiver: '^0.20.0'
-  shelf: '^0.6.4+2'
-  shelf_exception_handler: '^0.1.0'
-  shelf_proxy: '^0.1.0+2'
-  shelf_static: '^0.2.2'
+  http_exception: "^0.1.0"
+  matcher: ">=0.10.0 <0.13.0"
+  oauth: ">=0.3.0 <0.4.0"
+  quiver: "^0.20.0"
+  shelf: "^0.6.4+2"
+  shelf_exception_handler: "^0.1.0"
+  shelf_proxy: "^0.1.0+2"
+  shelf_static: "^0.2.2"
   config: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/config
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/config"
+  option: 
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/thirdparty_core_root/option"
   shelf_auth: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/shelf_auth
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/shelf_auth"
   shelf_auth_session: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/shelf_auth_session
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/shelf_auth_session"
   shelf_bind: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/shelf_bind
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/shelf_bind"
   shelf_oauth: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/shelf_oauth"
   shelf_oauth_memcache: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/shelf_oauth_memcache
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/shelf_oauth_memcache"
   shelf_path: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/shelf_path
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/shelf_path"
   shelf_rest: 
-    path: /Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/shelfish_root/shelf_rest
-dependency_overrides: 
+    path: "/Users/blah/dart/backlogio_acdart/gitbacklog_root/gissue_root/acdart_root/shelfish_root/shelf_rest"
 dev_dependencies: 
-  mockito: '>=0.8.1 <0.11.0'
-  stream_transformers: '^0.3.0+3'
-  test: '^0.12.0'
+  mockito: ">=0.8.1 <0.11.0"
+  stream_transformers: "^0.3.0+3"
+  test: "^0.12.0"
 environment: 
-  sdk: '>=1.9.0 <2.0.0'
+  sdk: ">=1.9.0 <2.0.0"
