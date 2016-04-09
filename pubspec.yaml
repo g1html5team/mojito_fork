@@ -7,47 +7,28 @@ dependencies:
   http_exception: "^0.1.0"
   matcher: ">=0.10.0 <0.13.0"
   oauth: ">=0.3.0 <0.4.0"
+  option: "^1.1.0"
   quiver: ">=0.21.4 <0.22.0"
   shelf: "^0.6.4+2"
   shelf_exception_handler: "^0.1.0"
   shelf_proxy: "^0.1.0+2"
   shelf_static: "^0.2.2"
   config: 
-    git: 
-      ref: "285155acf97fe8225647e354e0ecfa59d1f5f4c5"
-      url: "git@bitbucket.org:andersmholmgren/config.git"
-  option: 
-    git: 
-      ref: "eacb98574a2be87455decd39596d1867ee4bc0cc"
-      url: "git@github.com:Andersmholmgren/option.git"
+    path: "/Users/blah/dart/shelfish_root/config"
   shelf_auth: 
-    git: 
-      ref: "06fdafbcf3c5146a31311c264aa56efc16892955"
-      url: "git@bitbucket.org:andersmholmgren/shelf_auth.git"
+    path: "/Users/blah/dart/shelfish_root/shelf_auth"
   shelf_auth_session: 
-    git: 
-      ref: "ec9328158d52128c7670bf692b19ed5840c6aa1f"
-      url: "git@bitbucket.org:andersmholmgren/shelf_auth_session.git"
+    path: "/Users/blah/dart/shelfish_root/shelf_auth_session"
   shelf_bind: 
-    git: 
-      ref: "d0ce57b5dcaa259f67b8aa36d8201d2232112157"
-      url: "git@bitbucket.org:andersmholmgren/shelf_bind.git"
+    path: "/Users/blah/dart/shelfish_root/shelf_bind"
   shelf_oauth: 
-    git: 
-      ref: "e25c4d0e05f97a92435271c38655c0bed0e0e05c"
-      url: "git@bitbucket.org:andersmholmgren/shelf_oauth.git"
+    path: "/Users/blah/dart/shelfish_root/shelf_oauth"
   shelf_oauth_memcache: 
-    git: 
-      ref: "ed706ab146231e5c1469cfc9b64516f6d1f61fb6"
-      url: "git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git"
+    path: "/Users/blah/dart/shelfish_root/shelf_oauth_memcache"
   shelf_path: 
-    git: 
-      ref: "9087c6f8640afc005550e1ea7652e913287ff13e"
-      url: "git@bitbucket.org:andersmholmgren/shelf_path.git"
+    path: "/Users/blah/dart/shelfish_root/shelf_path"
   shelf_rest: 
-    git: 
-      ref: "0eb15153d1544a418763ff1773e37bf9aba5869b"
-      url: "git@bitbucket.org:andersmholmgren/shelf_rest.git"
+    path: "/Users/blah/dart/shelfish_root/shelf_rest"
 dev_dependencies: 
   mockito: ">=0.11.0 <0.12.0"
   stream_transformers: "^0.3.0+3"
