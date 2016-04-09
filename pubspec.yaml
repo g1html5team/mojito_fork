@@ -15,7 +15,7 @@ dependencies:
   shelf_static: "^0.2.2"
   config: 
     git: 
-      ref: "25cba48e46cac51e33763039cc5a6ca26bdbd4ec"
+      ref: "fd99e5b78be6f281459ce1153577eecbba5c853e"
       url: "git@bitbucket.org:andersmholmgren/config.git"
   shelf_auth: 
     git: 
