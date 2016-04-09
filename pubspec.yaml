@@ -14,21 +14,37 @@ dependencies:
   shelf_proxy: "^0.1.0+2"
   shelf_static: "^0.2.2"
   config: 
-    path: "/Users/blah/dart/shelfish_root/config"
+    git: 
+      ref: "25cba48e46cac51e33763039cc5a6ca26bdbd4ec"
+      url: "git@bitbucket.org:andersmholmgren/config.git"
   shelf_auth: 
-    path: "/Users/blah/dart/shelfish_root/shelf_auth"
+    git: 
+      ref: "b98083efb72a8d261b2182c3b06129d7cb15f9ea"
+      url: "git@bitbucket.org:andersmholmgren/shelf_auth.git"
   shelf_auth_session: 
-    path: "/Users/blah/dart/shelfish_root/shelf_auth_session"
+    git: 
+      ref: "20c74c9e0ace8ad6afee8d56c91f7dd02cbc0c22"
+      url: "git@bitbucket.org:andersmholmgren/shelf_auth_session.git"
   shelf_bind: 
-    path: "/Users/blah/dart/shelfish_root/shelf_bind"
+    git: 
+      ref: "fe59ce7e4004959e0055475b99067fb163a675b9"
+      url: "git@bitbucket.org:andersmholmgren/shelf_bind.git"
   shelf_oauth: 
-    path: "/Users/blah/dart/shelfish_root/shelf_oauth"
+    git: 
+      ref: "25b518055be178e2928cbf274059b1a8069a5916"
+      url: "git@bitbucket.org:andersmholmgren/shelf_oauth.git"
   shelf_oauth_memcache: 
-    path: "/Users/blah/dart/shelfish_root/shelf_oauth_memcache"
+    git: 
+      ref: "fb72fd02f037f993d21fd96e876caa22f60faf6e"
+      url: "git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git"
   shelf_path: 
-    path: "/Users/blah/dart/shelfish_root/shelf_path"
+    git: 
+      ref: "9087c6f8640afc005550e1ea7652e913287ff13e"
+      url: "git@bitbucket.org:andersmholmgren/shelf_path.git"
   shelf_rest: 
-    path: "/Users/blah/dart/shelfish_root/shelf_rest"
+    git: 
+      ref: "a813372ed2d9d88b37993393924cea0fa826a223"
+      url: "git@bitbucket.org:andersmholmgren/shelf_rest.git"
 dev_dependencies: 
   mockito: ">=0.11.0 <0.12.0"
   stream_transformers: "^0.3.0+3"
