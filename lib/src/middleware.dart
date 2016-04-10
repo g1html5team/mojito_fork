@@ -6,6 +6,7 @@
 library mojito.middleware;
 
 import 'package:shelf/shelf.dart';
+
 import 'middleware_impl.dart';
 
 abstract class MojitoMiddleware {

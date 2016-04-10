@@ -5,9 +5,9 @@
 
 library mojito.context;
 
-import 'package:shelf_auth/shelf_auth.dart';
-import 'package:option/option.dart';
 import 'package:mojito/src/mojito.dart';
+import 'package:option/option.dart';
+import 'package:shelf_auth/shelf_auth.dart';
 
 abstract class MojitoContext<M extends Mojito> {
   Option<AuthenticatedContext> get auth;

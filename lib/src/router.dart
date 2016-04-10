@@ -5,10 +5,12 @@
 
 library mojito.router;
 
+import 'package:mojito/src/oauth.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_rest/shelf_rest.dart' as r;
+
 import 'router_impl.dart';
-import 'package:mojito/src/oauth.dart';
+
 export 'package:shelf_oauth/shelf_oauth.dart'
     show OAuth1RequestTokenSecretStore, InMemoryOAuth1RequestTokenSecretStore;
 

@@ -5,15 +5,16 @@
 
 library mojito.router.impl;
 
-import 'package:shelf/shelf.dart';
-import 'package:shelf_rest/extend.dart' as r;
-import 'router.dart';
-import 'mojito.dart';
-import 'package:shelf_static/shelf_static.dart';
-import 'package:shelf_proxy/shelf_proxy.dart';
-import 'package:option/option.dart';
-import 'package:shelf_bind/shelf_bind.dart';
 import 'package:mojito/src/oauth_impl.dart';
+import 'package:option/option.dart';
+import 'package:shelf/shelf.dart';
+import 'package:shelf_bind/shelf_bind.dart';
+import 'package:shelf_proxy/shelf_proxy.dart';
+import 'package:shelf_rest/extend.dart' as r;
+import 'package:shelf_static/shelf_static.dart';
+
+import 'mojito.dart';
+import 'router.dart';
 
 class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
@@ -22,15 +23,25 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
   IsDevMode get isDevMode =>
       _isDevMode != null ? _isDevMode : () => context.isDevelopmentMode;
 
-  MojitoRouterBuilder(Function fallbackHandler, String name, path,
-      r.RouterAdapter routerAdapter, routeable, Middleware middleware,
+  MojitoRouterBuilder(
+      Function fallbackHandler,
+      String name,
+      path,
+      r.RouterAdapter routerAdapter,
+      routeable,
+      Middleware middleware,
       this._isDevMode)
       : super(
-          fallbackHandler, name, path, routerAdapter, routeable, middleware);
+            fallbackHandler, name, path, routerAdapter, routeable, middleware);
 
-  MojitoRouterBuilder.create({Function fallbackHandler,
-      r.HandlerAdapter handlerAdapter, r.RouteableAdapter routeableAdapter,
-      r.PathAdapter pathAdapter, Middleware middleware, path: '/', String name,
+  MojitoRouterBuilder.create(
+      {Function fallbackHandler,
+      r.HandlerAdapter handlerAdapter,
+      r.RouteableAdapter routeableAdapter,
+      r.PathAdapter pathAdapter,
+      Middleware middleware,
+      path: '/',
+      String name,
       IsDevMode isDevMode})
       : this._isDevMode = isDevMode,
         super.create(
@@ -49,9 +60,12 @@ class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
           routeable, middleware, isDevMode);
 
   @override
-  void addStaticAssetHandler(path, {String fileSystemPath: 'build/web',
-      bool serveFilesOutsidePath: false, String defaultDocument,
-      bool usePubServeInDev: true, String pubServeUrlString,
+  void addStaticAssetHandler(path,
+      {String fileSystemPath: 'build/web',
+      bool serveFilesOutsidePath: false,
+      String defaultDocument,
+      bool usePubServeInDev: true,
+      String pubServeUrlString,
       Middleware middleware}) {
     final usePubServe = usePubServeInDev && isDevMode();
 

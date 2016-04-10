@@ -5,11 +5,12 @@
 
 library mojito.context.impl;
 
+import 'package:mojito/src/mojito.dart';
+import 'package:option/option.dart';
 import 'package:shelf_auth/shelf_auth.dart';
+
 import 'context.dart';
 import 'preconditions.dart';
-import 'package:option/option.dart';
-import 'package:mojito/src/mojito.dart';
 
 class MojitoContextImpl implements MojitoContext {
   @override

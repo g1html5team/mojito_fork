@@ -1,10 +1,11 @@
-import 'package:mojito/mojito.dart';
 import 'dart:async';
-import 'package:uri/uri.dart';
+
+import 'package:logging/logging.dart';
+import 'package:mojito/mojito.dart';
 import 'package:option/option.dart';
 import 'package:shelf/shelf.dart';
+import 'package:uri/uri.dart';
 import 'package:uuid/uuid.dart';
-import 'package:logging/logging.dart';
 
 /// To try this example, simply run this dart script and then open a browser to
 /// one of the user grant urls such as:
@@ -25,8 +26,8 @@ main() {
   // typically only appropriate in development
   app.auth.global.authenticator(new TestAuthenticator()).jwtSession(
       'acme corp', new Uuid().v4(), (username) => _lookup(username, null))
-      ..allowHttp = true
-      ..allowAnonymousAccess = true;
+    ..allowHttp = true
+    ..allowAnonymousAccess = true;
 
   app.sessionStorage.add(new InMemorySessionRepository());
 

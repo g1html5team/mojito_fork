@@ -6,8 +6,9 @@
 library mojito.middleware.impl;
 
 import 'package:shelf/shelf.dart' as s;
-import 'middleware.dart';
 import 'package:shelf/shelf.dart';
+
+import 'middleware.dart';
 
 class MojitoMiddlewareImpl implements MojitoMiddleware {
   s.Middleware _middleware;

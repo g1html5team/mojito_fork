@@ -6,10 +6,10 @@
 library mojito.extend;
 
 export 'mojito.dart';
-export 'src/mojito_impl.dart';
-export 'src/context_impl.dart';
 export 'src/auth_impl.dart';
-export 'src/oauth_impl.dart';
 export 'src/authorisation_impl.dart';
-export 'src/router_impl.dart';
+export 'src/context_impl.dart';
 export 'src/middleware_impl.dart';
+export 'src/mojito_impl.dart';
+export 'src/oauth_impl.dart';
+export 'src/router_impl.dart';

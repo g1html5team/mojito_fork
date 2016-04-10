@@ -5,16 +5,17 @@
 
 library mojito.oauth.impl;
 
+import 'dart:async';
+
+import 'package:http_exception/http_exception.dart';
+import 'package:mojito/src/oauth.dart';
+import 'package:mojito/src/router.dart';
+import 'package:option/option.dart';
+import 'package:shelf/shelf.dart';
+import 'package:shelf_auth/shelf_auth.dart';
 import 'package:shelf_oauth/shelf_oauth.dart';
 import 'package:shelf_oauth_memcache/shelf_oauth_memcache.dart' as omem;
-import 'package:mojito/src/oauth.dart';
 import 'package:uri/uri.dart';
-import 'package:mojito/src/router.dart';
-import 'package:shelf/shelf.dart';
-import 'dart:async';
-import 'package:http_exception/http_exception.dart';
-import 'package:shelf_auth/shelf_auth.dart';
-import 'package:option/option.dart';
 
 class MojitoOAuthStorageImpl implements MojitoOAuthStorage {
   OAuthStorage inMemory() => new InMemoryOAuthStorage();
@@ -154,9 +155,11 @@ class OAuth1RouteBuilderImpl implements OAuth1RouteBuilder {
     final dancer = new OAuth1ProviderHandlers(consumerToken,
         authorizationServerFactory, cb, tokenStore, completionRedirectUrl);
 
-    routerBuilder.addAll((Router r) => r
-      ..get(requestTokenPath, dancer.tokenRequestHandler())
-      ..get(authTokenPath, dancer.accessTokenRequestHandler()), path: path);
+    routerBuilder.addAll(
+        (Router r) => r
+          ..get(requestTokenPath, dancer.tokenRequestHandler())
+          ..get(authTokenPath, dancer.accessTokenRequestHandler()),
+        path: path);
   }
 }
 
