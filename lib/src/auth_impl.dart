@@ -6,6 +6,7 @@
 library mojito.auth.impl;
 
 import 'package:shelf_auth/shelf_auth.dart';
+
 import 'auth.dart';
 import 'base_builder_impl.dart';
 

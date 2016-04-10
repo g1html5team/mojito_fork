@@ -3,12 +3,13 @@
 // All rights reserved. Use of this source code is governed by
 // a BSD 2-Clause License that can be found in the LICENSE file.
 
-import 'package:mojito/mojito.dart';
 import 'dart:async';
-import 'package:option/option.dart';
-import 'package:logging/logging.dart';
-import 'package:shelf/shelf.dart';
 import 'dart:math';
+
+import 'package:logging/logging.dart';
+import 'package:mojito/mojito.dart';
+import 'package:option/option.dart';
+import 'package:shelf/shelf.dart';
 import 'package:uuid/uuid.dart';
 
 main() {
@@ -26,8 +27,9 @@ main() {
         ..allowAnonymousAccess = true;
 
   var randomAuthenticator = (app.auth
-      .builder()
-      .authenticator(new RandomNameAuthenticator())..allowHttp = true).build();
+          .builder()
+          .authenticator(new RandomNameAuthenticator())..allowHttp = true)
+      .build();
 
   app.sessionStorage.add(new InMemorySessionRepository());
 

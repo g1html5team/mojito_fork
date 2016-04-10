@@ -1,3 +1,7 @@
+## 0.6.5
+
+* updated many dependency versions
+
 ## 0.6.4
 
 * added examples

@@ -6,6 +6,7 @@
 library preconditions;
 
 import 'package:matcher/matcher.dart';
+
 export 'package:matcher/matcher.dart';
 
 void ensure(value, Matcher matcher, [String failureMessage]) {

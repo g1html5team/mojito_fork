@@ -5,25 +5,27 @@
 
 library mojito.impl;
 
-import 'context.dart';
-import 'context_impl.dart';
+import 'dart:async';
+import 'dart:io';
+
+import 'package:config/config.dart';
+import 'package:logging/logging.dart';
+import 'package:mojito/src/config.dart';
+import 'package:mojito/src/middleware_impl.dart';
+import 'package:mojito/src/session_storage_impl.dart';
+import 'package:quiver/check.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_exception_handler/shelf_exception_handler.dart';
+import 'package:shelf_route/extend.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
-import 'mojito.dart';
-import 'router.dart' as mr;
+
 import 'auth_impl.dart';
 import 'authorisation_impl.dart';
-import 'package:mojito/src/middleware_impl.dart';
-import 'dart:async';
-import 'package:logging/logging.dart';
-import 'package:mojito/src/session_storage_impl.dart';
-import 'dart:io';
-import 'package:shelf_route/extend.dart';
-import 'package:config/config.dart';
-import 'package:mojito/src/config.dart';
-import 'package:quiver/check.dart';
+import 'context.dart';
+import 'context_impl.dart';
+import 'mojito.dart';
+import 'router.dart' as mr;
 
 final Logger _log = new Logger('mojito');
 
@@ -89,18 +91,16 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
       bool createRootLogger: true,
       IsDevMode isDevMode: defaultIsDevMode})
       : this(
-            new MojitoConfig(
-                server: new MojitoServerConfig(
-                    createRootRouter: createRootRouter,
-                    logRequests: logRequests,
-                    createRootLogger: createRootLogger)),
+            new MojitoConfig(server: new MojitoServerConfig(
+                createRootRouter: createRootRouter,
+                logRequests: logRequests,
+                createRootLogger: createRootLogger)),
             defaultEnvironmentNameResolver(
                 isDevMode != null ? isDevMode : defaultIsDevMode));
 
   Future start({InternetAddress address, int port: 9999}) async {
     if (address == null) address = InternetAddress.ANY_IP_V6;
-    final HttpServer server =
-        await HttpServer.bind(address, port);
+    final HttpServer server = await HttpServer.bind(address, port);
 
     server.defaultResponseHeaders.remove('x-frame-options', 'SAMEORIGIN');
     io.serveRequests(server, handler);
