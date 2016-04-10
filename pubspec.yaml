@@ -4,47 +4,23 @@ homepage: "https://bitbucket.org/andersmholmgren/mojito"
 name: "mojito"
 version: "0.6.5"
 dependencies: 
+  config: ">=0.0.5 <0.0.6"
   http_exception: "^0.1.0"
   matcher: ">=0.10.0 <0.13.0"
   oauth: ">=0.3.0 <0.4.0"
   option: "^1.1.0"
   quiver: ">=0.21.4 <0.22.0"
   shelf: "^0.6.4+2"
+  shelf_auth: ">=0.7.2 <0.7.3"
+  shelf_auth_session: ">=0.4.11 <0.4.12"
+  shelf_bind: "^0.9.3"
   shelf_exception_handler: "^0.1.0"
+  shelf_oauth: ">=0.8.2 <0.8.3"
+  shelf_oauth_memcache: "^0.3.7"
+  shelf_path: "^0.1.8"
   shelf_proxy: "^0.1.0+2"
+  shelf_rest: ">=0.3.4 <0.3.5"
   shelf_static: "^0.2.2"
-  config: 
-    git: 
-      ref: "fd99e5b78be6f281459ce1153577eecbba5c853e"
-      url: "git@bitbucket.org:andersmholmgren/config.git"
-  shelf_auth: 
-    git: 
-      ref: "b98083efb72a8d261b2182c3b06129d7cb15f9ea"
-      url: "git@bitbucket.org:andersmholmgren/shelf_auth.git"
-  shelf_auth_session: 
-    git: 
-      ref: "20c74c9e0ace8ad6afee8d56c91f7dd02cbc0c22"
-      url: "git@bitbucket.org:andersmholmgren/shelf_auth_session.git"
-  shelf_bind: 
-    git: 
-      ref: "fe59ce7e4004959e0055475b99067fb163a675b9"
-      url: "git@bitbucket.org:andersmholmgren/shelf_bind.git"
-  shelf_oauth: 
-    git: 
-      ref: "25b518055be178e2928cbf274059b1a8069a5916"
-      url: "git@bitbucket.org:andersmholmgren/shelf_oauth.git"
-  shelf_oauth_memcache: 
-    git: 
-      ref: "fb72fd02f037f993d21fd96e876caa22f60faf6e"
-      url: "git@bitbucket.org:andersmholmgren/shelf_oauth_memcache.git"
-  shelf_path: 
-    git: 
-      ref: "9087c6f8640afc005550e1ea7652e913287ff13e"
-      url: "git@bitbucket.org:andersmholmgren/shelf_path.git"
-  shelf_rest: 
-    git: 
-      ref: "a813372ed2d9d88b37993393924cea0fa826a223"
-      url: "git@bitbucket.org:andersmholmgren/shelf_rest.git"
 dev_dependencies: 
   mockito: ">=0.11.0 <0.12.0"
   stream_transformers: "^0.3.0+3"
