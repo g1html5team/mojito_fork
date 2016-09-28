@@ -5,12 +5,7 @@
 
 library mojito.session;
 
-//import 'package:shelf_auth/shelf_auth.dart';
-import 'package:shelf_auth_session/shelf_auth_session.dart';
-
 abstract class MojitoSessionStorage {
-  void add(SessionRepository repository);
-
 //  void inMemory();
 
 //  /// builder for authentication middleware to be applied all routes

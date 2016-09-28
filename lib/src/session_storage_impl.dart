@@ -6,7 +6,6 @@
 library mojito.session.impl;
 
 import 'package:shelf/shelf.dart';
-import 'package:shelf_auth_session/shelf_auth_session.dart';
 
 import 'session_storage.dart';
 //import 'package:shelf_auth/shelf_auth.dart';
@@ -14,8 +13,4 @@ import 'session_storage.dart';
 
 class MojitoSessionStorageImpl implements MojitoSessionStorage {
   Middleware middleware;
-
-  void add(SessionRepository repository) {
-    middleware = sessionMiddleware(repository);
-  }
 }

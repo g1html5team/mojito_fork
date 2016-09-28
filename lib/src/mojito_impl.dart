@@ -17,11 +17,8 @@ import 'package:quiver/check.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
 import 'package:shelf_exception_handler/shelf_exception_handler.dart';
-import 'package:shelf_route/extend.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 
-import 'auth_impl.dart';
-import 'authorisation_impl.dart';
 import 'context.dart';
 import 'context_impl.dart';
 import 'mojito.dart';
@@ -34,8 +31,6 @@ bool defaultIsDevMode() =>
 
 class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
   final mr.Router router;
-  final MojitoAuthImpl auth = new MojitoAuthImpl();
-  final MojitoAuthorisationImpl authorisation = new MojitoAuthorisationImpl();
   final MojitoSessionStorageImpl sessionStorage =
       new MojitoSessionStorageImpl();
   final MojitoMiddlewareImpl middleware = new MojitoMiddlewareImpl();
@@ -127,24 +122,6 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
     pipeline = pipeline.addMiddleware(exceptionHandler());
     pipeline = pipeline.addMiddleware(logExceptions());
     pipeline = pipeline.addMiddleware(_xFrameOptionsMiddleware());
-
-    final authMiddleware = auth.middleware;
-
-    if (authMiddleware != null) {
-      pipeline = pipeline.addMiddleware(authMiddleware);
-
-      // TODO: check auth middleware has session handler ???
-      // TODO: error out if session set wo auth
-      final sessionMiddleware = sessionStorage.middleware;
-      if (sessionMiddleware != null) {
-        pipeline = pipeline.addMiddleware(sessionMiddleware);
-      }
-    }
-
-    final authorisationMiddleware = authorisation.middleware;
-    if (authorisationMiddleware != null) {
-      pipeline = pipeline.addMiddleware(authorisationMiddleware);
-    }
 
     final mw = middleware.middleware;
     if (mw != null) {

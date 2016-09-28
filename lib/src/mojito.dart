@@ -14,8 +14,6 @@ import 'package:mojito/src/session_storage.dart';
 import 'package:quiver/check.dart';
 import 'package:shelf/shelf.dart';
 
-import 'auth.dart';
-import 'authorisation.dart';
 import 'context.dart';
 import 'middleware.dart';
 import 'mojito_impl.dart' as impl;
@@ -81,8 +79,6 @@ Mojito initWithConfig(ConfigFactory<MojitoConfig> configFactory,
 abstract class Mojito<C extends MojitoConfig> {
   Router get router;
   C get config;
-  MojitoAuth get auth;
-  MojitoAuthorisation get authorisation;
   MojitoSessionStorage get sessionStorage;
   MojitoMiddleware get middleware;
   MojitoContext get context;

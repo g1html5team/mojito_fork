@@ -5,7 +5,6 @@
 
 library mojito.router.impl;
 
-import 'package:mojito/src/oauth_impl.dart';
 import 'package:option/option.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_bind/shelf_bind.dart';
@@ -18,7 +17,6 @@ import 'router.dart';
 
 class MojitoRouterBuilder extends r.ShelfRestRouterBuilder<MojitoRouterBuilder>
     implements Router {
-  OAuthRouteBuilderImpl get oauth => new OAuthRouteBuilderImpl(this);
   final IsDevMode _isDevMode;
   IsDevMode get isDevMode =>
       _isDevMode != null ? _isDevMode : () => context.isDevelopmentMode;

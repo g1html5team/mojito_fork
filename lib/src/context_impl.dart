@@ -6,8 +6,6 @@
 library mojito.context.impl;
 
 import 'package:mojito/src/mojito.dart';
-import 'package:option/option.dart';
-import 'package:shelf_auth/shelf_auth.dart';
 
 import 'context.dart';
 import 'preconditions.dart';
@@ -21,7 +19,4 @@ class MojitoContextImpl implements MojitoContext {
   MojitoContextImpl(this.isDevelopmentMode, this.app) {
     ensure(isDevelopmentMode, isNotNull);
   }
-
-  @override
-  Option<AuthenticatedContext> get auth => authenticatedContext();
 }
