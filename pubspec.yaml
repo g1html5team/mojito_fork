@@ -11,10 +11,10 @@ dependencies:
   quiver: ">=0.21.4 <0.22.0"
   shelf: "^0.6.4+2"
   shelf_bind: "^0.9.3"
-  shelf_exception_handler: "^0.1.0"
   shelf_path: "^0.1.8"
   shelf_proxy: "^0.1.0+2"
   shelf_rest: ">=0.3.4 <0.3.5"
   shelf_static: "^0.2.2"
+  xml: '>=2.1.0 <3.0.0'
 environment:
   sdk: ">=1.9.0 <2.0.0"

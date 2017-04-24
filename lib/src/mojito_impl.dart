@@ -16,7 +16,7 @@ import 'package:mojito/src/session_storage_impl.dart';
 import 'package:quiver/check.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as io;
-import 'package:shelf_exception_handler/shelf_exception_handler.dart';
+import 'shelf_exception_handler.dart';
 import 'package:shelf_route/shelf_route.dart' as r;
 
 import 'context.dart';
