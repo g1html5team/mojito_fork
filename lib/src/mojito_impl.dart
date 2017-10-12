@@ -95,7 +95,7 @@ class MojitoImpl<C extends MojitoConfig> implements Mojito<C> {
 
   Future start({InternetAddress address, int port: 9999}) async {
     if (address == null) address = InternetAddress.ANY_IP_V6;
-    final HttpServer server = await HttpServer.bind(address, port);
+    final HttpServer server = await HttpServer.bind(address, port, shared: true);
 
     server.defaultResponseHeaders.remove('x-frame-options', 'SAMEORIGIN');
     io.serveRequests(server, handler);
